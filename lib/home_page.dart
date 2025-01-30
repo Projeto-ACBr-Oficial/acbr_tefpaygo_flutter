@@ -160,9 +160,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await repository.integrado
         .venda(
       requisicaoVenda: dadosVenda
-        ..provider = "REDE"
-        ..cardType = CardType.cartaoDebito
-        ..finType = FinType.aVista,
     )
         .then((value) {
       // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
