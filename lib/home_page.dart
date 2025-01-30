@@ -185,14 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void onClickFloatingActionButton() async {
-    await repository.integrado.generico(
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.instalacao,
-        ),
-        intentAction: IntentAction.interfaceautomacao);
-    await repository.integrado.administrativo();
-  }
 
   void onclickButtonVenda() async {
     if (_valorVenda < 1) {
