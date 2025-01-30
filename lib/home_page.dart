@@ -21,14 +21,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final PayGOSdk repository = PayGOSdk();
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -36,31 +34,31 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 10,
             children: <Widget>[
+              Container(
+                width: 250,
+                child: TextField(
+                    keyboardType: TextInputType.number,
+                    onChanged: onChangeInputValorVenda,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Valor da venda',
+                    )),
+              ),
               Text(
                 _repostaPaygoIntegrado,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-              TextField(
-                  keyboardType: TextInputType.number,
-                  onChanged: onChangeInputValorVenda,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Valor da venda',
-                  )),
               MaterialButton(
                   onPressed: onclickButtonVenda,
                   child: const Text('Venda'),
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .surfaceContainerLowest),
-              MaterialButton(onPressed: onClickButtonResolverPendencia,
-                  child: const Text('Resolver Pendência'), color: Theme
-                  .of(context)
-                  .colorScheme
-                  .surfaceContainerLowest),
-            ])
-        ,
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+              MaterialButton(
+                  onPressed: onClickButtonResolverPendencia,
+                  child: const Text('Resolver Pendência'),
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+            ]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onClickFloatingActionButton,
@@ -70,14 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
-
   /**
    * Metodo para inicializar o listener de intent
    * Esse metodo obtem a resposta do PayGo Integrado
    */
-  void _initIntentListener(){
-    receive_intent.ReceiveIntent.receivedIntentStream.listen((receive_intent.Intent? intent) {
+  void _initIntentListener() {
+    receive_intent.ReceiveIntent.receivedIntentStream
+        .listen((receive_intent.Intent? intent) {
       if (intent?.data != null) {
         final Uri uri = Uri.parse(intent?.data ?? '');
         final String decodedUri = Uri.decodeFull(uri.toString());
@@ -85,13 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
         resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
 
         //confirma venda automaticamente se transação for aprovada
-        if (resposta.operation == "VENDA" &&  resposta?.transactionResult == 0 ){
+        if (resposta.operation == "VENDA" && resposta?.transactionResult == 0) {
           confirmarVenda(resposta.transactionId);
         }
 
-
         setState(() {
-          _repostaPaygoIntegrado = "Operation: ${resposta?.operation} \n ID: ${resposta?.transactionId} \n Mensagem: ${resposta?.resultMessage}\n Resultado da transação: ${resposta?.transactionResult}";
+          _repostaPaygoIntegrado =
+              "Resposta do PayGo Integrado\nOperation: ${resposta?.operation} \nID: ${resposta?.transactionId}\nMensagem: ${resposta?.resultMessage}\nResultado da transação: ${resposta?.transactionResult}";
         });
       }
     });
@@ -114,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     )
         .then((value) {
-          print("Venda confirmada");
+      print("Venda confirmada");
     }).catchError((error) {
       print("Erro ao confirmar venda: $error");
     });
@@ -144,13 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ..finType = FinType.aVista,
     )
         .then((value) {
-     // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
+      // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
     }).catchError((error) {
       //changeStatusVenda("Erro ao enviar venda: $error");
     });
-
   }
-
 
   void onChangeInputValorVenda(String valor) {
     setState(() {
@@ -167,7 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await repository.integrado.administrativo();
   }
 
-
   void onclickButtonVenda() async {
     if (_valorVenda == 0) {
       Fluttertoast.showToast(
@@ -175,10 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-          backgroundColor: Theme
-              .of(context)
-              .colorScheme
-              .error,
+          backgroundColor: Theme.of(context).colorScheme.error,
           textColor: Colors.white,
           fontSize: 16.0);
       return;
@@ -186,6 +177,5 @@ class _MyHomePageState extends State<MyHomePage> {
     await realizarVenda();
   }
 
-  void onClickButtonResolverPendencia() {
-  }
+  void onClickButtonResolverPendencia() {}
 }
