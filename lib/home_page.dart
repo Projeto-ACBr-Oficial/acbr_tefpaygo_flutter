@@ -185,11 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onclickButtonVenda() async {
-    if (_valorVenda == 0) {
+    if (_valorVenda < 1) {
       Fluttertoast.showToast(
-          msg: "Informe o valor da venda",
+          msg: "Valor mínimo é R\$1,00",
           toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Theme.of(context).colorScheme.error,
           textColor: Colors.white,
