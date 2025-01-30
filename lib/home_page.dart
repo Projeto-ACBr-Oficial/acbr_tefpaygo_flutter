@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Theme.of(context).colorScheme.surfaceContainerLowest),
               MaterialButton(
                   minWidth: 250,
-                  onPressed: onClickButtonResolverPendencia,
-                  child: const Text('Resolver Pendência'),
+                  onPressed: onclickButtonLimparTela,
+                  child: const Text('Limpar tela'),
                   color: Theme.of(context).colorScheme.surfaceContainerLowest),
             ]),
       ),
@@ -199,5 +199,29 @@ class _MyHomePageState extends State<MyHomePage> {
     await realizarVenda();
   }
 
-  void onClickButtonResolverPendencia() {}
+  void onclickButtonLimparTela() {
+    setState(() {
+      _repostaPaygoIntegrado = "";
+    });
+
+    setState(() {
+      _valorVenda = 0.0;
+    });
+  }
+
+  /**
+   * Metodo para resolver pendencia
+   */
+
+  void resolverPendencia(Uri uri) async {
+    if (uri != null) {
+      await repository.integrado.resolucaoPendencia(
+        intentAction: IntentAction.confirmation,
+        requisicaoPendencia: uri.toString(),
+        requisicaoConfirmacao: TransacaoRequisicaoPendencia(
+          status: TransactionStatus.desfeitoManual,
+        ),
+      );
+    }
+  }
 }
