@@ -62,13 +62,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: onclickButtonLimparTela,
                   child: const Text('Limpar tela'),
                   color: Theme.of(context).colorScheme.surfaceContainerLowest),
+              MaterialButton(
+                  minWidth: 250,
+                  onPressed: onclickButtonInstalacao,
+                  child: const Text('Abrir menu de instalação'),
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+              MaterialButton(
+                  minWidth: 250,
+                  onPressed: onclickButtonManutencao,
+                  child: const Text('Abrir menu de manutenção'),
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+              MaterialButton(
+                  minWidth: 250,
+                  onPressed: onclickButtonPainelAdministrativo,
+                  child: const Text('Abrir Painel Administrativo'),
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
             ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onClickFloatingActionButton,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -207,6 +217,27 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _valorVenda = 0.0;
     });
+  }
+
+  void onclickButtonInstalacao() async {
+    await repository.integrado.generico(
+        requisicao: TransacaoRequisicaoGenerica(
+          operation: Operation.instalacao,
+        ),
+        intentAction: IntentAction.interfaceautomacao);
+  }
+
+  void onclickButtonManutencao() async {
+    await repository.integrado.generico(
+      requisicao: TransacaoRequisicaoGenerica(
+        operation: Operation.manutencao,
+      ),
+      intentAction: IntentAction.interfaceautomacao,
+    );
+  }
+
+  void onclickButtonPainelAdministrativo() async {
+    await repository.integrado.administrativo();
   }
 
   /**
