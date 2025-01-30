@@ -20,10 +20,62 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final PayGOSdk repository = PayGOSdk();
   double _valorVenda = 0.0 as double;
-  String _statusVenda = "";
-  String _repostaPaygoIntegrado = "Waiting for response";
+  String _repostaPaygoIntegrado = "";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                _repostaPaygoIntegrado,
+              ),
+              TextField(
+                  keyboardType: TextInputType.number,
+                  onChanged: onChangeInputValorVenda,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Valor da venda',
+                  )),
+              MaterialButton(
+                  onPressed: onclickButtonVenda,
+                  child: const Text('Venda'),
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .surfaceContainerLowest),
+              MaterialButton(onPressed: onClickButtonResolverPendencia,
+                  child: const Text('Resolver Pendência'), color: Theme
+                  .of(context)
+                  .colorScheme
+                  .surfaceContainerLowest),
+            ])
+        ,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onClickFloatingActionButton,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
 
 
+
+  /**
+   * Metodo para inicializar o listener de intent
+   * Esse metodo obtem a resposta do PayGo Integrado
+   */
   void _initIntentListener(){
     receive_intent.ReceiveIntent.receivedIntentStream.listen((receive_intent.Intent? intent) {
       if (intent?.data != null) {
@@ -31,37 +83,25 @@ class _MyHomePageState extends State<MyHomePage> {
         final String decodedUri = Uri.decodeFull(uri.toString());
         TransacaoRequisicaoResposta? resposta;
         resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
+
+        //confirma venda automaticamente se transação for aprovada
+        if (resposta.operation == "VENDA" &&  resposta?.transactionResult == 0 ){
+          confirmarVenda(resposta.transactionId);
+        }
+
+
         setState(() {
-              _repostaPaygoIntegrado = resposta?.resultMessage?? "Waiting for response" ;
+          _repostaPaygoIntegrado = "Operation: ${resposta?.operation} \n ID: ${resposta?.transactionId} \n Mensagem: ${resposta?.resultMessage}\n Resultado da transação: ${resposta?.transactionResult}";
         });
       }
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _initIntentListener();
-  }
-  void changeStatusVenda(String novoStatus) {
-    setState(() {
-      _statusVenda = novoStatus;
-    });
-  }
-
-  void onChangeInputValorVenda(String valor) {
-    setState(() {
-      _valorVenda = double.parse(valor);
-    });
-  }
-
-  void onClickFloatingActionButton() async {
-    await repository.integrado.generico(
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.instalacao,
-        ),
-        intentAction: IntentAction.interfaceautomacao);
-    await repository.integrado.administrativo();
   }
 
   Future<void> confirmarVenda(String id) async {
@@ -74,9 +114,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     )
         .then((value) {
-      changeStatusVenda("Venda confirmada: $id");
+          print("Venda confirmada");
     }).catchError((error) {
-      changeStatusVenda("Erro ao confirmar venda: $error");
+      print("Erro ao confirmar venda: $error");
     });
   }
 
@@ -104,15 +144,31 @@ class _MyHomePageState extends State<MyHomePage> {
         ..finType = FinType.aVista,
     )
         .then((value) {
-      changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
+     // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
     }).catchError((error) {
-      changeStatusVenda("Erro ao enviar venda: $error");
+      //changeStatusVenda("Erro ao enviar venda: $error");
     });
 
-    await confirmarVenda(dadosVenda.obterIdTransacao);
   }
 
-  void onClickButtonPagarComDebito() async {
+
+  void onChangeInputValorVenda(String valor) {
+    setState(() {
+      _valorVenda = double.parse(valor);
+    });
+  }
+
+  void onClickFloatingActionButton() async {
+    await repository.integrado.generico(
+        requisicao: TransacaoRequisicaoGenerica(
+          operation: Operation.instalacao,
+        ),
+        intentAction: IntentAction.interfaceautomacao);
+    await repository.integrado.administrativo();
+  }
+
+
+  void onclickButtonVenda() async {
     if (_valorVenda == 0) {
       Fluttertoast.showToast(
           msg: "Informe o valor da venda",
@@ -130,49 +186,6 @@ class _MyHomePageState extends State<MyHomePage> {
     await realizarVenda();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                _statusVenda,
-              ),
-              Text(
-                _repostaPaygoIntegrado,
-              ),
-              TextField(
-                  keyboardType: TextInputType.number,
-                  onChanged: onChangeInputValorVenda,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Valor da venda',
-                  )),
-              MaterialButton(
-                  onPressed: onClickButtonPagarComDebito,
-                  child: const Text('Pagar com débito'),
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .surfaceContainerLowest)
-            ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onClickFloatingActionButton,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+  void onClickButtonResolverPendencia() {
   }
 }
