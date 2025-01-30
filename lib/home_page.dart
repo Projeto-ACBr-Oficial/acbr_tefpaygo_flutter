@@ -51,10 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               MaterialButton(
+                  minWidth: 250,
                   onPressed: onclickButtonVenda,
                   child: const Text('Venda'),
                   color: Theme.of(context).colorScheme.surfaceContainerLowest),
               MaterialButton(
+                  minWidth: 250,
                   onPressed: onClickButtonResolverPendencia,
                   child: const Text('Resolver Pendência'),
                   color: Theme.of(context).colorScheme.surfaceContainerLowest),
@@ -88,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         setState(() {
           _repostaPaygoIntegrado =
-              "Resposta do PayGo Integrado\nOperation: ${resposta?.operation} \nID: ${resposta?.transactionId}\nMensagem: ${resposta?.resultMessage}\nResultado da transação: ${resposta?.transactionResult}";
+              "Resposta do PayGo Integrado:\nOperation: ${resposta?.operation} \nID: ${resposta?.transactionId}\nMensagem: ${resposta?.resultMessage}\nResultado da transação: ${resposta?.transactionResult}";
         });
       }
     });
