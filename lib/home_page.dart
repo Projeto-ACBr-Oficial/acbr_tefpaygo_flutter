@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.instalacao,
         ),
-        intentAction: IntentAction.interfaceautomacao);
+        intentAction: IntentAction.payment);
   }
 
   void onclickButtonManutencao() async {
@@ -224,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
       requisicao: TransacaoRequisicaoGenerica(
         operation: Operation.manutencao,
       ),
-      intentAction: IntentAction.interfaceautomacao,
+      intentAction: IntentAction.payment,
     );
   }
 
