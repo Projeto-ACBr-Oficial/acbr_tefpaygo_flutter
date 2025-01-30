@@ -56,27 +56,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   minWidth: 250,
                   onPressed: onclickButtonVenda,
                   child: const Text('Venda'),
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+                  color: Theme.of(context).colorScheme.primaryContainer),
               MaterialButton(
                   minWidth: 250,
                   onPressed: onclickButtonLimparTela,
                   child: const Text('Limpar tela'),
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+                  color: Theme.of(context).colorScheme.primaryContainer),
               MaterialButton(
                   minWidth: 250,
                   onPressed: onclickButtonInstalacao,
                   child: const Text('Abrir menu de instalação'),
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+                  color: Theme.of(context).colorScheme.primaryContainer),
               MaterialButton(
                   minWidth: 250,
                   onPressed: onclickButtonManutencao,
                   child: const Text('Abrir menu de manutenção'),
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+                  color: Theme.of(context).colorScheme.primaryContainer),
               MaterialButton(
                   minWidth: 250,
                   onPressed: onclickButtonPainelAdministrativo,
                   child: const Text('Abrir Painel Administrativo'),
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest),
+                  color: Theme.of(context).colorScheme.primaryContainer),
             ]),
       ),
     );
