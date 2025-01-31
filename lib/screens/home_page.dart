@@ -12,6 +12,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
+import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -27,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
+  late TectoySunmiprinter _printer = TectoySunmiprinter();
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: onclickButtonLimparTela,
                 text: 'Limpar tela',
               ),
-
               Button(
                 onPressed: onclickButtonInstalacao,
                 text: 'Abrir menu de instalação',
               ),
-
               Button(
                 onPressed: onclickButtonManutencao,
                 text: 'Abrir menu de manutenção',
@@ -86,12 +86,17 @@ class _MyHomePageState extends State<MyHomePage> {
   /**
    * Metodo para tratar a resposta do PayGo Integrado
    */
+
+
   void tratarRespostaPaygoIntegrado(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK)
-          //confirma a venda se a resposta for OK
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           confirmarVenda(resposta.transactionId);
+          imprimirComprovante(resposta.merchantReceipt);
+          mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
+        }
+
         else if (resposta?.transactionResult ==
             PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
           ;
@@ -103,10 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
           "ID: ${resposta?.transactionId}\n"+
           "Mensagem: ${resposta?.resultMessage}\n"+
           "Resultado da transação: ${resposta?.transactionResult}\n" +
-          "fullReceipt: ${resposta?.fullReceipt}\n" +
-          "shortReceipt: ${resposta?.shortReceipt}\n" +
-          "printReceipt: ${resposta?.printReceipts}\n" +
-          "cardholderReceipt: ${resposta?.cardholderReceipt}"
+         // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" +
+          "merchantReceipt: ${resposta?.merchantReceipt}\n"
 
       );
     }
@@ -142,6 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     _initIntentListener();
+    _printer.printTeste();
+    _printer.cutPaper();
+
   }
 
   Future<void> confirmarVenda(String id) async {
@@ -170,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
       allowDifferentReceipts: true,
       allowDiscount: true,
       allowDueAmount: true,
-      allowShortReceipt: false,
+      allowShortReceipt: true,
     );
     final dadosVenda = await TransacaoRequisicaoVenda(
       amount: _valorVenda,
