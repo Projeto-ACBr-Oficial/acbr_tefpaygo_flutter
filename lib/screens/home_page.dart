@@ -98,8 +98,17 @@ class _MyHomePageState extends State<MyHomePage> {
           //resolverPendencia(uri);
         }
       }
-      onChangePaygoIntegrado(
-          "Resposta do PayGo Integrado:\nOperation: ${resposta?.operation} \nID: ${resposta?.transactionId}\nMensagem: ${resposta?.resultMessage}\nResultado da transação: ${resposta?.transactionResult}");
+      onChangePaygoIntegrado("Resposta do PayGo Integrado:\n" +
+          "Operation: ${resposta?.operation} \n" +
+          "ID: ${resposta?.transactionId}\n"+
+          "Mensagem: ${resposta?.resultMessage}\n"+
+          "Resultado da transação: ${resposta?.transactionResult}\n" +
+          "fullReceipt: ${resposta?.fullReceipt}\n" +
+          "shortReceipt: ${resposta?.shortReceipt}\n" +
+          "printReceipt: ${resposta?.printReceipts}\n" +
+          "cardholderReceipt: ${resposta?.cardholderReceipt}"
+
+      );
     }
   }
 
@@ -167,11 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: _valorVenda,
       currencyCode: CurrencyCode.iso4217Real,
     );
-    await repository.integrado
-        .venda(
-      requisicaoVenda: dadosVenda
-    )
-        .then((value) {
+    await repository.integrado.venda(requisicaoVenda: dadosVenda).then((value) {
       // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
     }).catchError((error) {
       //changeStatusVenda("Erro ao enviar venda: $error");
