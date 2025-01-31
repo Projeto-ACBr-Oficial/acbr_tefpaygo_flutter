@@ -107,9 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
           "Operation: ${resposta?.operation} \n" +
           "ID: ${resposta?.transactionId}\n"+
           "Mensagem: ${resposta?.resultMessage}\n"+
-          "Resultado da transação: ${resposta?.transactionResult}\n" +
-         // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" +
-          "merchantReceipt: ${resposta?.merchantReceipt}\n"
+          "Resultado da transação: ${resposta?.transactionResult}\n"
+         // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
+         // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
 
       );
     }
@@ -145,9 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     _initIntentListener();
-    _printer.printTeste();
-    _printer.cutPaper();
-
   }
 
   Future<void> confirmarVenda(String id) async {
