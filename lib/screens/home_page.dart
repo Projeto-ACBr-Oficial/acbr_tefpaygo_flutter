@@ -262,4 +262,39 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
   }
+
+  void imprimirComprovante(String comprovante)  async{
+    try {
+      await _printer.printText(comprovante);
+      await _printer.cutPaper();
+    } catch (e) {
+      onChangePaygoIntegrado(_repostaPaygoIntegrado +"\n" + e.toString());
+    }
+  }
+
+  void  mostrarDialogoImprimirViaDoCliente(String comprovante) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Imprimir via do cliente"),
+            content: Text(comprovante),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
+              ),
+              TextButton(
+                onPressed: () {
+                  imprimirComprovante(comprovante);
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Imprimir"),
+              ),
+            ],
+          );
+        });
+  }
 }
