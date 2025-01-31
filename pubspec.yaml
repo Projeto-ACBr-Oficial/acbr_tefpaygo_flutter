@@ -34,6 +34,8 @@ dependencies:
     git:
       url: https://github.com/doszapro/paygo_sdk.git
   receive_intent: ^0.2.3
+  tectoy_sunmiprinter:
+    path: ./tectoy_sunmiprinter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
