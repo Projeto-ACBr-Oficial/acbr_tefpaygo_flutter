@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:demo_tefpaygo_simples/utils/paygo_consts.dart';
 import 'package:demo_tefpaygo_simples/widget/button.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final PayGOSdk repository = PayGOSdk();
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
+  late StreamSubscription _subscription;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
    */
 
   void _initIntentListener() {
-    receive_intent.ReceiveIntent.receivedIntentStream
+    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
       if (intent?.data != null) {
         final Uri uri = Uri.parse(intent?.data ?? '');
@@ -116,6 +119,13 @@ class _MyHomePageState extends State<MyHomePage> {
         tratarRespostaPaygoIntegrado(resposta);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _subscription?.cancel();
   }
 
   @override
