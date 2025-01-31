@@ -40,6 +40,10 @@ android {
             minifyEnabled false
         }
     }
+
+    dependencies {
+        implementation (files('./libs/printer-v1.4.0.aar'))
+    }
 }
 
 flutter {
