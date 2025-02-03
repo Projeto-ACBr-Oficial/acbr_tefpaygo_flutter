@@ -122,18 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
    * Metodo (exemplo) para tratar transacao nao suportada
    */
 
-  void handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      Fluttertoast.showToast(
-          msg: "Operação não suportada: ${resposta.operation}",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-  }
+  void handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
