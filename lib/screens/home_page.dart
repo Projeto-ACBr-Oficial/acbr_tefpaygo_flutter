@@ -70,8 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: onclickButtonLimparTela,
                 text: 'Limpar tela',
               ),
-              Button(text: "Configurações", onPressed: onClickButtonConfiguracoes),
-
+              Button(
+                  text: "Configurações", onPressed: onClickButtonConfiguracoes),
             ]),
       ),
     );
@@ -298,8 +298,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void onClickButtonConfiguracoes(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ConfigurationPage()));
+  void onClickButtonConfiguracoes() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ConfigurationPage()));
   }
 
   void onClickButtonReimpressao() async {

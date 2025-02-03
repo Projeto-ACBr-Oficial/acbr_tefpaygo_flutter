@@ -37,7 +37,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               onPressed: onclickButtonPainelAdministrativo,
               text: 'Abrir Painel Administrativo',
             ),
-            Button(text: "Exibe PDC", onPressed: onclickButtonExibePDC)
+            Button( onPressed: onclickButtonExibePDC,
+              text: "Exibe PDC",)
+            ,
+            Button(onPressed: onClickButtonRelatorioDetalhado,
+                text: "Relatório Detalhado"),
+            
           ],
         ),
       ),
@@ -72,5 +77,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc));
     //voltar para tela anterior
     Navigator.pop(context);
+  }
+
+  void onClickButtonRelatorioDetalhado() async{
+    await repository.integrado.generico(intentAction: IntentAction.payment,
+        requisicao: TransacaoRequisicaoGenerica(
+            operation: Operation.relatorioDetalhado
+        )
+    );
   }
 }
