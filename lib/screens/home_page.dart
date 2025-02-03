@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
 
         case "CANCELAMENTO":
-          ;
+          handleCancelamento(resposta);
           break;
 
         case "RELATORIO_SINTETICO":
@@ -342,6 +342,17 @@ class _MyHomePageState extends State<MyHomePage> {
       if (resposta.operation == "EXIBE_PDC") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           onChangePaygoIntegrado(resposta.resultMessage);
+        }
+      }
+    }
+  }
+
+  void handleCancelamento(TransacaoRequisicaoResposta resposta){
+    if (resposta != null) {
+      if (resposta.operation == "CANCELAMENTO") {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          confirmarTransacao(resposta.transactionId);
+          mostrarDialogoImpressao(resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
         }
       }
     }
