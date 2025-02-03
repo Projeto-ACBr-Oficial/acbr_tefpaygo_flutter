@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: onclickButtonVenda,
                 text: 'Venda',
               ),
+              Button(onPressed: onClickButtonReimpressao, text: "Reimpressão"),
               Button(
                 onPressed: onclickButtonLimparTela,
                 text: 'Limpar tela',
@@ -298,6 +299,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onclickButtonPainelAdministrativo() async {
     await repository.integrado.administrativo();
+  }
+
+  void onClickButtonReimpressao() async {
+    await repository.integrado.generico(
+        intentAction: IntentAction.payment,
+        requisicao:
+            TransacaoRequisicaoGenerica(operation: Operation.reimpressao));
   }
 
   /**
