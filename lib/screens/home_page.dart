@@ -29,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
   late TectoySunmiprinter _printer = TectoySunmiprinter();
+  String _provider = "DEMO";
 
   @override
   Widget build(BuildContext context) {
@@ -247,15 +248,13 @@ class _MyHomePageState extends State<MyHomePage> {
       allowDueAmount: true,
       allowShortReceipt: true,
     );
-    final dadosVenda = await TransacaoRequisicaoVenda(
-      amount: _valorVenda,
-      currencyCode: CurrencyCode.iso4217Real,
+    await repository.integrado.venda(
+       requisicaoVenda:  TransacaoRequisicaoVenda(
+        amount: _valorVenda,
+        currencyCode: CurrencyCode.iso4217Real
+      )
+       ..provider = _provider
     );
-    await repository.integrado.venda(requisicaoVenda: dadosVenda).then((value) {
-      // changeStatusVenda("Venda enviada: " + dadosVenda.obterIdTransacao);
-    }).catchError((error) {
-      //changeStatusVenda("Erro ao enviar venda: $error");
-    });
   }
 
   void onChangeInputValorVenda(String valor) {
