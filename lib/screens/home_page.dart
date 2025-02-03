@@ -274,8 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Imprimir via do cliente"),
-            content: Text(comprovante),
+            title: const Text("Imprimir via do cliente?"),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
