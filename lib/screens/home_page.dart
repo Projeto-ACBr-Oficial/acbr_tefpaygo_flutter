@@ -87,12 +87,11 @@ class _MyHomePageState extends State<MyHomePage> {
    * Metodo para tratar a resposta do PayGo Integrado
    */
 
-
   void tratarRespostaPaygoIntegrado(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          confirmarVenda(resposta.transactionId);
+          confirmarTransacao(resposta.transactionId);
           imprimirComprovante(resposta.merchantReceipt);
           mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
         }
@@ -147,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _initIntentListener();
   }
 
-  Future<void> confirmarVenda(String id) async {
+  Future<void> confirmarTransacao(String id) async {
     await repository.integrado
         .confirmarTransacao(
       intentAction: IntentAction.confirmation,
