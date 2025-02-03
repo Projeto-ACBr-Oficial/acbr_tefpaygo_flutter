@@ -42,7 +42,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             ,
             Button(onPressed: onClickButtonRelatorioDetalhado,
                 text: "Relatório Detalhado"),
-            
+            Button(onPressed: onclickButtonRelatorioResumido,
+                text: "Relatório Resumido")
+
           ],
         ),
       ),
@@ -85,5 +87,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             operation: Operation.relatorioDetalhado
         )
     );
+  }
+
+  void onclickButtonRelatorioResumido() async {
+    await repository.integrado.generico(
+        intentAction: IntentAction.payment,
+        requisicao: TransacaoRequisicaoGenerica(
+          operation: Operation.relatorioResumido,
+        ));
   }
 }
