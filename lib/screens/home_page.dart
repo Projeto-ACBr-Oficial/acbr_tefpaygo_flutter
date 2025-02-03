@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:demo_tefpaygo_simples/utils/paygo_consts.dart';
+import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
 import 'package:demo_tefpaygo_simples/widget/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'package:paygo_sdk/paygo_sdk.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
+import 'config/config_page.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -24,7 +27,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final PayGOSdk repository = PayGOSdk();
+  final PayGOSdk repository = PayGOSdkHelper().paygoSdk;
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
@@ -67,18 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: onclickButtonLimparTela,
                 text: 'Limpar tela',
               ),
-              Button(
-                onPressed: onclickButtonInstalacao,
-                text: 'Abrir menu de instalação',
-              ),
-              Button(
-                onPressed: onclickButtonManutencao,
-                text: 'Abrir menu de manutenção',
-              ),
-              Button(
-                onPressed: onclickButtonPainelAdministrativo,
-                text: 'Abrir Painel Administrativo',
-              ),
+              Button(text: "Configurações", onPressed: onClickButtonConfiguracoes),
+
             ]),
       ),
     );
@@ -91,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          confirmarTransacao(resposta.transactionId); //confirma a transacao automaticamente
+          confirmarTransacao(
+              resposta.transactionId); //confirma a transacao automaticamente
           imprimirComprovante(resposta.merchantReceipt);
           mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
         } else {
@@ -280,25 +274,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void onclickButtonInstalacao() async {
-    await repository.integrado.generico(
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.instalacao,
-        ),
-        intentAction: IntentAction.payment);
-  }
-
-  void onclickButtonManutencao() async {
-    await repository.integrado.generico(
-      requisicao: TransacaoRequisicaoGenerica(
-        operation: Operation.manutencao,
-      ),
-      intentAction: IntentAction.payment,
-    );
-  }
-
-  void onclickButtonPainelAdministrativo() async {
-    await repository.integrado.administrativo();
+  void onClickButtonConfiguracoes(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ConfigurationPage()));
   }
 
   void onClickButtonReimpressao() async {
