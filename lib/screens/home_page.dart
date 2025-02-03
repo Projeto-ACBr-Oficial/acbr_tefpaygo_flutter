@@ -385,3 +385,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 }
+
+extension on String {
+  String capitalizeFirstofEach() {
+    return this
+        .split(" ")
+        .map((str) => str[0].toUpperCase() + str.substring(1))
+        .join(" ");
+  }
+}
