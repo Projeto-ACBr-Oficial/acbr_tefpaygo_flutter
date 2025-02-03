@@ -138,6 +138,41 @@ class _MyHomePageState extends State<MyHomePage> {
           handleTransacaoReimpressao(resposta);
           break;
 
+        case "MANUTENCAO":
+          ;
+          break;
+        case "INSTALACAO":
+          ;
+          break;
+        case "ADMINISTRATIVA":
+          ;
+          break;
+
+        case "CANCELAMENTO":
+          ;
+          break;
+
+        case "RELATORIO_SINTETICO":
+          handleImprimeRelatorio(resposta);
+          break;
+        case "RELATORIO_DETALHADO":
+          handleImprimeRelatorio(resposta);
+          break;
+
+        case "RELATORIO_RESUMIDO":
+          handleImprimeRelatorio(resposta);
+          break;
+
+        case "TESTE_COMUNICACAO":
+          ;
+          break;
+
+        case "EXIBE_PDC":
+          handleExibePDC(resposta);
+          break;
+        case "OPERACAO_DESCONHECIDA":
+          ;
+          break;
         default:
           handleTransacaoNaoSuportada(resposta);
           break;
@@ -299,7 +334,28 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void mostrarDialogoImprimirViaDoCliente(String comprovante) {
+  void handleExibePDC(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.operation == "EXIBE_PDC") {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          onChangePaygoIntegrado(resposta.resultMessage);
+        }
+      }
+    }
+  }
+
+  void handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.operation.startsWith("RELATORIO")) {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          mostrarDialogoImpressao(resposta.fullReceipt, "Imprimir Relatório?");
+
+        }
+      }
+    }
+  }
+
+  void mostrarDialogoImpressao(String conteudo, String titulo ) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
