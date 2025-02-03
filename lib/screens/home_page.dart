@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
           imprimirComprovante(resposta.merchantReceipt);
-          mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
+          mostrarDialogoImpressao(resposta.cardholderReceipt, "Imprimir via do Cliente?");
         } else {
           //tratar transacao pendente
 
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (resposta.operation == "REIMPRESSAO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           imprimirComprovante(resposta.merchantReceipt);
-          mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
+          mostrarDialogoImpressao(resposta.cardholderReceipt, "Imprimir via do Cliente?");
         }
       }
     }
@@ -315,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Imprimir via do cliente?"),
+            title: Text(titulo),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -325,7 +325,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 onPressed: () {
-                  imprimirComprovante(comprovante);
+                  imprimirComprovante(conteudo);
                   Navigator.of(context).pop();
                 },
                 child: const Text("Imprimir"),
