@@ -88,6 +88,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             operation: Operation.relatorioDetalhado
         )
     );
+    Navigator.pop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
@@ -96,5 +97,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.relatorioResumido,
         ));
+
+    Navigator.pop(context);
   }
 }
