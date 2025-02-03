@@ -341,12 +341,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void handleCancelamento(TransacaoRequisicaoResposta resposta){
+  void handleCancelamento(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           confirmarTransacao(resposta.transactionId);
-          mostrarDialogoImpressao(resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
+          mostrarDialogoImpressao(
+              resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
         }
       }
     }
