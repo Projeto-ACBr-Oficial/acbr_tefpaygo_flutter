@@ -84,33 +84,90 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /**
-   * Metodo para tratar a resposta do PayGo Integrado
+   * Metodo para tratar a transacao de venda
    */
-
-  void tratarRespostaPaygoIntegrado(TransacaoRequisicaoResposta resposta) {
+  void handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          confirmarTransacao(resposta.transactionId);
+          confirmarTransacao(resposta.transactionId); //confirma a transacao automaticamente
+          imprimirComprovante(resposta.merchantReceipt);
+          mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
+        } else {
+          //tratar transacao pendente
+
+          if (resposta?.transactionResult ==
+              PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+            //resolverPendencia(resposta?.uri);
+            ;
+          }
+
+          //tratar outros erros
+        }
+      }
+    }
+  }
+
+  /**
+   * Metodo para tratar a transacao de reimpressao
+   */
+
+  void handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.operation == "REIMPRESSAO") {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           imprimirComprovante(resposta.merchantReceipt);
           mostrarDialogoImprimirViaDoCliente(resposta.cardholderReceipt);
         }
-
-        else if (resposta?.transactionResult ==
-            PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-          ;
-          //resolverPendencia(uri);
-        }
       }
-      onChangePaygoIntegrado("Resposta do PayGo Integrado:\n" +
-          "Operation: ${resposta?.operation} \n" +
-          "ID: ${resposta?.transactionId}\n"+
-          "Mensagem: ${resposta?.resultMessage}\n"+
-          "Resultado da transação: ${resposta?.transactionResult}\n"
-         // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
-         // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
+    }
+  }
 
-      );
+  /**
+   * Metodo (exemplo) para tratar transacao nao suportada
+   */
+
+  void handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      Fluttertoast.showToast(
+          msg: "Operação não suportada: ${resposta.operation}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Theme.of(context).colorScheme.error,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  /**
+   * Metodo para tratar a resposta do PayGo Integrado
+   */
+  void tratarRespostaPaygoIntegrado(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      switch (resposta.operation) {
+        case "VENDA":
+          handleTransacaoVenda(resposta);
+          break;
+
+        case "REIMPRESSAO":
+          handleTransacaoReimpressao(resposta);
+          break;
+
+        default:
+          handleTransacaoNaoSuportada(resposta);
+          break;
+      }
+
+      onChangePaygoIntegrado("Resposta do PayGo Integrado:\n" +
+              "Operation: ${resposta?.operation} \n" +
+              "ID: ${resposta?.transactionId}\n" +
+              "Mensagem: ${resposta?.resultMessage}\n" +
+              "Resultado da transação: ${resposta?.transactionResult}\n"
+          // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
+          // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
+
+          );
     }
   }
 
@@ -259,16 +316,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void imprimirComprovante(String comprovante)  async{
+  void imprimirComprovante(String comprovante) async {
     try {
       await _printer.printText(comprovante);
       await _printer.cutPaper();
     } catch (e) {
-      onChangePaygoIntegrado(_repostaPaygoIntegrado +"\n" + e.toString());
+      onChangePaygoIntegrado(_repostaPaygoIntegrado + "\n" + e.toString());
     }
   }
 
-  void  mostrarDialogoImprimirViaDoCliente(String comprovante) {
+  void mostrarDialogoImprimirViaDoCliente(String comprovante) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
