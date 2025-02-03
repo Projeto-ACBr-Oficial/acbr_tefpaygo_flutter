@@ -24,6 +24,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 5,
           children: <Widget>[
             Button(
               onPressed: onclickButtonInstalacao,
