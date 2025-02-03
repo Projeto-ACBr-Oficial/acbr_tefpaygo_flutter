@@ -140,16 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
           handleTransacaoReimpressao(resposta);
           break;
 
-        case "MANUTENCAO":
-          ;
-          break;
-        case "INSTALACAO":
-          ;
-          break;
-        case "ADMINISTRATIVA":
-          ;
-          break;
-
         case "CANCELAMENTO":
           handleCancelamento(resposta);
           break;
@@ -165,16 +155,24 @@ class _MyHomePageState extends State<MyHomePage> {
           handleImprimeRelatorio(resposta);
           break;
 
-        case "TESTE_COMUNICACAO":
-          ;
-          break;
-
         case "EXIBE_PDC":
           handleExibePDC(resposta);
           break;
-        case "OPERACAO_DESCONHECIDA":
+
+        case "MANUTENCAO":
+          ; // nao faz nada
+          break;
+        case "INSTALACAO":
           ;
           break;
+        case "ADMINISTRATIVA":
+          ;
+          break;
+        case "TESTE_COMUNICACAO":
+          ;
+          break;
+        case "OPERACAO_DESCONHECIDA":
+          ;
         default:
           handleTransacaoNaoSuportada(resposta);
           break;
