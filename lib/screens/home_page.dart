@@ -345,16 +345,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   void handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation.startsWith("RELATORIO")) {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           String tipoRelatorio = resposta.operation
               .toLowerCase()
-              .replaceAll("_"," ");
-          mostrarDialogoImpressao(resposta.fullReceipt, "Imprimir $tipoRelatorio?");
-
+              .replaceAll("_", " ")
+              .capitalizeFirstofEach();
+          mostrarDialogoImpressao(
+              resposta.fullReceipt, "Imprimir $tipoRelatorio?");
         }
       }
     }
