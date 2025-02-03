@@ -87,7 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
           confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
           imprimirComprovante(resposta.merchantReceipt);
-          mostrarDialogoImpressao(resposta.cardholderReceipt, "Imprimir via do Cliente?");
+          mostrarDialogoImpressao(
+              resposta.cardholderReceipt, "Imprimir via do Cliente?");
         } else {
           //tratar transacao pendente
 
@@ -112,7 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (resposta.operation == "REIMPRESSAO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           imprimirComprovante(resposta.merchantReceipt);
-          mostrarDialogoImpressao(resposta.cardholderReceipt, "Imprimir via do Cliente?");
+          mostrarDialogoImpressao(
+              resposta.cardholderReceipt, "Imprimir via do Cliente?");
         }
       }
     }
@@ -360,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void mostrarDialogoImpressao(String conteudo, String titulo ) {
+  void mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(
         context: context,
         builder: (BuildContext context) {

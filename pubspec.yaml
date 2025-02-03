@@ -33,7 +33,9 @@ dependencies:
   paygo_sdk:
     git:
       url: https://github.com/doszapro/paygo_sdk.git
-  receive_intent: ^0.2.3
+  receive_intent:
+    git:
+      url: https://github.com/kee-org/receive_intent.git
   tectoy_sunmiprinter:
     path: ./tectoy_sunmiprinter
 
