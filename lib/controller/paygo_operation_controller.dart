@@ -16,7 +16,6 @@ class TefPayGoTransacoes {
     _provider = provider;
   }
 
-
   Future<void> realizarVenda(double valor) async {
     // configura dados da automacao (obrigatorio  para o TefPayGo)
     final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
@@ -58,7 +57,7 @@ class TefPayGoTransacoes {
             TransacaoRequisicaoGenerica(operation: Operation.reimpressao));
   }
 
-  Future<void>instalacao() async {
+  Future<void> instalacao() async {
     await repository.integrado.generico(
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.instalacao,
@@ -66,7 +65,7 @@ class TefPayGoTransacoes {
         intentAction: IntentAction.payment);
   }
 
-   Future<void>manutencao() async {
+  Future<void> manutencao() async {
     await repository.integrado.generico(
       requisicao: TransacaoRequisicaoGenerica(
         operation: Operation.manutencao,
@@ -79,11 +78,10 @@ class TefPayGoTransacoes {
     await repository.integrado.administrativo();
   }
 
-  Future<void>exibePDC() async {
+  Future<void> exibePDC() async {
     await repository.integrado.generico(
         intentAction: IntentAction.payment,
         requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc));
-    //voltar para tela anterior
   }
 
   Future<void> relatorioDetalhado() async {
