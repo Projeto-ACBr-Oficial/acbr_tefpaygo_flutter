@@ -15,7 +15,7 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final PayGoRequestHandler _tefPayGoTransacoes = PayGoRequestHandlerHelper().tefPayGoTransacoes;
+  final PayGoRequestHandler _tefPayGoTransacoes = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   @override
   Widget build(BuildContext context) {

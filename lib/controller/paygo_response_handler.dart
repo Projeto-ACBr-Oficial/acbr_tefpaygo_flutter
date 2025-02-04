@@ -14,7 +14,7 @@ class PayGOResponseHandler {
   final Function(String) onChangePaygoIntegrado;
   final Function() getPaygoIntegrado;
   final _printer = TectoySunmiprinter();
-  final _tefPayGoTransacoes = PayGoRequestHandlerHelper().tefPayGoTransacoes;
+  final _tefPayGoTransacoes = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   PayGOResponseHandler(
       this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
