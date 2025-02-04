@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
-  late PayGOResponseHandler _tefHandlerController;
+  late PayGOResponseHandler _payGOResponseHandler;
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   @override
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final String decodedUri = Uri.decodeFull(uri.toString());
         TransacaoRequisicaoResposta? resposta;
         resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
-        _tefHandlerController.tratarRespostaPaygoIntegrado(resposta);
+        _payGOResponseHandler.tratarRespostaPaygoIntegrado(resposta);
       }
     });
   }
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tefHandlerController = PayGOResponseHandler(context, onChangePaygoIntegrado, getPaygoIntegrado);
+    _payGOResponseHandler = PayGOResponseHandler(context, onChangePaygoIntegrado, getPaygoIntegrado);
     _initIntentListener();
   }
 
