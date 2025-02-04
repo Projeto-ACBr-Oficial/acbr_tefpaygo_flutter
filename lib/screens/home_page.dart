@@ -9,7 +9,7 @@ import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
 import '../controller/paygo_operation_controller.dart';
 import '../controller/tef_paygo_handler.dart';
-import '../utils/paygo_operation_helper.dart';
+import '../utils/tef_paygo_transacoes.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -26,8 +26,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
-  late PayGOTefHandler _tefHandlerController;
-  final TefPayGoTransacoes _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
+  late PayGOResponseHandler _tefHandlerController;
+  final PayGoRequestHandler _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tefHandlerController = PayGOTefHandler(context, onChangePaygoIntegrado, getPaygoIntegrado);
+    _tefHandlerController = PayGOResponseHandler(context, onChangePaygoIntegrado, getPaygoIntegrado);
     _initIntentListener();
   }
 

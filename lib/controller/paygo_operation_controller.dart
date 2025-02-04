@@ -8,7 +8,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/intent_action.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/operation.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
-class TefPayGoTransacoes {
+class PayGoRequestHandler {
   String _provider = "DEMO";
   final repository = PayGOSdkHelper().paygoSdk;
 

@@ -3,20 +3,20 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../utils/paygo_consts.dart';
-import '../utils/paygo_operation_helper.dart';
+import '../utils/tef_paygo_transacoes.dart';
 
 /**
  * Classe para tratar as respostas do PayGo Integrado
  */
 
-class PayGOTefHandler {
+class PayGOResponseHandler {
   final BuildContext context;
   final Function(String) onChangePaygoIntegrado;
   final Function() getPaygoIntegrado;
   final _printer = TectoySunmiprinter();
   final _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
-  PayGOTefHandler(
+  PayGOResponseHandler(
       this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
 
   /**

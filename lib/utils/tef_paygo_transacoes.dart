@@ -14,8 +14,8 @@ class PayGoOperationHelper{
   }
 
   // Instance of PayGOSdk
-  final  TefPayGoTransacoes  _tefPayGoTransacoes = TefPayGoTransacoes();
+  final  PayGoRequestHandler  _tefPayGoTransacoes = PayGoRequestHandler();
 
   // Method to get the PayGOSdk instance
-  TefPayGoTransacoes get tefPayGoTransacoes => _tefPayGoTransacoes;
+  PayGoRequestHandler get tefPayGoTransacoes => _tefPayGoTransacoes;
 }

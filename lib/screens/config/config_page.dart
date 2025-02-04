@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
 import '../../controller/paygo_operation_controller.dart';
-import '../../utils/paygo_operation_helper.dart';
+import '../../utils/tef_paygo_transacoes.dart';
 import '../../widget/button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -15,7 +15,7 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final TefPayGoTransacoes _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
+  final PayGoRequestHandler _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
   @override
   Widget build(BuildContext context) {
