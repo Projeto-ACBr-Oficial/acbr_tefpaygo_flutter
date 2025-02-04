@@ -61,7 +61,7 @@ class PayGOResponseHandler {
         case "TESTE_COMUNICACAO":
         case "OPERACAO_DESCONHECIDA":
         default:
-          _handleOtherOperation(resposta);
+          _handleOutraOperacao(resposta);
           break;
       }
     }
@@ -160,7 +160,7 @@ class PayGOResponseHandler {
     }
   }
 
-  void _handleOtherOperation(TransacaoRequisicaoResposta resposta) {
+  void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       _showMessage("Resposta do PayGo Integrado:\n" +
               "Operation: ${resposta?.operation} \n" +
