@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
   late PayGOResponseHandler _tefHandlerController;
-  final PayGoRequestHandler _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
+  final PayGoRequestHandler _tefPayGoTransacoes = PayGoRequestHandlerHelper().tefPayGoTransacoes;
 
   @override
   Widget build(BuildContext context) {
