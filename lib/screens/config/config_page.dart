@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
-import '../../controller/paygo_operation_controller.dart';
+import '../../controller/paygo_request_handler.dart';
 import '../../utils/tef_paygo_transacoes.dart';
 import '../../widget/button.dart';
 

@@ -7,8 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
-import '../controller/paygo_operation_controller.dart';
-import '../controller/tef_paygo_handler.dart';
+import '../controller/paygo_request_handler.dart';
+import '../controller/paygo_response_handler.dart';
 import '../utils/tef_paygo_transacoes.dart';
 import 'config/config_page.dart';
 

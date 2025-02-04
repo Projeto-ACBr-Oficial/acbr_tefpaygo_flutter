@@ -1,5 +1,5 @@
 
-import 'package:demo_tefpaygo_simples/controller/paygo_operation_controller.dart';
+import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
 
 class PayGoOperationHelper{
   // Private constructor
