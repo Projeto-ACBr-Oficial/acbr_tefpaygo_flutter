@@ -3,7 +3,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../utils/paygo_consts.dart';
-import '../utils/tef_paygo_transacoes.dart';
+import '../utils/paygo_request_handler_helper.dart';
 
 /**
  * Classe para tratar as respostas do PayGo Integrado

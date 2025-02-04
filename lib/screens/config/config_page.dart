@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
 import '../../controller/paygo_request_handler.dart';
-import '../../utils/tef_paygo_transacoes.dart';
+import '../../utils/paygo_request_handler_helper.dart';
 import '../../widget/button.dart';
 
 class ConfigurationPage extends StatefulWidget {
