@@ -43,7 +43,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             Button(onPressed: onClickButtonRelatorioDetalhado,
                 text: "Relatório Detalhado"),
             Button(onPressed: onclickButtonRelatorioResumido,
-                text: "Relatório Resumido")
+                text: "Relatório Resumido"),
+            Button(onPressed: onclickButtonSelectProvider, text: "Selecionar Provedor")
 
           ],
         ),
@@ -78,5 +79,26 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     await _payGORequestHandler.relatorioResumido();
 
     Navigator.pop(context);
+  }
+
+  void onclickButtonSelectProvider(){
+     var providers =  { "DEMO", "REDE", "CIELO" } ;
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Selecione o provedor"),
+              content: Column(
+                children: providers.map((e) => ListTile(
+                  title: Text(e),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _payGORequestHandler.setProvider(e);
+                  },
+                )).toList(),
+              ),
+            );
+          });
+
   }
 }
