@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:paygo_sdk/paygo_sdk.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
 import '../../controller/paygo_request_handler.dart';
