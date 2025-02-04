@@ -3,11 +3,17 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_generica.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/intent_action.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/operation.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
+
+/**
+ * PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
+ *
+ */
 class PayGoRequestHandler {
   String _provider = "DEMO";
   final repository = PayGOSdkHelper().paygoSdk;
@@ -101,5 +107,21 @@ class PayGoRequestHandler {
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.relatorioResumido,
         ));
+  }
+
+  /**
+   * Metodo para resolver pendencia
+   */
+
+  Future<void>resolverPendencia(Uri uri) async {
+    if (uri != null) {
+      await repository.integrado.resolucaoPendencia(
+        intentAction: IntentAction.confirmation,
+        requisicaoPendencia: uri.toString(),
+        requisicaoConfirmacao: TransacaoRequisicaoPendencia(
+          status: TransactionStatus.desfeitoManual,
+        ),
+      );
+    }
   }
 }
