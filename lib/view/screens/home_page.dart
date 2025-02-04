@@ -22,7 +22,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   double _valorVenda = 0.0 as double;
-  String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
   late PayGOResponseHandler _payGOResponseHandler;
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
@@ -50,10 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: OutlineInputBorder(),
                       labelText: 'Valor da venda',
                     )),
-              ),
-              Text(
-                _repostaPaygoIntegrado,
-                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Button(
                 onPressed: onclickButtonVenda,
@@ -95,19 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _payGOResponseHandler = PayGOResponseHandler(context, onChangePaygoIntegrado, getPaygoIntegrado);
+    _payGOResponseHandler = PayGOResponseHandler(context);
     _initIntentListener();
   }
 
   void onChangeInputValorVenda(String valor) {
     setState(() {
       _valorVenda = double.parse(valor);
-    });
-  }
-
-  void onChangePaygoIntegrado(String response) {
-    setState(() {
-      _repostaPaygoIntegrado = response;
     });
   }
 
@@ -128,10 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onclickButtonLimparTela() {
     setState(() {
-      _repostaPaygoIntegrado = "";
-    });
-
-    setState(() {
       _valorVenda = 0.0;
     });
 
@@ -144,10 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onClickButtonReimpressao() async {
     await _payGORequestHandler.reimpressao();
-  }
-
-  String getPaygoIntegrado() {
-    return _repostaPaygoIntegrado;
   }
 
 }

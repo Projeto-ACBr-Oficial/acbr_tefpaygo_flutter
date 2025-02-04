@@ -12,15 +12,10 @@ import '../utils/paygo_request_handler_helper.dart';
 
 class PayGOResponseHandler {
   final BuildContext context;
-  final Function(String) onChangePaygoIntegrado;
-  final Function() getPaygoIntegrado;
   final _printer = TectoySunmiprinter();
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
-  PayGOResponseHandler(
-      this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
-
-
+  PayGOResponseHandler(this.context);
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
@@ -34,6 +29,7 @@ class PayGOResponseHandler {
       _processarResposta(resposta);
     }
   }
+
   void _processarResposta(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       switch (resposta.operation) {
@@ -65,19 +61,9 @@ class PayGOResponseHandler {
         case "TESTE_COMUNICACAO":
         case "OPERACAO_DESCONHECIDA":
         default:
-          ;
+          _handleOtherOperation(resposta);
           break;
       }
-
-      onChangePaygoIntegrado("Resposta do PayGo Integrado:\n" +
-              "Operation: ${resposta?.operation} \n" +
-              "ID: ${resposta?.transactionId}\n" +
-              "Mensagem: ${resposta?.resultMessage}\n" +
-              "Resultado da transação: ${resposta?.transactionResult}\n"
-          // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
-          // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
-
-          );
     }
   }
 
@@ -86,8 +72,7 @@ class PayGOResponseHandler {
       await _printer.printText(comprovante);
       await _printer.cutPaper();
     } catch (e) {
-      String paygoIntegrado = getPaygoIntegrado();
-      onChangePaygoIntegrado(paygoIntegrado + "\n" + e.toString());
+      _showMessage(e.toString());
     }
   }
 
@@ -95,7 +80,7 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "EXIBE_PDC") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          onChangePaygoIntegrado(resposta.resultMessage);
+          _showMessage(resposta.resultMessage);
         }
       }
     }
@@ -173,6 +158,20 @@ class PayGOResponseHandler {
     }
   }
 
+  void _handleOtherOperation(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      _showMessage("Resposta do PayGo Integrado:\n" +
+              "Operation: ${resposta?.operation} \n" +
+              "ID: ${resposta?.transactionId}\n" +
+              "Mensagem: ${resposta?.resultMessage}\n" +
+              "Resultado da transação: ${resposta?.transactionResult}\n"
+          // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
+          // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
+
+          );
+    }
+  }
+
   void _mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(
         context: context,
@@ -192,6 +191,25 @@ class PayGOResponseHandler {
                   Navigator.of(context).pop();
                 },
                 child: const Text("Imprimir"),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Resposta do PayGo Integrado"),
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
               ),
             ],
           );
