@@ -12,6 +12,8 @@ class PayGoRequestHandler {
   String _provider = "DEMO";
   final repository = PayGOSdkHelper().paygoSdk;
 
+  get provider => _provider;
+
   void setProvider(String provider) {
     _provider = provider;
   }

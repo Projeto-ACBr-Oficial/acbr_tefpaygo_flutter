@@ -83,22 +83,30 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   void onclickButtonSelectProvider(){
      var providers =  { "DEMO", "REDE", "CIELO" } ;
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Selecione o provedor"),
-              content: Column(
-                children: providers.map((e) => ListTile(
-                  title: Text(e),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _payGORequestHandler.setProvider(e);
-                  },
-                )).toList(),
-              ),
-            );
-          });
+     showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         String? selectedProvider = _payGORequestHandler.provider;
+         return AlertDialog(
+           title: Text("Selecione o provedor"),
+           content: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: providers.map((e) => RadioListTile<String>(
+               title: Text(e),
+               value: e,
+               groupValue: selectedProvider,
+               onChanged: (String? value) {
+                 setState(() {
+                   selectedProvider = value;
+                   _payGORequestHandler.setProvider(value!);
+                 });
+                 Navigator.pop(context);
+               },
+             )).toList(),
+           ),
+         );
+       },
+     );
 
   }
 }
