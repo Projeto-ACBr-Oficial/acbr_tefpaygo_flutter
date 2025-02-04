@@ -24,7 +24,7 @@ class PayGoRequestHandler {
     _provider = provider;
   }
 
-  Future<void> realizarVenda(double valor) async {
+  Future<void> venda(double valor) async {
     // configura dados da automacao (obrigatorio  para o TefPayGo)
     final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
       "Exemplo TEF",

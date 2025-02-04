@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fontSize: 16.0);
       return;
     }
-    await _payGORequestHandler.realizarVenda(_valorVenda);
+    await _payGORequestHandler.venda(_valorVenda);
   }
 
   void onclickButtonLimparTela() {
