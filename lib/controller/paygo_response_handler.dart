@@ -108,6 +108,8 @@ class PayGOResponseHandler {
               .capitalizeFirstofEach();
           _mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir $tipoRelatorio?");
+        }else {
+          _showMessage(resposta.resultMessage);
         }
       }
     }
