@@ -16,7 +16,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
  */
 class PayGoRequestHandler {
   String _provider = "DEMO";
-  final repository = PayGOSdkHelper().paygoSdk;
+  final _repository = PayGOSdkHelper().paygoSdk;
 
   get provider => _provider;
 
@@ -36,7 +36,7 @@ class PayGoRequestHandler {
       allowDueAmount: true,
       allowShortReceipt: true,
     );
-    await repository.integrado.venda(
+    await _repository.integrado.venda(
         requisicaoVenda: TransacaoRequisicaoVenda(
             amount: valor, currencyCode: CurrencyCode.iso4217Real)
           ..provider = _provider
@@ -45,7 +45,7 @@ class PayGoRequestHandler {
   }
 
   Future<void> confirmarTransacao(String id) async {
-    await repository.integrado
+    await _repository.integrado
         .confirmarTransacao(
       intentAction: IntentAction.confirmation,
       requisicao: TransacaoRequisicaoConfirmacao(
@@ -61,14 +61,14 @@ class PayGoRequestHandler {
   }
 
   Future<void> reimpressao() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
         intentAction: IntentAction.payment,
         requisicao:
             TransacaoRequisicaoGenerica(operation: Operation.reimpressao));
   }
 
   Future<void> instalacao() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.instalacao,
         ),
@@ -76,7 +76,7 @@ class PayGoRequestHandler {
   }
 
   Future<void> manutencao() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
       requisicao: TransacaoRequisicaoGenerica(
         operation: Operation.manutencao,
       ),
@@ -85,24 +85,24 @@ class PayGoRequestHandler {
   }
 
   Future<void> painelAdministrativo() async {
-    await repository.integrado.administrativo();
+    await _repository.integrado.administrativo();
   }
 
   Future<void> exibePDC() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
         intentAction: IntentAction.payment,
         requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc));
   }
 
   Future<void> relatorioDetalhado() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
         intentAction: IntentAction.payment,
         requisicao: TransacaoRequisicaoGenerica(
             operation: Operation.relatorioDetalhado));
   }
 
   Future<void> relatorioResumido() async {
-    await repository.integrado.generico(
+    await _repository.integrado.generico(
         intentAction: IntentAction.payment,
         requisicao: TransacaoRequisicaoGenerica(
           operation: Operation.relatorioResumido,
@@ -115,7 +115,7 @@ class PayGoRequestHandler {
 
   Future<void>resolverPendencia(Uri uri) async {
     if (uri != null) {
-      await repository.integrado.resolucaoPendencia(
+      await _repository.integrado.resolucaoPendencia(
         intentAction: IntentAction.confirmation,
         requisicaoPendencia: uri.toString(),
         requisicaoConfirmacao: TransacaoRequisicaoPendencia(
