@@ -23,7 +23,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   double _valorVenda = 0.0 as double;
   late StreamSubscription _subscription;
-  late PayGOResponseHandler _payGOResponseHandler;
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   @override
@@ -75,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      _payGOResponseHandler.processarResposta(intent);
+          PayGOResponseHandler(context).processarResposta(intent);
     });
   }
 
@@ -90,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _payGOResponseHandler = PayGOResponseHandler(context);
     _initIntentListener();
   }
 
