@@ -92,7 +92,7 @@ class PayGOResponseHandler {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           _payGORequestHandler.confirmarTransacao(resposta.transactionId);
           _mostrarDialogoImpressao(
-              resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
+              resposta.merchantReceipt, "Imprimir comprovante de cancelamento?");
         }else
           _showMessage(resposta.resultMessage);
       }
