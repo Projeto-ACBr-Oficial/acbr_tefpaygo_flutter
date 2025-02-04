@@ -33,7 +33,9 @@ class PayGoRequestHandler {
     await repository.integrado.venda(
         requisicaoVenda: TransacaoRequisicaoVenda(
             amount: valor, currencyCode: CurrencyCode.iso4217Real)
-          ..provider = _provider);
+          ..provider = _provider
+    , dadosAutomacao: dadosAutomacao
+    );
   }
 
   Future<void> confirmarTransacao(String id) async {
