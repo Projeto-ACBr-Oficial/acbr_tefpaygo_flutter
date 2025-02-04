@@ -93,7 +93,8 @@ class PayGOResponseHandler {
           _payGORequestHandler.confirmarTransacao(resposta.transactionId);
           _mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
-        }
+        }else
+          _showMessage(resposta.resultMessage);
       }
     }
   }
@@ -108,9 +109,8 @@ class PayGOResponseHandler {
               .capitalizeFirstofEach();
           _mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir $tipoRelatorio?");
-        }else {
+        }else
           _showMessage(resposta.resultMessage);
-        }
       }
     }
   }
@@ -130,15 +130,14 @@ class PayGOResponseHandler {
           _mostrarDialogoImpressao(
               resposta.cardholderReceipt, "Imprimir via do Cliente?");
         } else {
-          //tratar transacao pendente
 
-          if (resposta?.transactionResult ==
-              PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-            //resolverPendencia(resposta?.uri);
-            ;
-          }
+          // para este exemplo, apenas exibe a mensagem de erro
+          _showMessage(resposta.resultMessage);
 
-          //tratar outros erros
+          // // exemplo de tratamento de erro:
+          // if ( resposta.resultCode == PayGoRetornoConsts.PWRET_NOTHING ) {
+          //   _showMessage("Nenhuma ação foi realizada");
+          // }
         }
       }
     }
