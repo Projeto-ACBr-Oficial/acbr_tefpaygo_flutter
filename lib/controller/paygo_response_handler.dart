@@ -11,11 +11,11 @@ import '../utils/paygo_request_handler_helper.dart';
  */
 
 class PayGOResponseHandler {
-  final BuildContext context;
+  final BuildContext _context;
   final _printer = TectoySunmiprinter();
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
-  PayGOResponseHandler(this.context);
+  PayGOResponseHandler(this._context);
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
@@ -176,7 +176,7 @@ class PayGOResponseHandler {
 
   void _mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(
-        context: context,
+        context: _context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(titulo),
@@ -201,7 +201,7 @@ class PayGOResponseHandler {
 
   void _showMessage(String message) {
     showDialog(
-        context: context,
+        context: _context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Resposta do PayGo Integrado"),
