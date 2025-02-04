@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final String decodedUri = Uri.decodeFull(uri.toString());
         TransacaoRequisicaoResposta? resposta;
         resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
-        _payGOResponseHandler.tratarRespostaPaygoIntegrado(resposta);
+        _payGOResponseHandler.processarResposta(resposta);
       }
     });
   }

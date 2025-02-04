@@ -73,7 +73,7 @@ class PayGOResponseHandler {
   /**
    * Metodo para tratar a resposta do PayGo Integrado
    */
-  void tratarRespostaPaygoIntegrado(TransacaoRequisicaoResposta resposta) {
+  void processarResposta(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       switch (resposta.operation) {
         case "VENDA":
