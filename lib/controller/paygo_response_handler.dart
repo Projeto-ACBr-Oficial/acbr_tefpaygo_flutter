@@ -20,56 +20,7 @@ class PayGOResponseHandler {
   PayGOResponseHandler(
       this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
 
-  /**
-   * Metodo para tratar a transacao de venda
-   */
-  void _handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation == "VENDA") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _payGORequestHandler.confirmarTransacao(
-              resposta.transactionId); //confirma a transacao automaticamente
 
-          _imprimirComprovante(resposta.merchantReceipt);
-
-          _mostrarDialogoImpressao(
-              resposta.cardholderReceipt, "Imprimir via do Cliente?");
-        } else {
-          //tratar transacao pendente
-
-          if (resposta?.transactionResult ==
-              PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-            //resolverPendencia(resposta?.uri);
-            ;
-          }
-
-          //tratar outros erros
-        }
-      }
-    }
-  }
-
-  /**
-   * Metodo para tratar a transacao de reimpressao
-   */
-
-  void _handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation == "REIMPRESSAO") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _imprimirComprovante(resposta.merchantReceipt);
-          _mostrarDialogoImpressao(
-              resposta.cardholderReceipt, "Imprimir via do Cliente?");
-        }
-      }
-    }
-  }
-
-  /**
-   * Metodo (exemplo) para tratar transacao nao suportada
-   */
-
-  void _handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
@@ -177,6 +128,57 @@ class PayGOResponseHandler {
       }
     }
   }
+
+  /**
+   * Metodo para tratar a transacao de venda
+   */
+  void _handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.operation == "VENDA") {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          _payGORequestHandler.confirmarTransacao(
+              resposta.transactionId); //confirma a transacao automaticamente
+
+          _imprimirComprovante(resposta.merchantReceipt);
+
+          _mostrarDialogoImpressao(
+              resposta.cardholderReceipt, "Imprimir via do Cliente?");
+        } else {
+          //tratar transacao pendente
+
+          if (resposta?.transactionResult ==
+              PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+            //resolverPendencia(resposta?.uri);
+            ;
+          }
+
+          //tratar outros erros
+        }
+      }
+    }
+  }
+
+  /**
+   * Metodo para tratar a transacao de reimpressao
+   */
+
+  void _handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.operation == "REIMPRESSAO") {
+        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          _imprimirComprovante(resposta.merchantReceipt);
+          _mostrarDialogoImpressao(
+              resposta.cardholderReceipt, "Imprimir via do Cliente?");
+        }
+      }
+    }
+  }
+
+  /**
+   * Metodo (exemplo) para tratar transacao nao suportada
+   */
+
+  void _handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
 
   void _mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(
