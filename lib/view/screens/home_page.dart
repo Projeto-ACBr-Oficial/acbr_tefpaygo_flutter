@@ -22,7 +22,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final PayGOSdk repository = PayGOSdkHelper().paygoSdk;
+
   double _valorVenda = 0.0 as double;
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
