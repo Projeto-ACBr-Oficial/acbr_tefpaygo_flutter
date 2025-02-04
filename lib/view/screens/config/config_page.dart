@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../controller/paygo_request_handler.dart';
 import '../../../utils/paygo_request_handler_helper.dart';
-import '../../../widget/button.dart';
+import '../../widget/button.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({Key? key}) : super(key: key);
