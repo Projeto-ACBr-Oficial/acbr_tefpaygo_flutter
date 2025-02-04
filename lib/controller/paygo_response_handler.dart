@@ -153,6 +153,8 @@ class PayGOResponseHandler {
           _imprimirComprovante(resposta.merchantReceipt);
           _mostrarDialogoImpressao(
               resposta.cardholderReceipt, "Imprimir via do Cliente?");
+        }else if ( resposta?.transactionResult == PayGoRetornoConsts.PWRET_CANCEL) {
+           _showMessage(resposta.resultMessage);
         }
       }
     }
