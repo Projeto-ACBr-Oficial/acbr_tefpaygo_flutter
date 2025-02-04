@@ -64,9 +64,8 @@ class PayGOResponseHandler {
         case "ADMINISTRATIVA":
         case "TESTE_COMUNICACAO":
         case "OPERACAO_DESCONHECIDA":
-          ;
         default:
-          _handleTransacaoNaoSuportada(resposta);
+          ;
           break;
       }
 
@@ -173,12 +172,6 @@ class PayGOResponseHandler {
       }
     }
   }
-
-  /**
-   * Metodo (exemplo) para tratar transacao nao suportada
-   */
-
-  void _handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
 
   void _mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(

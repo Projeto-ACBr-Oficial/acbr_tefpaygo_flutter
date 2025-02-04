@@ -60,6 +60,7 @@ class PayGoRequestHandler {
     });
   }
 
+
   Future<void> reimpressao() async {
     await _repository.integrado.generico(
         intentAction: IntentAction.payment,
