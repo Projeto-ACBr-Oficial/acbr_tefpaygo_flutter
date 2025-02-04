@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
   late PayGOResponseHandler _tefHandlerController;
-  final PayGoRequestHandler _tefPayGoTransacoes = PayGoRequestHandlerHelper().payGoRequestHandler;
+  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fontSize: 16.0);
       return;
     }
-    await _tefPayGoTransacoes.realizarVenda(_valorVenda);
+    await _payGORequestHandler.realizarVenda(_valorVenda);
   }
 
   void onclickButtonLimparTela() {
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onClickButtonReimpressao() async {
-    await _tefPayGoTransacoes.reimpressao();
+    await _payGORequestHandler.reimpressao();
   }
 
   String getPaygoIntegrado() {

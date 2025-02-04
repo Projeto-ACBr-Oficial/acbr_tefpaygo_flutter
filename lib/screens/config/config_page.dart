@@ -15,7 +15,7 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final PayGoRequestHandler _tefPayGoTransacoes = PayGoRequestHandlerHelper().payGoRequestHandler;
+  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -55,30 +55,30 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void onclickButtonInstalacao() async {
-    await _tefPayGoTransacoes.instalacao();
+    await _payGORequestHandler.instalacao();
   }
 
   void onclickButtonManutencao() async {
-    await _tefPayGoTransacoes.manutencao();
+    await _payGORequestHandler.manutencao();
   }
 
   void onclickButtonPainelAdministrativo() async {
-    await _tefPayGoTransacoes.painelAdministrativo();
+    await _payGORequestHandler.painelAdministrativo();
     Navigator.pop(context);
   }
 
   void onclickButtonExibePDC() async {
-    await _tefPayGoTransacoes.exibePDC();
+    await _payGORequestHandler.exibePDC();
     Navigator.pop(context);
   }
 
   void onClickButtonRelatorioDetalhado() async{
-    await _tefPayGoTransacoes.relatorioDetalhado();
+    await _payGORequestHandler.relatorioDetalhado();
     Navigator.pop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
-    await _tefPayGoTransacoes.relatorioResumido();
+    await _payGORequestHandler.relatorioResumido();
 
     Navigator.pop(context);
   }
