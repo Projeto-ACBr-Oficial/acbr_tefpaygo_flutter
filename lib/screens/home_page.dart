@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:demo_tefpaygo_simples/controller/paygo_tef_handle_controller.dart';
 import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
 import 'package:demo_tefpaygo_simples/widget/button.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
+import '../controller/paygo_operation_controller.dart';
+import '../controller/tef_paygo_handler.dart';
+import '../utils/paygo_operation_helper.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -25,6 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _repostaPaygoIntegrado = "";
   late StreamSubscription _subscription;
   late PayGOTefHandler _tefHandlerController;
+  final TefPayGoTransacoes _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _valorVenda = double.parse(valor);
     });
-
-    _tefHandlerController.setValorVenda(double.parse(valor));
   }
 
   void onChangePaygoIntegrado(String response) {
@@ -130,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fontSize: 16.0);
       return;
     }
-    await _tefHandlerController.realizarVenda();
+    await _tefPayGoTransacoes.realizarVenda(_valorVenda);
   }
 
   void onclickButtonLimparTela() {
@@ -142,8 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _valorVenda = 0.0;
     });
 
-    _tefHandlerController.setValorVenda(_valorVenda);
-
   }
 
   void onClickButtonConfiguracoes() {
@@ -152,10 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onClickButtonReimpressao() async {
-    await repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao:
-            TransacaoRequisicaoGenerica(operation: Operation.reimpressao));
+    await _tefPayGoTransacoes.reimpressao();
   }
 
   String getPaygoIntegrado() {

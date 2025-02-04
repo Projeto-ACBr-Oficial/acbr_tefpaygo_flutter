@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
+import '../../controller/paygo_operation_controller.dart';
+import '../../utils/paygo_operation_helper.dart';
 import '../../widget/button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -13,7 +15,7 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final PayGOSdk repository = PayGOSdkHelper().paygoSdk;
+  final TefPayGoTransacoes _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
   @override
   Widget build(BuildContext context) {
@@ -53,50 +55,30 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void onclickButtonInstalacao() async {
-    await repository.integrado.generico(
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.instalacao,
-        ),
-        intentAction: IntentAction.payment);
+    await _tefPayGoTransacoes.instalacao();
   }
 
   void onclickButtonManutencao() async {
-    await repository.integrado.generico(
-      requisicao: TransacaoRequisicaoGenerica(
-        operation: Operation.manutencao,
-      ),
-      intentAction: IntentAction.payment,
-    );
+    await _tefPayGoTransacoes.manutencao();
   }
 
   void onclickButtonPainelAdministrativo() async {
-    await repository.integrado.administrativo();
+    await _tefPayGoTransacoes.painelAdministrativo();
     Navigator.pop(context);
   }
 
   void onclickButtonExibePDC() async {
-    await repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc));
-    //voltar para tela anterior
+    await _tefPayGoTransacoes.exibePDC();
     Navigator.pop(context);
   }
 
   void onClickButtonRelatorioDetalhado() async{
-    await repository.integrado.generico(intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(
-            operation: Operation.relatorioDetalhado
-        )
-    );
+    await _tefPayGoTransacoes.relatorioDetalhado();
     Navigator.pop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
-    await repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.relatorioResumido,
-        ));
+    await _tefPayGoTransacoes.relatorioResumido();
 
     Navigator.pop(context);
   }

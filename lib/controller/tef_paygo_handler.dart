@@ -1,17 +1,9 @@
-import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/intent_action.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../utils/paygo_consts.dart';
+import '../utils/paygo_operation_helper.dart';
 
 /**
  * Classe para tratar as respostas do PayGo Integrado
@@ -22,9 +14,7 @@ class PayGOTefHandler {
   final Function(String) onChangePaygoIntegrado;
   final Function() getPaygoIntegrado;
   final _printer = TectoySunmiprinter();
-  final repository = PayGOSdkHelper().paygoSdk;
-  String _provider = "DEMO";
-  double _valorVenda = 0.00;
+  final _tefPayGoTransacoes = PayGoOperationHelper().tefPayGoTransacoes;
 
   PayGOTefHandler(
       this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
@@ -36,7 +26,7 @@ class PayGOTefHandler {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          confirmarTransacao(
+          _tefPayGoTransacoes.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
 
           imprimirComprovante(resposta.merchantReceipt);
@@ -107,7 +97,7 @@ class PayGOTefHandler {
         case "EXIBE_PDC":
           handleExibePDC(resposta);
           break;
-          // não exigem ação imediata
+        // não exigem ação imediata
         case "MANUTENCAO":
         case "INSTALACAO":
         case "ADMINISTRATIVA":
@@ -155,7 +145,7 @@ class PayGOTefHandler {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          confirmarTransacao(resposta.transactionId);
+          _tefPayGoTransacoes.confirmarTransacao(resposta.transactionId);
           mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
         }
@@ -201,64 +191,6 @@ class PayGOTefHandler {
             ],
           );
         });
-  }
-
-  Future<void> confirmarTransacao(String id) async {
-    await repository.integrado
-        .confirmarTransacao(
-      intentAction: IntentAction.confirmation,
-      requisicao: TransacaoRequisicaoConfirmacao(
-        confirmationTransactionId: id,
-        status: TransactionStatus.confirmadoAutomatico,
-      ),
-    )
-        .then((value) {
-      print("Venda confirmada");
-    }).catchError((error) {
-      print("Erro ao confirmar venda: $error");
-    });
-  }
-
-  Future<void> realizarVenda() async {
-    // configura dados da automacao (obrigatorio  para o TefPayGo)
-    final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
-      "Exemplo TEF",
-      "1.0",
-      "ACBr",
-      allowCashback: true,
-      allowDifferentReceipts: true,
-      allowDiscount: true,
-      allowDueAmount: true,
-      allowShortReceipt: true,
-    );
-    await repository.integrado.venda(
-        requisicaoVenda: TransacaoRequisicaoVenda(
-            amount: _valorVenda, currencyCode: CurrencyCode.iso4217Real)
-          ..provider = _provider);
-  }
-
-  void setProvider(String provider) {
-    _provider = provider;
-  }
-
-  void setValorVenda(double valor) {
-    _valorVenda = valor;
-  }
-
-  /**
-   * Metodo para resolver pendencia
-   */
-
-  void resolverPendencia(Uri uri) async {
-    if (uri != null) {
-      await repository.integrado.resolucaoPendencia(
-        intentAction: IntentAction.confirmation,
-        requisicaoPendencia: uri.toString(),
-        requisicaoConfirmacao: TransacaoRequisicaoPendencia(
-          status: TransactionStatus.desfeitoManual,
-        ),
-      );
-    }
   }
 }
 
