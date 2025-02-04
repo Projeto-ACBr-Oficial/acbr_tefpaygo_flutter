@@ -14,7 +14,7 @@ class PayGOResponseHandler {
   final Function(String) onChangePaygoIntegrado;
   final Function() getPaygoIntegrado;
   final _printer = TectoySunmiprinter();
-  final _tefPayGoTransacoes = PayGoRequestHandlerHelper().payGoRequestHandler;
+  final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
 
   PayGOResponseHandler(
       this.context, this.onChangePaygoIntegrado, this.getPaygoIntegrado);
@@ -26,7 +26,7 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _tefPayGoTransacoes.confirmarTransacao(
+          _payGORequestHandler.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
 
           imprimirComprovante(resposta.merchantReceipt);
@@ -145,7 +145,7 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _tefPayGoTransacoes.confirmarTransacao(resposta.transactionId);
+          _payGORequestHandler.confirmarTransacao(resposta.transactionId);
           mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
         }
