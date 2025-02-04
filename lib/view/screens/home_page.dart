@@ -82,13 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      if (intent?.data != null) {
-        final Uri uri = Uri.parse(intent?.data ?? '');
-        final String decodedUri = Uri.decodeFull(uri.toString());
-        TransacaoRequisicaoResposta? resposta;
-        resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
-        _payGOResponseHandler.processarResposta(resposta);
-      }
+      _payGOResponseHandler.processarResposta(intent);
     });
   }
 

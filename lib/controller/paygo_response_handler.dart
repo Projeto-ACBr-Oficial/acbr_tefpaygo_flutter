@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
+import 'package:receive_intent/receive_intent.dart' as receive_intent;
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../utils/paygo_consts.dart';
@@ -22,16 +25,16 @@ class PayGOResponseHandler {
   /**
    * Metodo para tratar a transacao de venda
    */
-  void handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
+  void _handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           _payGORequestHandler.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
 
-          imprimirComprovante(resposta.merchantReceipt);
+          _imprimirComprovante(resposta.merchantReceipt);
 
-          mostrarDialogoImpressao(
+          _mostrarDialogoImpressao(
               resposta.cardholderReceipt, "Imprimir via do Cliente?");
         } else {
           //tratar transacao pendente
@@ -52,12 +55,12 @@ class PayGOResponseHandler {
    * Metodo para tratar a transacao de reimpressao
    */
 
-  void handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
+  void _handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "REIMPRESSAO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          imprimirComprovante(resposta.merchantReceipt);
-          mostrarDialogoImpressao(
+          _imprimirComprovante(resposta.merchantReceipt);
+          _mostrarDialogoImpressao(
               resposta.cardholderReceipt, "Imprimir via do Cliente?");
         }
       }
@@ -68,34 +71,43 @@ class PayGOResponseHandler {
    * Metodo (exemplo) para tratar transacao nao suportada
    */
 
-  void handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
+  void _handleTransacaoNaoSuportada(TransacaoRequisicaoResposta resposta) {}
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
    */
-  void processarResposta(TransacaoRequisicaoResposta resposta) {
+  void processarResposta(receive_intent.Intent? intent) {
+    if (intent?.data != null) {
+      final Uri uri = Uri.parse(intent?.data ?? '');
+      final String decodedUri = Uri.decodeFull(uri.toString());
+      TransacaoRequisicaoResposta? resposta;
+      resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
+      _processarResposta(resposta);
+    }
+  }
+  void _processarResposta(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       switch (resposta.operation) {
         case "VENDA":
-          handleTransacaoVenda(resposta);
+          _handleTransacaoVenda(resposta);
           break;
 
         case "REIMPRESSAO":
-          handleTransacaoReimpressao(resposta);
+          _handleTransacaoReimpressao(resposta);
           break;
 
         case "CANCELAMENTO":
-          handleCancelamento(resposta);
+          _handleCancelamento(resposta);
           break;
 
         case "RELATORIO_SINTETICO":
         case "RELATORIO_DETALHADO":
         case "RELATORIO_RESUMIDO":
-          handleImprimeRelatorio(resposta);
+          _handleImprimeRelatorio(resposta);
           break;
 
         case "EXIBE_PDC":
-          handleExibePDC(resposta);
+          _handleExibePDC(resposta);
           break;
         // não exigem ação imediata
         case "MANUTENCAO":
@@ -105,7 +117,7 @@ class PayGOResponseHandler {
         case "OPERACAO_DESCONHECIDA":
           ;
         default:
-          handleTransacaoNaoSuportada(resposta);
+          _handleTransacaoNaoSuportada(resposta);
           break;
       }
 
@@ -121,7 +133,7 @@ class PayGOResponseHandler {
     }
   }
 
-  void imprimirComprovante(String comprovante) async {
+  void _imprimirComprovante(String comprovante) async {
     try {
       await _printer.printText(comprovante);
       await _printer.cutPaper();
@@ -131,7 +143,7 @@ class PayGOResponseHandler {
     }
   }
 
-  void handleExibePDC(TransacaoRequisicaoResposta resposta) {
+  void _handleExibePDC(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "EXIBE_PDC") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
@@ -141,19 +153,19 @@ class PayGOResponseHandler {
     }
   }
 
-  void handleCancelamento(TransacaoRequisicaoResposta resposta) {
+  void _handleCancelamento(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           _payGORequestHandler.confirmarTransacao(resposta.transactionId);
-          mostrarDialogoImpressao(
+          _mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir comprovante de cancelamento?");
         }
       }
     }
   }
 
-  void handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
+  void _handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation.startsWith("RELATORIO")) {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
@@ -161,14 +173,14 @@ class PayGOResponseHandler {
               .toLowerCase()
               .replaceAll("_", " ")
               .capitalizeFirstofEach();
-          mostrarDialogoImpressao(
+          _mostrarDialogoImpressao(
               resposta.fullReceipt, "Imprimir $tipoRelatorio?");
         }
       }
     }
   }
 
-  void mostrarDialogoImpressao(String conteudo, String titulo) {
+  void _mostrarDialogoImpressao(String conteudo, String titulo) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -183,7 +195,7 @@ class PayGOResponseHandler {
               ),
               TextButton(
                 onPressed: () {
-                  imprimirComprovante(conteudo);
+                  _imprimirComprovante(conteudo);
                   Navigator.of(context).pop();
                 },
                 child: const Text("Imprimir"),
