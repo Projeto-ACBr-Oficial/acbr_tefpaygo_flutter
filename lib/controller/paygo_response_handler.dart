@@ -14,6 +14,13 @@ class PayGOResponseHandler {
   final BuildContext _context;
   final _printer = TectoySunmiprinter();
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+  bool _isAutoConfirm = true;
+
+  get isAutoConfirm => _isAutoConfirm;
+
+  void setIsAutoConfirm(bool value) {
+    _isAutoConfirm = value;
+  }
 
   PayGOResponseHandler(this._context);
 
@@ -90,7 +97,9 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _payGORequestHandler.confirmarTransacao(resposta.transactionId);
+          if ( _isAutoConfirm) {
+            _payGORequestHandler.confirmarTransacao(resposta.transactionId);
+          }
           _mostrarDialogoImpressao(
               resposta.merchantReceipt, "Imprimir comprovante de cancelamento?");
         }else
@@ -122,9 +131,10 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+          if ( _isAutoConfirm) {
           _payGORequestHandler.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
-
+          }
           _imprimirComprovante(resposta.merchantReceipt);
 
           _mostrarDialogoImpressao(
