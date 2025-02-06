@@ -74,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-          PayGOResponseHandler(context).processarResposta(intent);
+          PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
+          responseHandler.processarResposta(intent);
     });
   }
 
