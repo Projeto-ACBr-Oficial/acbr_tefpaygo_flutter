@@ -75,6 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
           PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
+
+          //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
+          //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
+          //responseHandler.setIsAutoConfirm(false);
           responseHandler.processarResposta(intent);
     });
   }
