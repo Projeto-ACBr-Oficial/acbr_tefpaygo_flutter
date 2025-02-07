@@ -1,0 +1,123 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:receive_intent/receive_intent.dart' as receive_intent;
+
+import '../../controller/paygo_request_handler.dart';
+import '../../controller/paygo_response_handler.dart';
+import '../../utils/paygo_request_handler_helper.dart';
+import '../widget/button.dart';
+
+class CommandPage extends StatefulWidget {
+  const CommandPage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  State<CommandPage> createState() => _CommandPageState();
+}
+
+class _CommandPageState extends State<CommandPage> {
+  double _valorVenda = 0.0 as double;
+  late StreamSubscription _subscription;
+  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 10,
+            children: <Widget>[
+              Container(
+                width: 250,
+                child: TextField(
+                    keyboardType: TextInputType.number,
+                    onChanged: onChangeInputValorVenda,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Valor da venda',
+                    )),
+              ),
+              Button(
+                onPressed: onclickButtonVenda,
+                text: 'Venda',
+              ),
+              Button(onPressed: onClickButtonReimpressao, text: "Reimpressão"),
+              Button(
+                onPressed: onclickButtonLimparTela,
+                text: 'Limpar tela',
+              ),
+            ]),
+      ),
+
+
+    );
+  }
+
+
+  /**
+   * Metodo para inicializar o listener de intent
+   * Esse metodo obtem a resposta do PayGo Integrado
+   */
+
+  void _initIntentListener() {
+    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
+        .listen((receive_intent.Intent? intent) {
+      PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
+
+      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
+      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
+      //responseHandler.setIsAutoConfirm(false);
+      responseHandler.processarResposta(intent);
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _subscription?.cancel();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initIntentListener();
+  }
+
+  void onChangeInputValorVenda(String valor) {
+    setState(() {
+      _valorVenda = double.parse(valor);
+    });
+  }
+
+  void onclickButtonVenda() async {
+    if (_valorVenda < 1) {
+      Fluttertoast.showToast(
+          msg: "Valor mínimo é R\$1,00",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Theme.of(context).colorScheme.error,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return;
+    }
+    await _payGORequestHandler.venda(_valorVenda);
+  }
+
+  void onclickButtonLimparTela() {
+    setState(() {
+      _valorVenda = 0.0;
+    });
+
+  }
+
+  void onClickButtonReimpressao() async {
+    await _payGORequestHandler.reimpressao();
+  }
+}

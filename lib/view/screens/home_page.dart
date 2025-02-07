@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
@@ -21,118 +22,48 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  double _valorVenda = 0.0 as double;
-  late StreamSubscription _subscription;
-  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+  final List<Widget> _pages = [
+    CommandPage(title: "Comandos"),
+    ConfigurationPage(),
+  ];
+  int _currentIndex = 0;
+
+
+  void setCurrentIndex(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 10,
-            children: <Widget>[
-              Container(
-                width: 250,
-                child: TextField(
-                    keyboardType: TextInputType.number,
-                    onChanged: onChangeInputValorVenda,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Valor da venda',
-                    )),
-              ),
-              Button(
-                onPressed: onclickButtonVenda,
-                text: 'Venda',
-              ),
-              Button(onPressed: onClickButtonReimpressao, text: "Reimpressão"),
-              Button(
-                onPressed: onclickButtonLimparTela,
-                text: 'Limpar tela',
-              ),
-              Button(
-                  text: "Configurações", onPressed: onClickButtonConfiguracoes),
-            ]),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: setCurrentIndex,
+          items: [
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Comandos",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Configurações",
+            ),
+          ]
       ),
     );
   }
-
-
-  /**
-   * Metodo para inicializar o listener de intent
-   * Esse metodo obtem a resposta do PayGo Integrado
-   */
-
-  void _initIntentListener() {
-    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
-        .listen((receive_intent.Intent? intent) {
-          PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
-
-          //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-          //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-          //responseHandler.setIsAutoConfirm(false);
-          responseHandler.processarResposta(intent);
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _subscription?.cancel();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _initIntentListener();
-  }
-
-  void onChangeInputValorVenda(String valor) {
-    setState(() {
-      _valorVenda = double.parse(valor);
-    });
-  }
-
-  void onclickButtonVenda() async {
-    if (_valorVenda < 1) {
-      Fluttertoast.showToast(
-          msg: "Valor mínimo é R\$1,00",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Theme.of(context).colorScheme.error,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      return;
-    }
-    await _payGORequestHandler.venda(_valorVenda);
-  }
-
-  void onclickButtonLimparTela() {
-    setState(() {
-      _valorVenda = 0.0;
-    });
-
-  }
-
-  void onClickButtonConfiguracoes() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ConfigurationPage()));
-  }
-
-  void onClickButtonReimpressao() async {
-    await _payGORequestHandler.reimpressao();
-  }
-
 }
 
