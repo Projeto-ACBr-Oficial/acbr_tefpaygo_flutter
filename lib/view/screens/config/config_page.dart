@@ -59,23 +59,23 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   void onclickButtonPainelAdministrativo() async {
     await _payGORequestHandler.painelAdministrativo();
-    Navigator.pop(context);
+   Navigator.canPop(context);
   }
 
   void onclickButtonExibePDC() async {
     await _payGORequestHandler.exibePDC();
-    Navigator.pop(context);
+   Navigator.canPop(context);
   }
 
   void onClickButtonRelatorioDetalhado() async{
     await _payGORequestHandler.relatorioDetalhado();
-    Navigator.pop(context);
+   Navigator.canPop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
     await _payGORequestHandler.relatorioResumido();
 
-    Navigator.pop(context);
+   Navigator.canPop(context);
   }
 
   void onclickButtonSelectProvider(){
@@ -97,7 +97,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                    selectedProvider = value;
                    _payGORequestHandler.setProvider(value!);
                  });
-                 Navigator.pop(context);
+                 Navigator.canPop(context);
                },
              )).toList(),
            ),

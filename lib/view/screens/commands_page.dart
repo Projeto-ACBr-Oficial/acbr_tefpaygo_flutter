@@ -20,8 +20,8 @@ class CommandPage extends StatefulWidget {
 
 class _CommandPageState extends State<CommandPage> {
   double _valorVenda = 0.0 as double;
-  late StreamSubscription _subscription;
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,43 +58,6 @@ class _CommandPageState extends State<CommandPage> {
   }
 
 
-  /**
-   * Metodo para inicializar o listener de intent
-   * Esse metodo obtem a resposta do PayGo Integrado
-   */
-
-  void _initIntentListener() {
-    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
-        .listen((receive_intent.Intent? intent) {
-      PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
-
-      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-      //responseHandler.setIsAutoConfirm(false);
-      responseHandler.processarResposta(intent);
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _subscription?.cancel();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _initIntentListener();
-  }
-
-  void onChangeInputValorVenda(String valor) {
-    setState(() {
-      _valorVenda = double.parse(valor);
-    });
-  }
-
   void onclickButtonVenda() async {
     if (_valorVenda < 1) {
       Fluttertoast.showToast(
@@ -119,5 +82,11 @@ class _CommandPageState extends State<CommandPage> {
 
   void onClickButtonReimpressao() async {
     await _payGORequestHandler.reimpressao();
+  }
+
+  void onChangeInputValorVenda(String valor) {
+    setState(() {
+      _valorVenda = double.parse(valor);
+    });
   }
 }
