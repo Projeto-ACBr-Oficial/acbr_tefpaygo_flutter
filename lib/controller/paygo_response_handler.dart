@@ -1,7 +1,7 @@
+import 'package:demo_tefpaygo_simples/controller/PayGoRequestCallBack.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
-import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../utils/paygo_consts.dart';
 import '../utils/paygo_request_handler_helper.dart';
@@ -12,17 +12,19 @@ import '../utils/paygo_request_handler_helper.dart';
 
 class PayGOResponseHandler {
   final BuildContext _context;
-  final _printer = TectoySunmiprinter();
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
   bool _isAutoConfirm = true;
+  final PayGoRequestCallBack _callBack;
+
 
   get isAutoConfirm => _isAutoConfirm;
+
 
   void setIsAutoConfirm(bool value) {
     _isAutoConfirm = value;
   }
 
-  PayGOResponseHandler(this._context);
+  PayGOResponseHandler(this._context, this._callBack);
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
@@ -34,6 +36,7 @@ class PayGOResponseHandler {
       TransacaoRequisicaoResposta? resposta;
       resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
       _processarResposta(resposta);
+      print("intent data = $intent?.data");
     }
   }
 
@@ -74,20 +77,11 @@ class PayGOResponseHandler {
     }
   }
 
-  void _imprimirComprovante(String comprovante) async {
-    try {
-      await _printer.printText(comprovante);
-      await _printer.cutPaper();
-    } catch (e) {
-      _showMessage(e.toString());
-    }
-  }
-
   void _handleExibePDC(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation == "EXIBE_PDC") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _showMessage(resposta.resultMessage);
+          _callBack.onReceiveMessage(resposta.resultMessage);
         }
       }
     }
@@ -100,10 +94,9 @@ class PayGOResponseHandler {
           if ( _isAutoConfirm) {
             _payGORequestHandler.confirmarTransacao(resposta.transactionId);
           }
-          _mostrarDialogoImpressao(
-              resposta.merchantReceipt, "Imprimir comprovante de cancelamento?");
+          _callBack.onPrinter(resposta);
         }else
-          _showMessage(resposta.resultMessage);
+          _callBack.onReceiveMessage(resposta.resultMessage);
       }
     }
   }
@@ -116,10 +109,9 @@ class PayGOResponseHandler {
               .toLowerCase()
               .replaceAll("_", " ")
               .capitalizeFirstofEach();
-          _mostrarDialogoImpressao(
-              resposta.fullReceipt, "Imprimir $tipoRelatorio?");
+          _callBack.onPrinter(resposta);
         }else
-          _showMessage(resposta.resultMessage);
+          _callBack.onReceiveMessage(resposta.resultMessage);
       }
     }
   }
@@ -135,14 +127,12 @@ class PayGOResponseHandler {
           _payGORequestHandler.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
           }
-          _imprimirComprovante(resposta.merchantReceipt);
+          _callBack.onPrinter(resposta);
 
-          _mostrarDialogoImpressao(
-              resposta.cardholderReceipt, "Imprimir via do Cliente?");
         } else {
 
           // para este exemplo, apenas exibe a mensagem de erro
-          _showMessage(resposta.resultMessage);
+          _callBack.onReceiveMessage(resposta.resultMessage);
 
           // // exemplo de tratamento de erro:
           // if ( resposta.resultCode == PayGoRetornoConsts.PWRET_NOTHING ) {
@@ -161,11 +151,9 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "REIMPRESSAO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _imprimirComprovante(resposta.merchantReceipt);
-          _mostrarDialogoImpressao(
-              resposta.cardholderReceipt, "Imprimir via do Cliente?");
+          _callBack.onPrinter(resposta);
         }else {
-           _showMessage(resposta.resultMessage);
+           _callBack.onReceiveMessage(resposta.resultMessage);
         }
       }
     }
@@ -173,7 +161,7 @@ class PayGOResponseHandler {
 
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
-      _showMessage("Resposta do PayGo Integrado:\n" +
+      _callBack.onReceiveMessage("Resposta do PayGo Integrado:\n" +
               "Operation: ${resposta?.operation} \n" +
               "ID: ${resposta?.transactionId}\n" +
               "Mensagem: ${resposta?.resultMessage}\n" +
@@ -185,49 +173,6 @@ class PayGOResponseHandler {
     }
   }
 
-  void _mostrarDialogoImpressao(String conteudo, String titulo) {
-    showDialog(
-        context: _context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(titulo),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _imprimirComprovante(conteudo);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Imprimir"),
-              ),
-            ],
-          );
-        });
-  }
-
-  void _showMessage(String message) {
-    showDialog(
-        context: _context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Resposta do PayGo Integrado"),
-            content: Text(message),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-            ],
-          );
-        });
-  }
 }
 
 extension on String {

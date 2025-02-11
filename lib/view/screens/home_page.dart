@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
 import 'package:flutter/material.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
+import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
+import '../../controller/PayGoRequestCallBack.dart';
 import '../../controller/paygo_response_handler.dart';
 import 'config/config_page.dart';
 
@@ -16,9 +19,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> implements PayGoRequestCallBack {
   late StreamSubscription _subscription;
-
+  final _printer = TectoySunmiprinter();
 
   final List<Widget> _pages = [
     CommandPage(title: "Comandos"),
@@ -59,8 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.settings),
                   label: "Configurações",
                 ),
-              ])
-      ),
+              ])),
     );
   }
 
@@ -72,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
+      PayGOResponseHandler responseHandler = PayGOResponseHandler(context, this);
 
       //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
       //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
@@ -93,5 +95,91 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     _initIntentListener();
+  }
+
+  /**
+   *  Metodo que implementa a impressão de uma reposta do PayGo Integrado
+   */
+  @override
+  void onPrinter(TransacaoRequisicaoResposta resposta) {
+    _imprimirComprovante(resposta.merchantReceipt);
+
+    switch (resposta.operation) {
+      case "VENDA":
+        _mostrarDialogoImpressao(
+            resposta.cardholderReceipt, "Comprovante de venda");
+        break;
+      case "CANCELAMENTO":
+        _mostrarDialogoImpressao(
+            resposta.cardholderReceipt, "Comprovante de cancelamento");
+        break;
+      case "REIMPRESSAO":
+        _mostrarDialogoImpressao(
+            resposta.cardholderReceipt, "Comprovante de reimpresão");
+        break;
+
+      case "RELATORIO_SINTETICO":
+      case "RELATORIO_DETALHADO":
+      case "RELATORIO_RESUMIDO":
+        _mostrarDialogoImpressao(
+            resposta.fullReceipt, "Comprovante de relatório");
+        break;
+      default:
+        onReceiveMessage("Operação não suportada");
+    }
+  }
+
+  @override
+  void onReceiveMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Resposta do PayGo Integrado"),
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _mostrarDialogoImpressao(String conteudo, String titulo) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(titulo),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
+              ),
+              TextButton(
+                onPressed: () {
+                  _imprimirComprovante(conteudo);
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Imprimir"),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _imprimirComprovante(String comprovante) async {
+    try {
+      await _printer.printText(comprovante);
+      await _printer.cutPaper();
+    } catch (e) {
+      onReceiveMessage(e.toString());
+    }
   }
 }
