@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
-import 'package:receive_intent/receive_intent.dart' as receive_intent;
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 import '../../controller/paygo_response_callback.dart';
@@ -21,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     implements PayGoResponseCallback {
-  late StreamSubscription _subscription;
+
   final _printer = TectoySunmiprinter();
   late  PayGOResponseHandler _responseHandler;
 
@@ -74,21 +71,14 @@ class _MyHomePageState extends State<MyHomePage>
    */
 
   void _initIntentListener() {
-    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
-        .listen((receive_intent.Intent? intent) {
-
-      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-      //responseHandler.setIsAutoConfirm(false);
-      _responseHandler.processarResposta(intent);
-    });
+    _responseHandler.inicializar();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _subscription?.cancel();
+    _responseHandler.finalizar();
   }
 
   @override

@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:demo_tefpaygo_simples/controller/paygo_response_callback.dart';
-import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
@@ -15,6 +16,8 @@ class PayGOResponseHandler {
   bool _isAutoConfirm = true;
   final PayGoResponseCallback _callBack;
 
+  late StreamSubscription _subscription;
+
 
   get isAutoConfirm => _isAutoConfirm;
 
@@ -25,9 +28,26 @@ class PayGOResponseHandler {
 
   PayGOResponseHandler(this._callBack);
 
+
+  void inicializar() {
+    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
+        .listen((receive_intent.Intent? intent) {
+
+      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
+      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
+      //responseHandler.setIsAutoConfirm(false);
+      this.processarResposta(intent);
+    });
+  }
+
+  void finalizar() {
+    _subscription.cancel();
+  }
+
   /**
    * Metodo para tratar a resposta do PayGo Integrado
    */
+
   void processarResposta(receive_intent.Intent? intent) {
     if (intent?.data != null) {
       final Uri uri = Uri.parse(intent?.data ?? '');
