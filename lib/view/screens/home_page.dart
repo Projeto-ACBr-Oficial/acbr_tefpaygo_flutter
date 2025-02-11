@@ -23,6 +23,7 @@ class _MyHomePageState extends State<MyHomePage>
     implements PayGoRequestCallBack {
   late StreamSubscription _subscription;
   final _printer = TectoySunmiprinter();
+  late  PayGOResponseHandler _responseHandler;
 
   final List<Widget> _pages = [
     CommandPage(title: "Comandos"),
@@ -75,13 +76,11 @@ class _MyHomePageState extends State<MyHomePage>
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      PayGOResponseHandler responseHandler =
-          PayGOResponseHandler(context, this);
 
       //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
       //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
       //responseHandler.setIsAutoConfirm(false);
-      responseHandler.processarResposta(intent);
+      _responseHandler.processarResposta(intent);
     });
   }
 
@@ -96,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    _responseHandler = PayGOResponseHandler(this);
     _initIntentListener();
   }
 

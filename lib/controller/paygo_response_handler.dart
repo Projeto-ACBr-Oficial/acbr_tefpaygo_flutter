@@ -11,7 +11,6 @@ import '../utils/paygo_request_handler_helper.dart';
  */
 
 class PayGOResponseHandler {
-  final BuildContext _context;
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
   bool _isAutoConfirm = true;
   final PayGoRequestCallBack _callBack;
@@ -24,7 +23,7 @@ class PayGOResponseHandler {
     _isAutoConfirm = value;
   }
 
-  PayGOResponseHandler(this._context, this._callBack);
+  PayGOResponseHandler(this._callBack);
 
   /**
    * Metodo para tratar a resposta do PayGo Integrado
