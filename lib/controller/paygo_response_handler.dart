@@ -36,7 +36,7 @@ class PayGOResponseHandler {
       //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
       //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
       //responseHandler.setIsAutoConfirm(false);
-      this.processarResposta(intent);
+      this._processarIntent(intent);
     });
   }
 
@@ -48,7 +48,7 @@ class PayGOResponseHandler {
    * Metodo para tratar a resposta do PayGo Integrado
    */
 
-  void processarResposta(receive_intent.Intent? intent) {
+  void _processarIntent(receive_intent.Intent? intent) {
     if (intent?.data != null) {
       final Uri uri = Uri.parse(intent?.data ?? '');
       final String decodedUri = Uri.decodeFull(uri.toString());
