@@ -19,7 +19,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> implements PayGoRequestCallBack {
+class _MyHomePageState extends State<MyHomePage>
+    implements PayGoRequestCallBack {
   late StreamSubscription _subscription;
   final _printer = TectoySunmiprinter();
 
@@ -74,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> implements PayGoRequestCallBack
   void _initIntentListener() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      PayGOResponseHandler responseHandler = PayGOResponseHandler(context, this);
+      PayGOResponseHandler responseHandler =
+          PayGOResponseHandler(context, this);
 
       //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
       //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
@@ -106,28 +108,29 @@ class _MyHomePageState extends State<MyHomePage> implements PayGoRequestCallBack
 
     switch (resposta.operation) {
       case "VENDA":
+      case "REIMPRESSAO":
         _mostrarDialogoImpressao(
-            resposta.cardholderReceipt, "Comprovante de venda");
+            resposta.cardholderReceipt, "Imprimir via do cliente?");
         break;
       case "CANCELAMENTO":
         _mostrarDialogoImpressao(
-            resposta.cardholderReceipt, "Comprovante de cancelamento");
-        break;
-      case "REIMPRESSAO":
-        _mostrarDialogoImpressao(
-            resposta.cardholderReceipt, "Comprovante de reimpresão");
+            resposta.cardholderReceipt, "Comprovante de cancelamento?");
         break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
         _mostrarDialogoImpressao(
-            resposta.fullReceipt, "Comprovante de relatório");
+            resposta.fullReceipt, "Imprimir Relatorio?");
         break;
       default:
         onReceiveMessage("Operação não suportada");
     }
   }
+
+  /**
+   * Metodo que implementa a exibição de uma mensagem do PayGo Integrado
+   */
 
   @override
   void onReceiveMessage(String message) {
