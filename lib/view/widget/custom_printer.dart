@@ -1,4 +1,4 @@
-import 'package:demo_tefpaygo_simples/view/widget/CustomPrinterInterface.dart';
+import 'package:demo_tefpaygo_simples/view/widget/custom_view_printer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
