@@ -1,4 +1,5 @@
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
+import 'package:demo_tefpaygo_simples/view/widget/printer_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
@@ -18,9 +19,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     implements PayGoResponseCallback {
-
-  final _printer = TectoySunmiprinter();
-  late  PayGOResponseHandler _responseHandler;
+  final _customPrinter = CustomPrinter();
+  late PayGOResponseHandler _responseHandler;
 
   final List<Widget> _pages = [
     CommandPage(title: "Comandos"),
@@ -97,24 +97,24 @@ class _MyHomePageState extends State<MyHomePage>
    */
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
-    _imprimirComprovante(resposta.merchantReceipt);
+    _customPrinter.imprimirComprovante(resposta.merchantReceipt);
 
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
-        _mostrarDialogoImpressao(
-            resposta.cardholderReceipt, "Imprimir via do cliente?");
+        _customPrinter.mostrarDialogoImpressao(
+            context, resposta.cardholderReceipt, "Imprimir via do cliente?");
         break;
       case "CANCELAMENTO":
-        _mostrarDialogoImpressao(
+        _customPrinter.mostrarDialogoImpressao(context,
             resposta.cardholderReceipt, "Comprovante de cancelamento?");
         break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
-        _mostrarDialogoImpressao(
-            resposta.fullReceipt, "Imprimir Relatorio?");
+        _customPrinter.mostrarDialogoImpressao(
+            context, resposta.fullReceipt, "Imprimir Relatorio?");
         break;
       default:
         onReceiveMessage("Operação não suportada");
@@ -143,39 +143,5 @@ class _MyHomePageState extends State<MyHomePage>
             ],
           );
         });
-  }
-
-  void _mostrarDialogoImpressao(String conteudo, String titulo) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(titulo),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _imprimirComprovante(conteudo);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Imprimir"),
-              ),
-            ],
-          );
-        });
-  }
-
-  void _imprimirComprovante(String comprovante) async {
-    try {
-      await _printer.printText(comprovante);
-      await _printer.cutPaper();
-    } catch (e) {
-      onReceiveMessage(e.toString());
-    }
   }
 }
