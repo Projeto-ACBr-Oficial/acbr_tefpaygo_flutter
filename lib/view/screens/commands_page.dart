@@ -89,4 +89,5 @@ class _CommandPageState extends State<CommandPage> {
       _valorVenda = double.parse(valor);
     });
   }
+
 }

@@ -1,5 +1,5 @@
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
-import 'package:demo_tefpaygo_simples/view/widget/custom_view_printer.dart';
+import 'package:demo_tefpaygo_simples/controller/generic_printer.dart';
 import 'package:demo_tefpaygo_simples/view/widget/custom_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
@@ -20,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     implements PayGoResponseCallback {
-  final CustomViewPrinter _customPrinter = CustomPrinter();
+  final GenericPrinter _customPrinter = CustomPrinter();
   late PayGOResponseHandler _responseHandler;
 
   final List<Widget> _pages = [
@@ -98,23 +98,23 @@ class _MyHomePageState extends State<MyHomePage>
    */
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
-    _customPrinter.imprimirComprovante(resposta.merchantReceipt);
+    _customPrinter.printerText(resposta.merchantReceipt);
 
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
-        _customPrinter.mostrarDialogoImpressao(
+        mostrarDialogoImpressao(
             context, resposta.cardholderReceipt, "Imprimir via do cliente?");
         break;
       case "CANCELAMENTO":
-        _customPrinter.mostrarDialogoImpressao(context,
+        mostrarDialogoImpressao(context,
             resposta.cardholderReceipt, "Comprovante de cancelamento?");
         break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
-        _customPrinter.mostrarDialogoImpressao(
+        mostrarDialogoImpressao(
             context, resposta.fullReceipt, "Imprimir Relatorio?");
         break;
       default:
@@ -140,6 +140,31 @@ class _MyHomePageState extends State<MyHomePage>
                   Navigator.of(context).pop();
                 },
                 child: const Text("Fechar"),
+              ),
+            ],
+          );
+        });
+  }
+
+  void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(titulo),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Fechar"),
+              ),
+              TextButton(
+                onPressed: () {
+                  _customPrinter.printerText(conteudo);
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Imprimir"),
               ),
             ],
           );
