@@ -6,7 +6,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
-import '../../controller/PayGoRequestCallBack.dart';
+import '../../controller/paygo_response_callback.dart';
 import '../../controller/paygo_response_handler.dart';
 import 'config/config_page.dart';
 
@@ -20,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>
-    implements PayGoRequestCallBack {
+    implements PayGoResponseCallback {
   late StreamSubscription _subscription;
   final _printer = TectoySunmiprinter();
   late  PayGOResponseHandler _responseHandler;

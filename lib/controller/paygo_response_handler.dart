@@ -1,4 +1,4 @@
-import 'package:demo_tefpaygo_simples/controller/PayGoRequestCallBack.dart';
+import 'package:demo_tefpaygo_simples/controller/paygo_response_callback.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
@@ -13,7 +13,7 @@ import '../utils/paygo_request_handler_helper.dart';
 class PayGOResponseHandler {
   final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
   bool _isAutoConfirm = true;
-  final PayGoRequestCallBack _callBack;
+  final PayGoResponseCallback _callBack;
 
 
   get isAutoConfirm => _isAutoConfirm;
