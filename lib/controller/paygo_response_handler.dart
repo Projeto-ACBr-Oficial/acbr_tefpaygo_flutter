@@ -32,10 +32,6 @@ class PayGOResponseHandler {
   void inicializar() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-
-      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-      //responseHandler.setIsAutoConfirm(false);
       this._processarIntent(intent);
     });
   }

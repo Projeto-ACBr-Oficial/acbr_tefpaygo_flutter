@@ -72,6 +72,9 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _initIntentListener() {
     _responseHandler.inicializar();
+    //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
+    //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
+    //responseHandler.setIsAutoConfirm(false);
   }
 
   @override
