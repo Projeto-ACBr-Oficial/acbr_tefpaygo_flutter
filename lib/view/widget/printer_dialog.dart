@@ -1,10 +1,12 @@
+import 'package:demo_tefpaygo_simples/view/widget/CustomPrinterInterface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
-class CustomPrinter {
+class CustomPrinter implements CustomViewPrinter {
   final _printer = TectoySunmiprinter();
 
+  @override
   void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
     showDialog(
         context: context,
@@ -30,6 +32,7 @@ class CustomPrinter {
         });
   }
 
+  @override
   void imprimirComprovante(String comprovante) async {
     try {
       await _printer.printText(comprovante);

@@ -1,4 +1,5 @@
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
+import 'package:demo_tefpaygo_simples/view/widget/CustomPrinterInterface.dart';
 import 'package:demo_tefpaygo_simples/view/widget/printer_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
@@ -19,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     implements PayGoResponseCallback {
-  final _customPrinter = CustomPrinter();
+  final CustomViewPrinter _customPrinter = CustomPrinter();
   late PayGOResponseHandler _responseHandler;
 
   final List<Widget> _pages = [
