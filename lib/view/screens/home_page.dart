@@ -1,6 +1,6 @@
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
 import 'package:demo_tefpaygo_simples/controller/generic_printer.dart';
-import 'package:demo_tefpaygo_simples/view/widget/custom_printer.dart';
+import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
