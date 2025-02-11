@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:demo_tefpaygo_simples/controller/generic_printer.dart';
+import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 /**

@@ -1,12 +1,11 @@
-import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
-import 'package:demo_tefpaygo_simples/controller/generic_printer.dart';
 import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
+import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
+import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
 import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
-import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
-import '../../controller/paygo_response_callback.dart';
 import '../../controller/paygo_response_handler.dart';
+import '../../controller/types/paygo_response_callback.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
