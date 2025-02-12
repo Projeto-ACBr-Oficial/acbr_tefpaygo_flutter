@@ -142,7 +142,7 @@ class PayGOResponseHandler {
           _payGORequestHandler.confirmarTransacao(
               resposta.transactionId); //confirma a transacao automaticamente
           }
-          _callBack.onPrinter(resposta);
+          _callBack.onFinishTransaction(resposta);
 
         } else {
 

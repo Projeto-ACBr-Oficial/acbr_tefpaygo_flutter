@@ -19,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     implements PayGoResponseCallback {
-  final GenericPrinter _customPrinter = CustomPrinter();
+  final GenericPrinter _customPrinter = CustomPrinter(); // pode substituir por uma classe que implemente a interface GenericPrinter
   late PayGOResponseHandler _responseHandler;
 
   final List<Widget> _pages = [
@@ -143,6 +143,16 @@ class _MyHomePageState extends State<MyHomePage>
             ],
           );
         });
+  }
+
+  @override
+  void onFinishTransaction(TransacaoRequisicaoResposta response) {
+
+    //a impressão é opcional
+    onPrinter(response);
+    //aqui você deve chamar a regra de negócio para finalizar a transação
+    //por exemplo, salvar a transação no banco de dados
+
   }
 
   void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
