@@ -155,6 +155,37 @@ class _MyHomePageState extends State<MyHomePage>
 
   }
 
+
+ @override
+  void onPendingTransaction(String transactionPendingData) {
+    // aqui pode confirmar ou desfazer manualmente a transação pendente
+   // de acordo com sua regra de negocio
+   PayGoRequestHandler payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+   showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+              title: Text("Transação Pendente"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    String id = Uri.parse(transactionPendingData).queryParameters["transactionId"] ?? "";
+                    payGORequestHandler.confirmarTransacao(id);
+                    Navigator.of(context).pop();
+                    },
+                  child: const Text("Confirmar"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    payGORequestHandler.resolverPendencia(Uri.parse(transactionPendingData));
+                    Navigator.of(context).pop();
+             },
+                  child: const Text("Desfazer"),
+                ),
+              ]);
+        });
+  }
+
   void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
     showDialog(
         context: context,

@@ -14,4 +14,10 @@ abstract class PayGoResponseCallback {
    * Aqui você pode implementar a lógica para imprimir o comprovante, salvar a transação no banco de dados, etc
    */
   void onFinishTransaction(TransacaoRequisicaoResposta response);
+
+  /**
+   * Método chamado quando a transação está pendente
+   *
+   **/
+  void onPendingTransaction(String transactionPendingData);
 }
