@@ -24,15 +24,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           children: <Widget>[
             Button(
               onPressed: onclickButtonInstalacao,
-              text: 'Abrir menu de instalação',
+              text: 'Instalação',
             ),
             Button(
               onPressed: onclickButtonManutencao,
-              text: 'Abrir menu de manutenção',
+              text: ' Manutenção',
             ),
             Button(
               onPressed: onclickButtonPainelAdministrativo,
-              text: 'Abrir Painel Administrativo',
+              text: 'Administrativo',
             ),
             Button( onPressed: onclickButtonExibePDC,
               text: "Exibe PDC",)
