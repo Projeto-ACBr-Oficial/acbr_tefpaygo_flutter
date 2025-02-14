@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:core';
 
 import 'package:demo_tefpaygo_simples/controller/types/paygo_response_callback.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
@@ -17,6 +19,8 @@ class PayGOResponseHandler {
   final PayGoResponseCallback _callBack;
 
   late StreamSubscription _subscription;
+
+  late receive_intent.Intent?  _intent;
 
 
   get isAutoConfirm => _isAutoConfirm;
@@ -50,6 +54,7 @@ class PayGOResponseHandler {
       final String decodedUri = Uri.decodeFull(uri.toString());
       TransacaoRequisicaoResposta? resposta;
       resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
+      _intent = intent;
       _processarResposta(resposta);
       print("intent data = $intent?.data");
     }
@@ -138,21 +143,19 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          if ( _isAutoConfirm) {
-          _payGORequestHandler.confirmarTransacao(
-              resposta.transactionId); //confirma a transacao automaticamente
+          if (_isAutoConfirm) {
+            _payGORequestHandler.confirmarTransacao(
+                resposta.transactionId); //confirma a transacao automaticamente
           }
           _callBack.onFinishTransaction(resposta);
 
+          //tratamento para transacao pendente
+        } else if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+          String pendingTransactionId = _intent?.extra?["TransacaoPendenteDados"] ?? "";
+
+         // _callBack.onPendingTransaction(pendingTransactionId);
         } else {
-
-          // para este exemplo, apenas exibe a mensagem de erro
           _callBack.onReceiveMessage(resposta.resultMessage);
-
-          // // exemplo de tratamento de erro:
-          // if ( resposta.resultCode == PayGoRetornoConsts.PWRET_NOTHING ) {
-          //   _showMessage("Nenhuma ação foi realizada");
-          // }
         }
       }
     }
