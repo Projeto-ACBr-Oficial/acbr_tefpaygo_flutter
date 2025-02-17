@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../controller/paygo_request_handler.dart';
-import '../../../utils/paygo_request_handler_helper.dart';
+import '../../../controller/PayGoTefController.dart';
 import '../../widget/button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -12,8 +12,7 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
-
+  final TefController _tefController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,30 +49,30 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void onclickButtonInstalacao() async {
-    await _payGORequestHandler.instalacao();
+    await _tefController.payGORequestHandler.instalacao();
   }
 
   void onclickButtonManutencao() async {
-    await _payGORequestHandler.manutencao();
+    await _tefController.payGORequestHandler.manutencao();
   }
 
   void onclickButtonPainelAdministrativo() async {
-    await _payGORequestHandler.painelAdministrativo();
+    await _tefController.payGORequestHandler.painelAdministrativo();
    Navigator.canPop(context);
   }
 
   void onclickButtonExibePDC() async {
-    await _payGORequestHandler.exibePDC();
+    await _tefController.payGORequestHandler.exibePDC();
    Navigator.canPop(context);
   }
 
   void onClickButtonRelatorioDetalhado() async{
-    await _payGORequestHandler.relatorioDetalhado();
+    await _tefController.payGORequestHandler.relatorioDetalhado();
    Navigator.canPop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
-    await _payGORequestHandler.relatorioResumido();
+    await _tefController.payGORequestHandler.relatorioResumido();
 
    Navigator.canPop(context);
   }
@@ -83,7 +82,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
      showDialog(
        context: context,
        builder: (BuildContext context) {
-         String? selectedProvider = _payGORequestHandler.provider;
+         String? selectedProvider = _tefController.payGORequestHandler.provider;
          return AlertDialog(
            title: Text("Selecione o provedor"),
            content: Column(
@@ -95,9 +94,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                onChanged: (String? value) {
                  setState(() {
                    selectedProvider = value;
-                   _payGORequestHandler.setProvider(value!);
+                   _tefController.payGORequestHandler.setProvider(value!);
                  });
-                 Navigator.canPop(context);
+                 Navigator.pop(context);
                },
              )).toList(),
            ),

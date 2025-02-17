@@ -2,10 +2,14 @@ import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
 import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
+import 'package:demo_tefpaygo_simples/view/screens/payment/payment_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 
+import '../../controller/PayGoTefController.dart';
 import '../../controller/paygo_response_handler.dart';
 import '../../controller/types/paygo_response_callback.dart';
 import '../../utils/paygo_request_handler_helper.dart';
@@ -14,17 +18,14 @@ import 'config/config_page.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
+
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    implements PayGoResponseCallback {
-  final GenericPrinter _customPrinter = CustomPrinter(); // pode substituir por uma classe que implemente a interface GenericPrinter
-  late PayGOResponseHandler _responseHandler;
-
+class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     CommandPage(title: "Comandos"),
     ConfigurationPage(),
@@ -38,7 +39,15 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
+    final TefController _tefController = Get.put(TefController());
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (bool dip, dynamic result) {
@@ -58,8 +67,9 @@ class _MyHomePageState extends State<MyHomePage>
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  label: "Comandos",
+                  label: "Home",
                 ),
+
                 BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
                   label: "Configurações",
@@ -68,149 +78,6 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  /**
-   * Metodo para inicializar o listener de intent
-   * Esse metodo obtem a resposta do PayGo Integrado
-   */
-
-  void _initIntentListener() {
-    _responseHandler.inicializar();
-    //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-    //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-    //responseHandler.setIsAutoConfirm(false);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _responseHandler.finalizar();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _responseHandler = PayGOResponseHandler(this);
-    _initIntentListener();
-  }
-
-  /**
-   *  Metodo que implementa a impressão de uma reposta do PayGo Integrado
-   */
-  @override
-  void onPrinter(TransacaoRequisicaoResposta resposta) {
-    _customPrinter.printerText(resposta.merchantReceipt);
-
-    switch (resposta.operation) {
-      case "VENDA":
-      case "REIMPRESSAO":
-        mostrarDialogoImpressao(
-            context, resposta.cardholderReceipt, "Imprimir via do cliente?");
-        break;
-      case "CANCELAMENTO":
-        mostrarDialogoImpressao(context,
-            resposta.cardholderReceipt, "Comprovante de cancelamento?");
-        break;
-
-      case "RELATORIO_SINTETICO":
-      case "RELATORIO_DETALHADO":
-      case "RELATORIO_RESUMIDO":
-        mostrarDialogoImpressao(
-            context, resposta.fullReceipt, "Imprimir Relatorio?");
-        break;
-      default:
-        onReceiveMessage("Operação não suportada");
-    }
-  }
-
-  /**
-   * Metodo que implementa a exibição de uma mensagem do PayGo Integrado
-   */
-
-  @override
-  void onReceiveMessage(String message) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Resposta do PayGo Integrado"),
-            content: Text(message),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-            ],
-          );
-        });
-  }
-
-  @override
-  void onFinishTransaction(TransacaoRequisicaoResposta response) {
-
-    //a impressão é opcional
-    onPrinter(response);
-    //aqui você deve chamar a regra de negócio para finalizar a transação
-    //por exemplo, salvar a transação no banco de dados
-
-  }
 
 
- @override
-  void onPendingTransaction(String transactionPendingData) {
-    // aqui pode confirmar ou desfazer manualmente a transação pendente
-   // de acordo com sua regra de negocio
-   PayGoRequestHandler payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
-   showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return AlertDialog(
-              title: Text("Transação Pendente"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    String id = Uri.parse(transactionPendingData).queryParameters["transactionId"] ?? "";
-                    payGORequestHandler.confirmarTransacao(id);
-                    Navigator.of(context).pop();
-                    },
-                  child: const Text("Confirmar"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    payGORequestHandler.resolverPendencia(Uri.parse(transactionPendingData));
-                    Navigator.of(context).pop();
-             },
-                  child: const Text("Desfazer"),
-                ),
-              ]);
-        });
-  }
-
-  void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(titulo),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _customPrinter.printerText(conteudo);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Imprimir"),
-              ),
-            ],
-          );
-        });
-  }
 }

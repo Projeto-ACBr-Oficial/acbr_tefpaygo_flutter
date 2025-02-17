@@ -1,4 +1,6 @@
+import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'view/screens/home_page.dart';
 
 void main() {
@@ -11,13 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      initialBinding: HomeBinding(),
       title: 'Demo PayGOSdk',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Demo  PayGo SDK'),
+      home: const MyHomePage(title: 'Demo PayGo SDK'),
     );
   }
 }
