@@ -1,13 +1,7 @@
-import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_generica.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/intent_action.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/operation.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
+import 'package:paygo_sdk/paygo_sdk.dart';
 
 
 /**
@@ -16,7 +10,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
  */
 class PayGoRequestHandler {
   String _provider = "DEMO";
-  final _repository = PayGOSdkHelper().paygoSdk;
+  final _repository = PayGOSdk();
 
   get provider => _provider;
 
