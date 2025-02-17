@@ -21,13 +21,50 @@ class CommandPage extends StatefulWidget {
 
 class _CommandPageState extends State<CommandPage> {
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+  void _onChangedInputVenda(String value){
 
+    String onlyDigits = _valorVendaString.replaceFirst(",", "").replaceAll(".", "") + value;
+    setState(() {
+      _valorVenda = double.parse(onlyDigits)/100.00;
+      _valorVendaString = _valorVenda.toStringAsFixed(2);
+    });
+
+  }
+
+
+  void _onClearVenda(){
+    setState((){
+      _valorVenda = 0.0;
+      _valorVendaString = "0.00";
+    });
+  }
+  double _valorVenda = 0.0;
+  String _valorVendaString = "0.00";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CustomKeyBoard()
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 2,
+          children: [
+            Text(
+                _valorVendaString,
+                style: TextStyle(fontSize:40)
+            ),
+            CustomKeyBoard(onChangedInputVenda:_onChangedInputVenda),
+            MaterialButton(
+              shape: CircleBorder(
+                  side: BorderSide(
+                      color: Colors.black,
+                      width: 2
+                  )
+              ),
+                onPressed: _onClearVenda, child: Text("C")
+            ),
+          ],
+        )
       )
 
     );
