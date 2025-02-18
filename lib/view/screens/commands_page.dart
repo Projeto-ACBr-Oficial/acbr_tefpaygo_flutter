@@ -17,12 +17,15 @@ class CommandPage extends StatefulWidget {
 class _CommandPageState extends State<CommandPage> {
   final TefController _tefController = Get.find();
   double _valorVenda = 0.0;
-  String _valorVendaString = "0.00";
+  String _valorVendaString = "0,00";
 
   void _setInputVenta(String value){
     setState(() {
       _valorVenda = double.parse(value)/100;
-      _valorVendaString = _valorVenda.toStringAsFixed(2);
+      _valorVendaString = _valorVenda
+          .toStringAsFixed(2)
+      .replaceFirst(".", ",")
+      ;
     });
   }
 
