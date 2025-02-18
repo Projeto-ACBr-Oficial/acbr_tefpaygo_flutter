@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
 import '../../controller/paygo_request_handler.dart';
@@ -20,15 +23,21 @@ class CommandPage extends StatefulWidget {
 }
 
 class _CommandPageState extends State<CommandPage> {
-  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
-  void _onChangedInputVenda(String value){
+  final TefController _tefController = Get.find();
+  double _valorVenda = 0.0;
+  String _valorVendaString = "0.00";
 
-    String digits = _onlyNumber(_valorVendaString) + value;
+  void _setInputVenta(String value){
     setState(() {
-      _valorVenda = double.parse(digits)/100.00;
+      _valorVenda = double.parse(value);
       _valorVendaString = _valorVenda.toStringAsFixed(2);
     });
+  }
 
+  void _parseInputVenda(String value){
+
+    String digits = _onlyNumber(_valorVendaString) + value;
+    _setInputVenta(digits);
   }
 
   String _onlyNumber(String numberStr){
@@ -42,10 +51,7 @@ class _CommandPageState extends State<CommandPage> {
     }else{
       digits = "0";
     }
-    setState(() {
-      _valorVenda = double.parse(digits)/100.00;
-      _valorVendaString = _valorVenda.toStringAsFixed(2);
-    });
+    _setInputVenta(digits);
 
   }
   void _processInputKeyBoard(String value){
@@ -77,8 +83,7 @@ class _CommandPageState extends State<CommandPage> {
       _valorVendaString = "0.00";
     });
   }
-  double _valorVenda = 0.0;
-  String _valorVendaString = "0.00";
+
 
   @override
   Widget build(BuildContext context) {
