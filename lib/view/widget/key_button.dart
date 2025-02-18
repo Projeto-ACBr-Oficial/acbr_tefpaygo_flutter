@@ -37,7 +37,6 @@ class KeyButton extends StatelessWidget {
           )
       ),
       onPressed: () {
-        print(text);
         processKeyBoardInput(text);
 
       },
