@@ -67,7 +67,7 @@ class _CommandPageState extends State<CommandPage> {
         _pagar();
         break;
       default:
-        _onChangedInputVenda(value);
+          _parseInputVenda(value);
         break;
     }
   }
