@@ -1,17 +1,8 @@
-import 'dart:async';
-
 import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
-import '../../controller/paygo_request_handler.dart';
-import '../../controller/paygo_response_handler.dart';
-import '../../utils/paygo_request_handler_helper.dart';
-import '../widget/button.dart';
 import '../widget/keyboard.dart';
 
 class CommandPage extends StatefulWidget {

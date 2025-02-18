@@ -1,18 +1,6 @@
-import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
-import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
-import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
 import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
-import 'package:demo_tefpaygo_simples/view/screens/payment/payment_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 
-import '../../controller/PayGoTefController.dart';
-import '../../controller/paygo_response_handler.dart';
-import '../../controller/types/paygo_response_callback.dart';
-import '../../utils/paygo_request_handler_helper.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {

@@ -42,6 +42,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 text: "Relatório Resumido"),
             Button(onPressed: onclickButtonSelectProvider, text: "Selecionar Provedor")
 
+
           ],
         ),
       ),
