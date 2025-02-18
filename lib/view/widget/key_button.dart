@@ -25,8 +25,9 @@ class KeyButton extends StatelessWidget {
           .of(context)
           .colorScheme
           .onPrimary,
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-      shape: CircleBorder(
+      padding:EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
           side: BorderSide(
             color: color == null ? Theme
                 .of(context)
