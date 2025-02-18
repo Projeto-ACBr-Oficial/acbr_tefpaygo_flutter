@@ -29,7 +29,7 @@ class _CommandPageState extends State<CommandPage> {
 
   void _setInputVenta(String value){
     setState(() {
-      _valorVenda = double.parse(value);
+      _valorVenda = double.parse(value)/100;
       _valorVendaString = _valorVenda.toStringAsFixed(2);
     });
   }
@@ -92,10 +92,7 @@ class _CommandPageState extends State<CommandPage> {
 
 
   void _onClearVenda(){
-    setState((){
-      _valorVenda = 0.0;
-      _valorVendaString = "0.00";
-    });
+    _setInputVenta("0.00");
   }
 
 
