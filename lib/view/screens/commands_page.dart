@@ -73,7 +73,21 @@ class _CommandPageState extends State<CommandPage> {
   }
 
   void _pagar(){
-    ;
+    if ( _valorVenda < 1){
+      Fluttertoast.showToast(
+          msg: "Valor da venda deve ser maior que R\$ 1,00",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      return;
+    }
+    _tefController
+        .payGORequestHandler
+        .venda(_valorVenda);
   }
 
 
