@@ -49,6 +49,7 @@ class _CommandPageState extends State<CommandPage> {
 
   }
   void _processInputKeyBoard(String value){
+    value = value.toUpperCase();
     switch(value){
       case "C":
         _onClearVenda();
@@ -56,10 +57,17 @@ class _CommandPageState extends State<CommandPage> {
       case "CE":
         _clearLatestDigit();
         break;
+      case "PAGAR":
+        _pagar();
+        break;
       default:
         _onChangedInputVenda(value);
         break;
     }
+  }
+
+  void _pagar(){
+    ;
   }
 
 
