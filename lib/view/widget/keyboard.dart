@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'key_button.dart';
+
 class CustomKeyBoard extends StatelessWidget {
-    final Function(String) onChangedInputVenda;
-    const CustomKeyBoard({Key? key,required this.onChangedInputVenda}) : super(key: key);
+    final Function(String) processKeyBoardInput;
+    const CustomKeyBoard({Key? key,required this.processKeyBoardInput}) : super(key: key);
 
 
   @override
@@ -17,73 +19,42 @@ class CustomKeyBoard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                KeyButton('1', onChangedInputVenda: onChangedInputVenda),
-                KeyButton('2' , onChangedInputVenda: onChangedInputVenda),
-                KeyButton('3' , onChangedInputVenda: onChangedInputVenda),
+                KeyButton('1', processKeyBoardInput: processKeyBoardInput),
+                KeyButton('2' , processKeyBoardInput: processKeyBoardInput),
+                KeyButton('3' , processKeyBoardInput: processKeyBoardInput),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                KeyButton('4',  onChangedInputVenda: onChangedInputVenda),
-                KeyButton('5',  onChangedInputVenda: onChangedInputVenda),
-                KeyButton('6',onChangedInputVenda: onChangedInputVenda),
+                KeyButton('4',  processKeyBoardInput: processKeyBoardInput),
+                KeyButton('5',  processKeyBoardInput: processKeyBoardInput),
+                KeyButton('6',processKeyBoardInput: processKeyBoardInput),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                KeyButton('7',onChangedInputVenda: onChangedInputVenda),
-                KeyButton('8',onChangedInputVenda: onChangedInputVenda),
-                KeyButton('9',onChangedInputVenda: onChangedInputVenda  ),
+                KeyButton('7',processKeyBoardInput: processKeyBoardInput),
+                KeyButton('8',processKeyBoardInput: processKeyBoardInput),
+                KeyButton('9',processKeyBoardInput: processKeyBoardInput  ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                KeyButton('0',onChangedInputVenda: onChangedInputVenda),
+                KeyButton(
+                    'C',
+                    processKeyBoardInput: processKeyBoardInput,
+                    color: Colors.red
+                ),
+                KeyButton('0',processKeyBoardInput: processKeyBoardInput),
+                KeyButton('CE',icon:Icon(Icons.arrow_back),processKeyBoardInput: processKeyBoardInput),
               ],
             ),
           ],
         ),
       );
-  }
-
-}
-
-class KeyButton extends StatelessWidget {
-  final String text;
-  final Function(String) onChangedInputVenda;
-  const KeyButton(this.text, {Key? key,required this.onChangedInputVenda}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      color: Theme
-          .of(context)
-          .colorScheme
-          .primary,
-      textColor: Theme
-          .of(context)
-          .colorScheme
-          .onPrimary,
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-      shape: CircleBorder(
-          side: BorderSide(
-            color: Theme
-                .of(context)
-                .colorScheme
-                .primary,
-            width: 2.0,
-          )
-      ),
-      onPressed: () {
-        print(text);
-        onChangedInputVenda(text);
-
-      },
-      child: Text(text),
-    );
   }
 
 }

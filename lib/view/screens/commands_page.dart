@@ -23,12 +23,43 @@ class _CommandPageState extends State<CommandPage> {
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
   void _onChangedInputVenda(String value){
 
-    String onlyDigits = _valorVendaString.replaceFirst(",", "").replaceAll(".", "") + value;
+    String digits = _onlyNumber(_valorVendaString) + value;
     setState(() {
-      _valorVenda = double.parse(onlyDigits)/100.00;
+      _valorVenda = double.parse(digits)/100.00;
       _valorVendaString = _valorVenda.toStringAsFixed(2);
     });
 
+  }
+
+  String _onlyNumber(String numberStr){
+    return numberStr.replaceFirst(",", "").replaceAll(".", "");
+  }
+
+  void  _clearLatestDigit(){
+    String digits = _onlyNumber(_valorVendaString);
+    if(digits.length > 1){
+      digits = digits.substring(0, digits.length - 1);
+    }else{
+      digits = "0";
+    }
+    setState(() {
+      _valorVenda = double.parse(digits)/100.00;
+      _valorVendaString = _valorVenda.toStringAsFixed(2);
+    });
+
+  }
+  void _processInputKeyBoard(String value){
+    switch(value){
+      case "C":
+        _onClearVenda();
+        break;
+      case "CE":
+        _clearLatestDigit();
+        break;
+      default:
+        _onChangedInputVenda(value);
+        break;
+    }
   }
 
 
@@ -53,16 +84,7 @@ class _CommandPageState extends State<CommandPage> {
                 _valorVendaString,
                 style: TextStyle(fontSize:40)
             ),
-            CustomKeyBoard(onChangedInputVenda:_onChangedInputVenda),
-            MaterialButton(
-              shape: CircleBorder(
-                  side: BorderSide(
-                      color: Colors.black,
-                      width: 2
-                  )
-              ),
-                onPressed: _onClearVenda, child: Text("C")
-            ),
+            CustomKeyBoard(processKeyBoardInput:_processInputKeyBoard),
           ],
         )
       )
