@@ -9,16 +9,18 @@ class CustomKeyBoard extends StatelessWidget {
   const CustomKeyBoard({Key? key, required this.processKeyBoardInput})
       : super(key: key);
 
+  final double _spacing = 5.0;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      ( Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 5,
+        spacing: _spacing,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 5,
+            spacing: _spacing,
             children: [
               KeyButton('1', processKeyBoardInput: processKeyBoardInput),
               KeyButton('2', processKeyBoardInput: processKeyBoardInput),
@@ -30,7 +32,7 @@ class CustomKeyBoard extends StatelessWidget {
             ],
           ),
           Row(
-            spacing: 5,
+            spacing: _spacing,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               KeyButton('4', processKeyBoardInput: processKeyBoardInput),
@@ -43,7 +45,7 @@ class CustomKeyBoard extends StatelessWidget {
             ],
           ),
           Row(
-            spacing: 5,
+            spacing: _spacing,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               KeyButton('7', processKeyBoardInput: processKeyBoardInput),
@@ -56,7 +58,7 @@ class CustomKeyBoard extends StatelessWidget {
             ],
           ),
           Row(
-            spacing: 5,
+            spacing: _spacing,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LargeButton("0", processKeyBoardInput: processKeyBoardInput)
@@ -64,6 +66,7 @@ class CustomKeyBoard extends StatelessWidget {
           ),
         ],
       ),
+      )
     );
   }
 }
