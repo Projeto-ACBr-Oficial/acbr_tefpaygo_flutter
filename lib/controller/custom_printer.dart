@@ -15,10 +15,10 @@ class CustomPrinter implements GenericPrinter {
   @override
   void printerText(String comprovante) async {
     try {
-     await [
+     await Future.wait([
        _printer.printText(comprovante),
        _printer.cutPaper()
-     ];
+     ]);
     } catch (e) {
       print(e);
     }

@@ -30,5 +30,8 @@ abstract class PayGoResponseCallback {
    **/
   void onPendingTransaction(String transactionPendingData);
 
+  /**
+   * Metodo auxiliar que verifica quais requisitos são necessários para confirmar a transação
+   */
   bool checkRequirmentsToConfirmTransaction();
 }

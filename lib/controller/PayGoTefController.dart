@@ -16,6 +16,18 @@ class HomeBinding extends Bindings {
   }
 }
 
+/**
+ *  TefController é a classe que implenta as regras de negócio do TEF PayGo
+ *  Propriedades configuráveis:
+ * - _printer: Instância da classe CustomPrinter
+ * - _isAutoConfirm: booleano que define se a transação deve ser confirmada automaticamente
+ * - _isPrintcardholderReceipt: booleano que define se o comprovante do cliente deve ser impresso
+ *  - _isPrintMerchantReceipt: booleano que define se o comprovante do estabelecimento deve ser impresso
+ *  - _isPrintReport: booleano que define se o relatório deve ser impresso
+ *  - _pendingTransactionActions (enumerado) que define a ação a ser tomada quando a transação está pendente
+ *
+ */
+
 class TefController extends GetxController implements PayGoResponseCallback {
 
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
@@ -69,7 +81,6 @@ class TefController extends GetxController implements PayGoResponseCallback {
     //a impressão é opcional
     onPrinter(response);
   }
-
   @override
   void onPendingTransaction(String transactionPendingData) {
     // TODO: implement onPendingTransaction
