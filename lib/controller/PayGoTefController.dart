@@ -19,7 +19,7 @@ class HomeBinding extends Bindings {
 /**
  *  TefController é a classe que implenta as regras de negócio do TEF PayGo
  *  Propriedades configuráveis:
- * - _printer: Instância da classe CustomPrinter
+ * - _printer: Instância de [GenericPrinter]
  * - _isAutoConfirm: booleano que define se a transação deve ser confirmada automaticamente
  * - _isPrintcardholderReceipt: booleano que define se o comprovante do cliente deve ser impresso
  *  - _isPrintMerchantReceipt: booleano que define se o comprovante do estabelecimento deve ser impresso
