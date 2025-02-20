@@ -29,4 +29,6 @@ abstract class PayGoResponseCallback {
    *
    **/
   void onPendingTransaction(String transactionPendingData);
+
+  bool checkRequirmentsToConfirmTransaction();
 }
