@@ -15,8 +15,10 @@ class CustomPrinter implements GenericPrinter {
   @override
   void printerText(String comprovante) async {
     try {
-      await _printer.printText(comprovante);
-      await _printer.cutPaper();
+     await [
+       _printer.printText(comprovante),
+       _printer.cutPaper()
+     ];
     } catch (e) {
       print(e);
     }
