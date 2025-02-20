@@ -105,14 +105,13 @@ class TefController extends GetxController implements PayGoResponseCallback {
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
 
-    if (_isPrintMerchantReceipt)
-      _printer.printerText(resposta.merchantReceipt);
 
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
       case "CANCELAMENTO":
-        _printCardHolderReceipt(resposta);
+        _printRecepits(resposta)  ;
+
         break;
 
       case "RELATORIO_SINTETICO":
@@ -188,5 +187,11 @@ class TefController extends GetxController implements PayGoResponseCallback {
     if (_isPrintReport) {
       _printer.printerText(resposta.fullReceipt);
     }
+  }
+
+  void _printRecepits(TransacaoRequisicaoResposta resposta) {
+    if (_isPrintMerchantReceipt)
+      _printer.printerText(resposta.merchantReceipt);
+    _printCardHolderReceipt(resposta);
   }
 }
