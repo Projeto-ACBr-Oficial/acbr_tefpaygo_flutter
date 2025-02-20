@@ -29,7 +29,10 @@ class _PaymentPageState extends State<PaymentPage> {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 2,
             children: <Widget>[
+              Text("Total"),
+              Text("R\$ ${widget.valorPagamento.toStringAsFixed(2)}", style: TextStyle(fontSize: 30)),
               Text("Escolha a forma de pagamento:", style: TextStyle(fontSize: 20)),
               Button(text: "Debito", onPressed: onClicKButtonDebito),
               Button(text: "Credito", onPressed: onClickButtonCredito),
