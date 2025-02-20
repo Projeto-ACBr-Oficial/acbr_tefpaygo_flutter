@@ -1,8 +1,9 @@
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
-
 
 /**
  * PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
@@ -13,6 +14,17 @@ class PayGoRequestHandler {
   final _repository = PayGOSdk();
 
   get provider => _provider;
+
+  late CardType _cardType = CardType.cartaoDebito;
+  late FinType _finType = FinType.aVista;
+
+  void setCardType(CardType cardType) {
+    _cardType = cardType;
+  }
+
+  void setFinType(FinType finType) {
+    _finType = finType;
+  }
 
   void setProvider(String provider) {
     _provider = provider;
@@ -34,8 +46,9 @@ class PayGoRequestHandler {
         requisicaoVenda: TransacaoRequisicaoVenda(
             amount: valor, currencyCode: CurrencyCode.iso4217Real)
           ..provider = _provider
-    , dadosAutomacao: dadosAutomacao
-    );
+          ..cardType = _cardType
+          ..finType = _finType,
+        dadosAutomacao: dadosAutomacao);
   }
 
   Future<void> confirmarTransacao(String id) async {
@@ -53,7 +66,6 @@ class PayGoRequestHandler {
       print("Erro ao confirmar venda: $error");
     });
   }
-
 
   Future<void> reimpressao() async {
     await _repository.integrado.generico(
@@ -108,7 +120,7 @@ class PayGoRequestHandler {
    * Metodo para resolver pendencia
    */
 
-  Future<void>resolverPendencia(Uri uri) async {
+  Future<void> resolverPendencia(Uri uri) async {
     if (uri != null) {
       await _repository.integrado.resolucaoPendencia(
         intentAction: IntentAction.confirmation,
