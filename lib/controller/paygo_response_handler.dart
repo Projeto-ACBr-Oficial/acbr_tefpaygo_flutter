@@ -109,10 +109,6 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation.startsWith("RELATORIO")) {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          String tipoRelatorio = resposta.operation
-              .toLowerCase()
-              .replaceAll("_", " ")
-              .capitalizeFirstofEach();
           _callBack.onPrinter(resposta);
         } else
           _callBack.onReceiveMessage(resposta.resultMessage);
@@ -171,14 +167,5 @@ class PayGOResponseHandler {
 
           );
     }
-  }
-}
-
-extension on String {
-  String capitalizeFirstofEach() {
-    return this
-        .split(" ")
-        .map((str) => str[0].toUpperCase() + str.substring(1))
-        .join(" ");
   }
 }
