@@ -20,6 +20,9 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   final TefController _tefController = Get.find();
 
+  String _formatPayment(){
+    return "R\$ ${widget.valorPagamento.toStringAsFixed(2)}".replaceAll('.',',');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +35,7 @@ class _PaymentPageState extends State<PaymentPage> {
             spacing: 2,
             children: <Widget>[
               Text("Total"),
-              Text("R\$ ${widget.valorPagamento.toStringAsFixed(2)}", style: TextStyle(fontSize: 30)),
+              Text(_formatPayment(), style: TextStyle(fontSize: 30)),
               Text("Escolha a forma de pagamento:", style: TextStyle(fontSize: 20)),
               Button(text: "Debito", onPressed: onClicKButtonDebito),
               Button(text: "Credito", onPressed: onClickButtonCredito),
