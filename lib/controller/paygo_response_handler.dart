@@ -2,36 +2,23 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:demo_tefpaygo_simples/controller/types/paygo_response_callback.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
 import '../utils/paygo_consts.dart';
-import '../utils/paygo_request_handler_helper.dart';
 
 /**
  * Classe para tratar as respostas do PayGo Integrado
  */
 
 class PayGOResponseHandler {
-  final _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
-  bool _isAutoConfirm = true;
   final PayGoResponseCallback _callBack;
 
   late StreamSubscription _subscription;
 
-  late receive_intent.Intent?  _intent;
-
-
-  get isAutoConfirm => _isAutoConfirm;
-
-
-  void setIsAutoConfirm(bool value) {
-    _isAutoConfirm = value;
-  }
+  late receive_intent.Intent? _intent;
 
   PayGOResponseHandler(this._callBack);
-
 
   void inicializar() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
@@ -111,11 +98,8 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          if ( _isAutoConfirm) {
-            _payGORequestHandler.confirmarTransacao(resposta.transactionId);
-          }
-          _callBack.onPrinter(resposta);
-        }else
+          _callBack.onFinishTransaction(resposta);
+        } else
           _callBack.onReceiveMessage(resposta.resultMessage);
       }
     }
@@ -130,7 +114,7 @@ class PayGOResponseHandler {
               .replaceAll("_", " ")
               .capitalizeFirstofEach();
           _callBack.onPrinter(resposta);
-        }else
+        } else
           _callBack.onReceiveMessage(resposta.resultMessage);
       }
     }
@@ -143,17 +127,15 @@ class PayGOResponseHandler {
     if (resposta != null) {
       if (resposta.operation == "VENDA") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          if (_isAutoConfirm) {
-            _payGORequestHandler.confirmarTransacao(
-                resposta.transactionId); //confirma a transacao automaticamente
-          }
           _callBack.onFinishTransaction(resposta);
 
           //tratamento para transacao pendente
-        } else if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-          String pendingTransactionId = _intent?.extra?["TransacaoPendenteDados"] ?? "";
+        } else if (resposta?.transactionResult ==
+            PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+          String pendingTransactionId =
+              _intent?.extra?["TransacaoPendenteDados"] ?? "";
 
-         // _callBack.onPendingTransaction(pendingTransactionId);
+          _callBack.onPendingTransaction(pendingTransactionId);
         } else {
           _callBack.onReceiveMessage(resposta.resultMessage);
         }
@@ -170,8 +152,8 @@ class PayGOResponseHandler {
       if (resposta.operation == "REIMPRESSAO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           _callBack.onPrinter(resposta);
-        }else {
-           _callBack.onReceiveMessage(resposta.resultMessage);
+        } else {
+          _callBack.onReceiveMessage(resposta.resultMessage);
         }
       }
     }
@@ -190,7 +172,6 @@ class PayGOResponseHandler {
           );
     }
   }
-
 }
 
 extension on String {

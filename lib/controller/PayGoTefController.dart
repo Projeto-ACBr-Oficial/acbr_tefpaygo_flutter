@@ -14,73 +14,101 @@ class HomeBinding extends Bindings {
     Get.lazyPut<TefController>(() => TefController());
   }
 }
-class TefController extends GetxController implements PayGoResponseCallback{
-  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
-  final GenericPrinter _printer = CustomPrinter(); 
-  late PayGOResponseHandler _payGOResponseHandler;
 
+class TefController extends GetxController implements PayGoResponseCallback {
+
+  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
+  late GenericPrinter _printer = CustomPrinter();
+  late PayGOResponseHandler _payGOResponseHandler;
+  late bool _isAutoConfirm = true;
+  late bool _isPrintcardholderReceipt = true;
+  late bool _isPrintMerchantReceipt = true;
+  late bool _isPrintReport = true;
+
+  late PendingTransactionActions _pendingTransactionActions = PendingTransactionActions.CONFIRM;
+
+  get pendingTransactionActions => _pendingTransactionActions;
+  get isAutoConfirm => _isAutoConfirm;
+  get isPrintcardholderReceipt => _isPrintcardholderReceipt;
+  get isPrintMerchantReceipt => _isPrintMerchantReceipt;
+  get isPrintReport => _isPrintReport;
   get payGORequestHandler => _payGORequestHandler;
   get payGOResponseHandler => _payGOResponseHandler;
 
+  void setPendingTransactionActions(PendingTransactionActions pendingTransactionActions) {
+    _pendingTransactionActions = pendingTransactionActions;
+  }
+
+  void setIsPrintReport(bool isPrintReport) {
+    _isPrintReport = isPrintReport;
+  }
+
+  void setIsPrintcardholderReceipt(bool isPrintcardholderReceipt) {
+    _isPrintcardholderReceipt = isPrintcardholderReceipt;
+  }
+
+  void setIsPrintMerchantReceipt(bool isPrintMerchantReceipt) {
+    _isPrintMerchantReceipt = isPrintMerchantReceipt;
+  }
+
+  void setIsAutoConfirm(bool isAutoConfirm) {
+    _isAutoConfirm = isAutoConfirm;
+  }
+
+  void setPrinter(GenericPrinter printer) {
+    _printer = printer;
+  }
+
   @override
   void onFinishTransaction(TransacaoRequisicaoResposta response) {
-    // TODO: implement onFinishTransaction
+
+    if (checkRequirmentsToConfirmTransaction()) {
+      _payGORequestHandler.confirmarTransacao(response.transactionId);
+    }
     //a impressão é opcional
     onPrinter(response);
-    //aqui você deve chamar a regra de negócio para finalizar a transação
-    //por exemplo, salvar a transação no banco de dados
   }
 
   @override
   void onPendingTransaction(String transactionPendingData) {
     // TODO: implement onPendingTransaction
-    showDialog(
-        context: Get.context!,
-        builder: (BuildContext context){
-          return AlertDialog(
-              title: Text("Transação Pendente"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    String id = Uri.parse(transactionPendingData).queryParameters["transactionId"] ?? "";
-                    _payGORequestHandler.confirmarTransacao(id);
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Confirmar"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _payGORequestHandler.resolverPendencia(Uri.parse(transactionPendingData));
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Desfazer"),
-                ),
-              ]);
-        });
+    switch (_pendingTransactionActions) {
+
+      case PendingTransactionActions.CONFIRM:
+        String id = Uri.parse(transactionPendingData).queryParameters["transactionId"] ?? "";
+        _payGORequestHandler.confirmarTransacao(id);
+        break;
+
+      case PendingTransactionActions.MANUAL_UNDO:
+        _payGORequestHandler.resolverPendencia(Uri.parse(transactionPendingData));
+        break;
+
+      case PendingTransactionActions.NONE:
+      default:
+        print("Nenhuma ação definida para transação pendente");
+        break;
+    }
   }
 
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
-    // TODO: implement onPrinter
-    _printer.printerText(resposta.merchantReceipt);
+
+    if (_isPrintMerchantReceipt)
+      _printer.printerText(resposta.merchantReceipt);
 
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
-        mostrarDialogoImpressao(
-            Get.context!, resposta.cardholderReceipt, "Imprimir via do cliente?");
-        break;
       case "CANCELAMENTO":
-        mostrarDialogoImpressao(  Get.context!,
-            resposta.cardholderReceipt, "Comprovante de cancelamento?");
+        _printCardHolderReceipt(resposta);
         break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
-        mostrarDialogoImpressao(
-              Get.context!, resposta.fullReceipt, "Imprimir Relatorio?");
+        _printReport(resposta);
         break;
+
       default:
         onReceiveMessage("Operação não suportada");
     }
@@ -89,7 +117,7 @@ class TefController extends GetxController implements PayGoResponseCallback{
   @override
   void onReceiveMessage(String message) {
     showDialog(
-        context: Get.context !,
+        context: Get.context!,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Resposta do PayGo Integrado"),
@@ -104,6 +132,17 @@ class TefController extends GetxController implements PayGoResponseCallback{
             ],
           );
         });
+  }
+
+
+  /**
+   * Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
+    */
+
+  @override
+  bool checkRequirmentsToConfirmTransaction() {
+    //aqui você pode implementar a lógica para verificar se os requisitos para confirmar a transação foram atendidos
+      return _isAutoConfirm == true ;
   }
 
   @override
@@ -127,30 +166,15 @@ class TefController extends GetxController implements PayGoResponseCallback{
     _payGOResponseHandler.finalizar();
   }
 
-  void mostrarDialogoImpressao(BuildContext context, String conteudo, String titulo) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(titulo),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-              TextButton(
-                onPressed: () {
-                  _printer.printerText(conteudo);
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Imprimir"),
-              ),
-            ],
-          );
-        });
+  void _printCardHolderReceipt(TransacaoRequisicaoResposta resposta) {
+    if (_isPrintcardholderReceipt) {
+      _printer.printerText(resposta.cardholderReceipt);
+    }
   }
 
-
+  void _printReport(TransacaoRequisicaoResposta resposta) {
+    if (_isPrintReport) {
+      _printer.printerText(resposta.fullReceipt);
+    }
+  }
 }
