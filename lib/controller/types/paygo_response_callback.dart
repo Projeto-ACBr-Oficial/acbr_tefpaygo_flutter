@@ -4,8 +4,17 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
  * PayGoResponseCallback é uma interface de comunicação entre a view e o PayGoResponseHandler
  */
 abstract class PayGoResponseCallback {
+  /**
+   * Método chamado quando a impressão é solicitada
+   * Aqui você pode implementar a lógica para imprimir o comprovante
+   */
+
   void onPrinter(TransacaoRequisicaoResposta resposta);
 
+  /**
+   * Método chamado quando uma mensagem é recebida
+   * Aqui você pode implementar a lógica para exibir a mensagem recebida
+   */
   void onReceiveMessage(String message);
 
   /**
