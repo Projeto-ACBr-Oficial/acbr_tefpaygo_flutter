@@ -3,7 +3,7 @@ import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_response_handler.dart';
 import 'package:demo_tefpaygo_simples/controller/types/PendingTransactionActions.dart';
 import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
-import 'package:demo_tefpaygo_simples/controller/types/paygo_response_callback.dart';
+import 'package:demo_tefpaygo_simples/controller/types/tef_paygo_callback.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -28,7 +28,7 @@ class HomeBinding extends Bindings {
  *
  */
 
-class TefController extends GetxController implements PayGoResponseCallback {
+class TefController extends GetxController implements TefPayGoCallBack {
 
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
   late GenericPrinter _printer = CustomPrinter();

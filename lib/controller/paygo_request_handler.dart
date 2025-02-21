@@ -46,8 +46,8 @@ class PayGoRequestHandler {
         requisicaoVenda: TransacaoRequisicaoVenda(
             amount: valor, currencyCode: CurrencyCode.iso4217Real)
           ..provider = _provider
-          ..cardType = _cardType
-          ..finType = _finType,
+          ..cardType = _cardType,
+         // ..finType = _finType,
         dadosAutomacao: dadosAutomacao);
   }
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:demo_tefpaygo_simples/controller/types/paygo_response_callback.dart';
+import 'package:demo_tefpaygo_simples/controller/types/tef_paygo_callback.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
@@ -12,7 +12,7 @@ import '../utils/paygo_consts.dart';
  */
 
 class PayGOResponseHandler {
-  final PayGoResponseCallback _callBack;
+  final TefPayGoCallBack _callBack;
 
   late StreamSubscription _subscription;
 

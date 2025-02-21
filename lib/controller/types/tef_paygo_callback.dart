@@ -3,7 +3,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 /**
  * PayGoResponseCallback é uma interface de comunicação entre a view e o PayGoResponseHandler
  */
-abstract class PayGoResponseCallback {
+abstract class TefPayGoCallBack {
   /**
    * Método chamado quando a impressão é solicitada
    * Aqui você pode implementar a lógica para imprimir o comprovante
