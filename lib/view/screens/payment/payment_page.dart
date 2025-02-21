@@ -34,8 +34,15 @@ class _PaymentPageState extends State<PaymentPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 2,
             children: <Widget>[
-              Text("Total"),
-              Text(_formatPayment(), style: TextStyle(fontSize: 30)),
+              Container(
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Text("Total"),
+                    Text(_formatPayment(), style: TextStyle(fontSize: 30)),
+                  ],
+                ),
+              ),
               Text("Escolha a forma de pagamento:", style: TextStyle(fontSize: 20)),
               Button(text: "Debito", onPressed: onClicKButtonDebito),
               Button(text: "Credito", onPressed: onClickButtonCredito),
