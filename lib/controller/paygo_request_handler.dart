@@ -45,9 +45,11 @@ class PayGoRequestHandler {
     await _repository.integrado.venda(
         requisicaoVenda: TransacaoRequisicaoVenda(
             amount: valor, currencyCode: CurrencyCode.iso4217Real)
-          ..provider = _provider
-          ..cardType = _cardType,
-         // ..finType = _finType,
+          ..provider = _provider //autorizador  (adquirente)
+          ..cardType = _cardType, //tipo de transação
+         // ..finType = _finType, //tipo de parcelamento
+       // ..installments = 1, / quantidade de parcelas
+
         dadosAutomacao: dadosAutomacao);
   }
 

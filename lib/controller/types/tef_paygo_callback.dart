@@ -6,7 +6,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 abstract class TefPayGoCallBack {
   /**
    * Método chamado quando a impressão é solicitada
-   * Aqui você pode implementar a lógica para imprimir o comprovante
+   * Aqui você pode implementar a lógica de impressão de acordo com a resposta da transação
    */
 
   void onPrinter(TransacaoRequisicaoResposta resposta);

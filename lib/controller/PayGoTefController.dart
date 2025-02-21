@@ -102,9 +102,9 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
   }
 
+
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
-
 
     switch (resposta.operation) {
       case "VENDA":
@@ -177,18 +177,27 @@ class TefController extends GetxController implements TefPayGoCallBack {
     _payGOResponseHandler.finalizar();
   }
 
+  /**
+   * Metodo auxiliar para imprimir o comprovante (via  do cliente)
+   */
   void _printCardHolderReceipt(TransacaoRequisicaoResposta resposta) {
     if (_isPrintcardholderReceipt) {
       _printer.printerText(resposta.cardholderReceipt);
     }
   }
 
+  /**
+   * Metodo auxiliar para imprimir o relatório
+   */
   void _printReport(TransacaoRequisicaoResposta resposta) {
     if (_isPrintReport) {
       _printer.printerText(resposta.fullReceipt);
     }
   }
 
+  /**
+   * Metodo auxiliar para imprimir os comprovantes
+   */
   void _printRecepits(TransacaoRequisicaoResposta resposta) {
     if (_isPrintMerchantReceipt)
       _printer.printerText(resposta.merchantReceipt);
