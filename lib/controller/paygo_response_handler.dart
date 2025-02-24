@@ -62,10 +62,8 @@ class PayGOResponseHandler {
           _handleImpressao(resposta);
           break;
 
-        case "EXIBE_PDC":
-          _handleExibePDC(resposta);
-          break;
         // não exigem ação imediata
+        case "EXIBE_PDC":
         case "MANUTENCAO":
         case "INSTALACAO":
         case "ADMINISTRATIVA":
@@ -74,16 +72,6 @@ class PayGOResponseHandler {
         default:
           _handleOutraOperacao(resposta);
           break;
-      }
-    }
-  }
-
-  void _handleExibePDC(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation == "EXIBE_PDC") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _callBack.onReceiveMessage(resposta.resultMessage);
-        }
       }
     }
   }
@@ -112,13 +100,10 @@ class PayGOResponseHandler {
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       _callBack.onReceiveMessage("Resposta do PayGo Integrado:\n" +
-              "Operation: ${resposta?.operation} \n" +
-              "ID: ${resposta?.transactionId}\n" +
-              "Mensagem: ${resposta?.resultMessage}\n" +
-              "Resultado da transação: ${resposta?.transactionResult}\n"
-          // "cardholderReceipt: ${resposta?.cardholderReceipt}\n" + //via do cliente
-          // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
-
+          "Operation: ${resposta?.operation} \n" +
+          "${resposta?.resultMessage}\n"+
+          "Resultado da transação: ${resposta?.transactionResult}\n" +
+          "ID: ${resposta?.transactionId}\n"
           );
     }
   }
