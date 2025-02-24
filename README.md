@@ -57,7 +57,6 @@ Contém propriedades configuráveis que permitem:
 +   Trocar a [impressora](docs/arquitetura.md#generic-printer)
 
 ### View ###
----
 Responsável por mostrar as informações para o usuário.
 
 #### screens ####
