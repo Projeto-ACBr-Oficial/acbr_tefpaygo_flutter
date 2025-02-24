@@ -29,7 +29,6 @@ class HomeBinding extends Bindings {
  */
 
 class TefController extends GetxController implements TefPayGoCallBack {
-
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
   late GenericPrinter _printer = CustomPrinter();
   late PayGOResponseHandler _payGOResponseHandler;
@@ -38,82 +37,17 @@ class TefController extends GetxController implements TefPayGoCallBack {
   late bool _isPrintMerchantReceipt = true;
   late bool _isPrintReport = true;
 
-  late PendingTransactionActions _pendingTransactionActions = PendingTransactionActions.CONFIRM;
-
-  get pendingTransactionActions => _pendingTransactionActions;
-  get isAutoConfirm => _isAutoConfirm;
-  get isPrintcardholderReceipt => _isPrintcardholderReceipt;
-  get isPrintMerchantReceipt => _isPrintMerchantReceipt;
-  get isPrintReport => _isPrintReport;
-  get payGORequestHandler => _payGORequestHandler;
-  get payGOResponseHandler => _payGOResponseHandler;
-
-  void setPendingTransactionActions(PendingTransactionActions pendingTransactionActions) {
-    _pendingTransactionActions = pendingTransactionActions;
-  }
-
-  void setIsPrintReport(bool isPrintReport) {
-    _isPrintReport = isPrintReport;
-  }
-
-  void setIsPrintcardholderReceipt(bool isPrintcardholderReceipt) {
-    _isPrintcardholderReceipt = isPrintcardholderReceipt;
-  }
-
-  void setIsPrintMerchantReceipt(bool isPrintMerchantReceipt) {
-    _isPrintMerchantReceipt = isPrintMerchantReceipt;
-  }
-
-  void setIsAutoConfirm(bool isAutoConfirm) {
-    _isAutoConfirm = isAutoConfirm;
-  }
-
-  void setPrinter(GenericPrinter printer) {
-    _printer = printer;
-  }
-
-  @override
-  void onFinishTransaction(TransacaoRequisicaoResposta response) {
-
-    //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
-    if (checkRequirmentsToConfirmTransaction()) {
-      _payGORequestHandler.confirmarTransacao(response.transactionId);
-    }
-    //a impressão é opcional
-    onPrinter(response);
-
-    //
-  }
-  @override
-  void onPendingTransaction(String transactionPendingData) {
-    // TODO: implement onPendingTransaction
-    switch (_pendingTransactionActions) {
-
-      case PendingTransactionActions.CONFIRM:
-        String id = Uri.parse(transactionPendingData).queryParameters["transactionId"] ?? "";
-        _payGORequestHandler.confirmarTransacao(id);
-        break;
-
-      case PendingTransactionActions.MANUAL_UNDO:
-        _payGORequestHandler.resolverPendencia(Uri.parse(transactionPendingData));
-        break;
-
-      case PendingTransactionActions.NONE:
-      default:
-        print("Nenhuma ação definida para transação pendente");
-        break;
-    }
-  }
+  late PendingTransactionActions _pendingTransactionActions =
+      PendingTransactionActions.CONFIRM;
 
 
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
-
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
       case "CANCELAMENTO":
-        _printRecepits(resposta)  ;
+        _printRecepits(resposta);
 
         break;
 
@@ -148,37 +82,54 @@ class TefController extends GetxController implements TefPayGoCallBack {
         });
   }
 
+  @override
+  void onFinishTransaction(TransacaoRequisicaoResposta response) {
+    //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
+    if (checkRequirmentsToConfirmTransaction()) {
+      _payGORequestHandler.confirmarTransacao(response.transactionId);
+    }
+    //a impressão é opcional
+    onPrinter(response);
+
+    //
+  }
+
+  @override
+  void onPendingTransaction(String transactionPendingData) {
+    // TODO: implement onPendingTransaction
+    switch (_pendingTransactionActions) {
+      case PendingTransactionActions.CONFIRM:
+        String id = Uri.parse(transactionPendingData)
+                .queryParameters["transactionId"] ??
+            "";
+        _payGORequestHandler.confirmarTransacao(id);
+        break;
+
+      case PendingTransactionActions.MANUAL_UNDO:
+        _payGORequestHandler
+            .resolverPendencia(Uri.parse(transactionPendingData));
+        break;
+
+      case PendingTransactionActions.NONE:
+      default:
+        print("Nenhuma ação definida para transação pendente");
+        break;
+    }
+  }
+
+
 
   /**
    * Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
-    */
+   */
 
   @override
   bool checkRequirmentsToConfirmTransaction() {
     //aqui você pode implementar a lógica para verificar se os requisitos para confirmar a transação foram atendidos
-      return _isAutoConfirm == true ;
+    return _isAutoConfirm == true;
   }
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    _payGOResponseHandler = PayGOResponseHandler(this);
-  }
 
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-    _payGOResponseHandler.inicializar();
-  }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
-    _payGOResponseHandler.finalizar();
-  }
 
   /**
    * Metodo auxiliar para imprimir o comprovante (via  do cliente)
@@ -202,8 +153,72 @@ class TefController extends GetxController implements TefPayGoCallBack {
    * Metodo auxiliar para imprimir os comprovantes
    */
   void _printRecepits(TransacaoRequisicaoResposta resposta) {
-    if (_isPrintMerchantReceipt)
-      _printer.printerText(resposta.merchantReceipt);
+    if (_isPrintMerchantReceipt) _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
+  }
+
+  // Getters e Setters
+
+  get pendingTransactionActions => _pendingTransactionActions;
+
+  get isAutoConfirm => _isAutoConfirm;
+
+  get isPrintcardholderReceipt => _isPrintcardholderReceipt;
+
+  get isPrintMerchantReceipt => _isPrintMerchantReceipt;
+
+  get isPrintReport => _isPrintReport;
+
+  get payGORequestHandler => _payGORequestHandler;
+
+  get payGOResponseHandler => _payGOResponseHandler;
+
+  void setPendingTransactionActions(
+      PendingTransactionActions pendingTransactionActions) {
+    _pendingTransactionActions = pendingTransactionActions;
+  }
+
+  void setIsPrintReport(bool isPrintReport) {
+    _isPrintReport = isPrintReport;
+  }
+
+  void setIsPrintcardholderReceipt(bool isPrintcardholderReceipt) {
+    _isPrintcardholderReceipt = isPrintcardholderReceipt;
+  }
+
+  void setIsPrintMerchantReceipt(bool isPrintMerchantReceipt) {
+    _isPrintMerchantReceipt = isPrintMerchantReceipt;
+  }
+
+  void setIsAutoConfirm(bool isAutoConfirm) {
+    _isAutoConfirm = isAutoConfirm;
+  }
+
+  void setPrinter(GenericPrinter printer) {
+    _printer = printer;
+  }
+
+
+  // Métodos de controle de estado
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _payGOResponseHandler = PayGOResponseHandler(this);
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    _payGOResponseHandler.inicializar();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    _payGOResponseHandler.finalizar();
   }
 }
