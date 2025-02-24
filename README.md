@@ -64,7 +64,7 @@ Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/mate
 
 +  [PaymentMode](lib/view/screens/payment/payment_mode.dart)
    +    Tela inicial de pagamento
-+  [ConfigurationPage](lib/view/screens/config/configuration_page.dart)
++  [ConfigurationPage](lib/view/screens/config/config_page.dart)
    +    Tela de configuração
 
 #### widgets ####
