@@ -52,15 +52,12 @@ class PayGOResponseHandler {
     if (resposta != null) {
       switch (resposta.operation) {
         case "VENDA":
-          _handleTransacaoVenda(resposta);
+        case "CANCELAMENTO":
+          _handleTransacao(resposta);
           break;
 
         case "REIMPRESSAO":
           _handleTransacaoReimpressao(resposta);
-          break;
-
-        case "CANCELAMENTO":
-          _handleCancelamento(resposta);
           break;
 
         case "RELATORIO_SINTETICO":
@@ -95,21 +92,6 @@ class PayGOResponseHandler {
     }
   }
 
-  void _handleCancelamento(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation == "CANCELAMENTO") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _callBack.onFinishTransaction(resposta);
-        } else if (resposta?.transactionResult ==
-            PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-          _callBack.onPendingTransaction(_getStringPendingData());
-        } else {
-          _callBack.onReceiveMessage(resposta.resultMessage);
-        }
-      }
-    }
-  }
-
   void _handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.operation.startsWith("RELATORIO")) {
@@ -121,22 +103,21 @@ class PayGOResponseHandler {
     }
   }
 
-  /**
-   * Metodo para tratar a transacao de venda
-   */
-  void _handleTransacaoVenda(TransacaoRequisicaoResposta resposta) {
+  void _handleTransacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
-      if (resposta.operation == "VENDA") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+      String transactionResult = resposta.transactionResult.toString();
+      switch (transactionResult) {
+        case PayGoRetornoConsts.PWRET_OK:
           _callBack.onFinishTransaction(resposta);
-
-          //tratamento para transacao pendente
-        } else if (resposta?.transactionResult ==
-            PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+          break;
+        case PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN:
           _callBack.onPendingTransaction(_getStringPendingData());
-        } else {
-          _callBack.onReceiveMessage(resposta.resultMessage);
-        }
+          break;
+        default:
+          _callBack.onReceiveMessage(resposta.resultMessage +
+              "\n" +
+              "Resultado da transação: ${resposta.transactionResult}");
+          break;
       }
     }
   }
@@ -171,11 +152,10 @@ class PayGOResponseHandler {
     }
   }
 
-
   /**
    * Método auxiliar para obter os dados da transação pendente
    */
-  String _getStringPendingData(){
-      return _intent?.extra?["TransacaoPendenteDados"] ?? "";
-    }
+  String _getStringPendingData() {
+    return _intent?.extra?["TransacaoPendenteDados"] ?? "";
+  }
 }
