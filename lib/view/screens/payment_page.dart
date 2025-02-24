@@ -71,7 +71,7 @@ class _CommandPageState extends State<CommandPage> {
   void _pagar(){
     if ( _valorVenda < 1){
       Fluttertoast.showToast(
-          msg: "Valor da venda deve ser maior que R\$ 1,00",
+          msg: "Valor mínimo de venda é R\$ 1,00",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -92,18 +92,21 @@ class _CommandPageState extends State<CommandPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 2,
-          children: [
-            TextPrice(_valorVendaString),
-            CustomKeyBoard(processKeyBoardInput:_processInputKeyBoard),
-          ],
-        )
-      )
+    return LayoutBuilder(
+      builder: (context,constraint){
+        return Container(
+            width: constraint.maxWidth *0.7,
+            child:Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 2,
+              children: [
+                TextPrice(_valorVendaString),
+                CustomKeyBoard(processKeyBoardInput:_processInputKeyBoard),
+              ],
+            )
 
+        );
+      }
     );
   }
 }
