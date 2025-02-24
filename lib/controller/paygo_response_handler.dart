@@ -44,7 +44,6 @@ class PayGOResponseHandler {
       resposta = TransacaoRequisicaoResposta.fromUri(decodedUri);
       _intent = intent;
       _processarResposta(resposta);
-      print("intent data = $intent?.data");
     }
   }
 
