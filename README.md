@@ -26,9 +26,6 @@ Pré-requisitos
 
 \* Lembre-se de baixar a versão correta para produção ou homologação
 
-Arquitetura
---
-Aplicação é dividida em camadas
 
 
 Controller
@@ -39,20 +36,10 @@ Controller
 
 Essa classe implementa a interface [TefPayGoCallBack](#tefpaygocallback)
 
-
 Também Contém propriedades configuráveis que permitem:
 +   Habilitar/Desabilitar a impressão do comprovante 
 +   Trocar a [impressora](#generic-printer)
 
-#### [PayGoResponseHandler](lib/controller/paygo_response_handler.dart)  ####
-Responsável por receber as respostas do PayGo Integrador e enviá-las para o TefPayGoController.
-
-#### [PayGoRequestHandler](lib/controller/paygo_request_handler.dart) ####
-Responsável para enviar as requisições para o PayGo Integrador.
-
-    
-#### [TefPayGoCallBack](lib/controller/types/tef_paygo_callback.dart) ####
-É uma interface de comunicação entre a view e o PayGoResponseHandler.
 
 #### Generic Printer #### 
 
@@ -74,6 +61,6 @@ Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/mate
 +  [ConfigurationPage](lib/view/screens/config/config_page.dart)
    +    Tela de configuração
 
-#### widgets ####
-Widgets reutilizáveis.
-
+Arquitetura da aplicação
+__
+A arquitetura está especificada no arquivo [arquitetura.md](docs/arquitetura.md)
