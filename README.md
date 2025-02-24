@@ -49,8 +49,9 @@ Também Contém propriedades configuráveis que permitem:
     
 
 #### Generic Printer #### 
-É uma interface que especifica os métodos que uma impressora deve implementar.</br>
-A ideia dessa interface é desacoplar a impressora do TefController.
+
+[GenericPrinter](lib/controller/types/generic_printer.dart) uma interface que especifica os métodos que uma impressora deve implementar.</br>
+A ideia dessa interface é desacoplar a impressora do controller.
 
 View
 ---
