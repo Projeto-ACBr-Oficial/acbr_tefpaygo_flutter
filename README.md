@@ -1,6 +1,8 @@
-# DemoTefPayGoSimples #
+<p align="center">
+   <img src="prints/app-tela-inicial.png" width="360"/>
+</p>
 
-Sobre
+# DemoTefPayGoSimples #
 -----
 DemoTefPayGoSimples é um projeto de exemplo que demonstra a integração
 
