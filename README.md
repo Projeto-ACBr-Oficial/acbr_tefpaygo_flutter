@@ -10,8 +10,10 @@ Tecnologias utilizadas
 + [PayGo SDK](https://github.com/claudneysessa/paygo_sdk)
 + [PayGo Integrado](https://paygodev.readme.io/docs/o-paygo-integrado)
 
-Pré-requisitos
+Getting Started
 --- 
+## Pré-requisitos do PayGo Integrador ##
+
 1. Obter as crendenciais do PayGo Integrado (entre contato com o suporte da PayGo)
 2. Baixar o [PayGo Integrado e PayGo SDK](https://setis.com.br/filevista/public/pg6b/kit-paygo-android-v4-1-35-7.zip)\*
 3. Instalar o Apk do PayGo Integrado no dispositivo. 
