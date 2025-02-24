@@ -3,7 +3,7 @@
  */
 
 enum PendingTransactionActions {
-  NONE,
-  CONFIRM,
-  MANUAL_UNDO
+  NONE, //Nenhuma ação
+  CONFIRM,// confirmar transação
+  MANUAL_UNDO //desfeito manual
 }

@@ -9,6 +9,7 @@ import '../utils/paygo_consts.dart';
 
 /**
  * Classe para tratar as respostas do PayGo Integrado
+ * Essencialmente essa classe recebe uma intent e chama a callback[TefPayGoCallBack] de acordo com a resposta
  */
 
 class PayGOResponseHandler {
