@@ -59,7 +59,7 @@ class PayGOResponseHandler {
         case "RELATORIO_SINTETICO":
         case "RELATORIO_DETALHADO":
         case "RELATORIO_RESUMIDO":
-          _callBack.onPrinter(resposta);
+          _handleImpressao(resposta);
           break;
 
         case "EXIBE_PDC":
@@ -120,6 +120,19 @@ class PayGOResponseHandler {
           // "merchantReceipt: ${resposta?.merchantReceipt}\n" //via do estabelecimento
 
           );
+    }
+  }
+
+  /**
+   * Método auxiliar para tratar a impressão
+   */
+  void _handleImpressao(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if ( resposta.transactionResult == PayGoRetornoConsts.PWRET_OK) {
+        _callBack.onPrinter(resposta);
+      } else {
+        _callBack.onReceiveMessage(resposta.resultMessage);
+      }
     }
   }
 
