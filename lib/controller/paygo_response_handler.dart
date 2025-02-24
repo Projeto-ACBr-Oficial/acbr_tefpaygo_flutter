@@ -56,13 +56,10 @@ class PayGOResponseHandler {
           break;
 
         case "REIMPRESSAO":
-          _handleTransacaoReimpressao(resposta);
-          break;
-
         case "RELATORIO_SINTETICO":
         case "RELATORIO_DETALHADO":
         case "RELATORIO_RESUMIDO":
-          _handleImprimeRelatorio(resposta);
+          _callBack.onPrinter(resposta);
           break;
 
         case "EXIBE_PDC":
@@ -91,16 +88,6 @@ class PayGOResponseHandler {
     }
   }
 
-  void _handleImprimeRelatorio(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation.startsWith("RELATORIO")) {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _callBack.onPrinter(resposta);
-        } else
-          _callBack.onReceiveMessage(resposta.resultMessage);
-      }
-    }
-  }
 
   void _handleTransacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
@@ -121,21 +108,6 @@ class PayGOResponseHandler {
     }
   }
 
-  /**
-   * Metodo para tratar a transacao de reimpressao
-   */
-
-  void _handleTransacaoReimpressao(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.operation == "REIMPRESSAO") {
-        if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-          _callBack.onPrinter(resposta);
-        } else {
-          _callBack.onReceiveMessage(resposta.resultMessage);
-        }
-      }
-    }
-  }
 
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
