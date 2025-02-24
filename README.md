@@ -1,4 +1,4 @@
-# DemoTefPayGoSimples #
+_# DemoTefPayGoSimples #
 
 Sobre
 -----
@@ -37,18 +37,22 @@ Controller
 ### PayGoTefController ###
 [PayGoTefController](lib/controller/PayGoTefController.dart) é responsável pelas regras de negócio.<br/>
 
-Essa classe implementa a interface [TefPayGoController](lib/controller/types/tef_paygo_callback.dart)que define eventos que devem ser implementados.<br/>
+Essa classe implementa a interface [TefPayGoCallBack](#tefpaygocallback-)
+
 
 Também Contém propriedades configuráveis que permitem:
 +   Habilitar/Desabilitar a impressão do comprovante 
 +   Trocar a [impressora](#generic-printer)
 
 [PayGoResponseHandler](lib/controller/paygo_response_handler.dart)
-    +   Responsável por receber as respostas do PayGo Integrador e enviá-las para o TefPayGoController.
++   Responsável por receber as respostas do PayGo Integrador e enviá-las para o TefPayGoController.
 [PayGoRequestHandler](lib/controller/paygo_request_handler.dart)
-    +   Responsável para enviar as requisições para o PayGo Integrador.
++   Responsável para enviar as requisições para o PayGo Integrador.
 
     
+#### TefPayGoCallBack ####
+[TefPayGoCallBack](lib/controller/types/tef_paygo_callback.dart) é uma interface de comunicação entre a view e o PayGoResponseHandler.
+
 
 #### Generic Printer #### 
 
