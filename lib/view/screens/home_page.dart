@@ -1,4 +1,4 @@
-import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
+import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
