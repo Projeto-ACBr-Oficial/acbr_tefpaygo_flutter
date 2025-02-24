@@ -37,6 +37,8 @@ Controller
 ### PayGoTefController ###
 [PayGoTefController](lib/controller/PayGoTefController.dart) é responsável pelas regras de negócio.<br/>
 
+Essa classe implementa a interface [TefPayGoController](lib/controller/types/tef_paygo_callback.dart)que define eventos que devem ser implementados.<br/>
+
 Também Contém propriedades configuráveis que permitem:
 +   Habilitar/Desabilitar a impressão do comprovante 
 +   Trocar a [impressora](#generic-printer)
@@ -51,7 +53,7 @@ Também Contém propriedades configuráveis que permitem:
 #### Generic Printer #### 
 
 [GenericPrinter](lib/controller/types/generic_printer.dart) uma interface que especifica os métodos que uma impressora deve implementar.</br>
-A ideia dessa interface é desacoplar a impressora do controller.
+O objetivo dessa interface é desacoplar a impressora do controller.
 
 View
 ---
