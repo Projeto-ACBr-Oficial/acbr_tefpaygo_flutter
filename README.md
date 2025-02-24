@@ -65,7 +65,7 @@ Telas da aplicação
 [MyHomePage](lib/view/screens/home_page.dart) é a tela principal da aplicação.<br/>
 Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html) para navegar entre as telas.
 
-+  [PaymentModel](lib/view/screens/payment/payment_model.dart)
++  [PaymentModel](lib/view/screens/payment/payment_mode.dart)
    +    Tela inicial de pagamento
 +  [ConfigurationPage](lib/view/screens/config/configuration_page.dart)
    +    Tela de configuração
