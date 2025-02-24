@@ -16,8 +16,8 @@ Responsável para enviar as requisições para o PayGo Integrador.
 É uma interface de comunicação entre a view e o PayGoResponseHandler.
 
 
-#### Generic Printer #### 
-
-[GenericPrinter](lib/controller/types/generic_printer.dart) uma interface que especifica os métodos que uma impressora deve implementar.</br>
+#### [GenericPrinter](../lib/controller/types/generic_printer.dart) #### 
+ 
+É uma interface que especifica os métodos que uma impressora deve implementar.</br>
 O objetivo dessa interface é desacoplar a impressora do controller.
 

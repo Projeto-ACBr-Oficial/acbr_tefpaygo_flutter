@@ -28,11 +28,22 @@ Getting Started
 
 \* Lembre-se de baixar a versão correta para produção ou homologação
 
+ ## Executando o projeto ##
 
+```bash
+flutter pub get
+flutter run 
+```
 
 Arquitetura básica da aplicação
 ---
 A arquitetura está especificada no arquivo [arquitetura.md](docs/arquitetura.md)
+
+Em resumo é divida em três camadas:
+
++ Model
++ View
++ Controller
 
 ### Controller ###
 
@@ -41,7 +52,7 @@ A arquitetura está especificada no arquivo [arquitetura.md](docs/arquitetura.md
 
 Essa classe implementa a interface [TefPayGoCallBack](docs/arquitetura.md#tefpaygocallback)
 
-Também Contém propriedades configuráveis que permitem:
+Contém propriedades configuráveis que permitem:
 +   Habilitar/Desabilitar a impressão do comprovante
 +   Trocar a [impressora](docs/arquitetura.md#generic-printer)
 
