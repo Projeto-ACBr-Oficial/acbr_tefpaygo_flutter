@@ -14,3 +14,10 @@ Responsável para enviar as requisições para o PayGo Integrador.
 
 #### [TefPayGoCallBack](../lib/controller/types/tef_paygo_callback.dart) ####
 É uma interface de comunicação entre a view e o PayGoResponseHandler.
+
+
+#### Generic Printer #### 
+
+[GenericPrinter](lib/controller/types/generic_printer.dart) uma interface que especifica os métodos que uma impressora deve implementar.</br>
+O objetivo dessa interface é desacoplar a impressora do controller.
+

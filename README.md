@@ -28,23 +28,20 @@ Pré-requisitos
 
 
 
-Controller
+Arquitetura básica da aplicação
 ---
+A arquitetura está especificada no arquivo [arquitetura.md](docs/arquitetura.md)
 
-### PayGoTefController ###
+### Controller ###
+
+#### PayGoTefController ####
 [PayGoTefController](lib/controller/PayGoTefController.dart) é responsável pelas regras de negócio.<br/>
 
-Essa classe implementa a interface [TefPayGoCallBack](#tefpaygocallback)
+Essa classe implementa a interface [TefPayGoCallBack](docs/arquitetura.md#tefpaygocallback)
 
 Também Contém propriedades configuráveis que permitem:
-+   Habilitar/Desabilitar a impressão do comprovante 
-+   Trocar a [impressora](#generic-printer)
-
-
-#### Generic Printer #### 
-
-[GenericPrinter](lib/controller/types/generic_printer.dart) uma interface que especifica os métodos que uma impressora deve implementar.</br>
-O objetivo dessa interface é desacoplar a impressora do controller.
++   Habilitar/Desabilitar a impressão do comprovante
++   Trocar a [impressora](docs/arquitetura.md#generic-printer)
 
 View
 ---
@@ -60,7 +57,3 @@ Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/mate
    +    Tela inicial de pagamento
 +  [ConfigurationPage](lib/view/screens/config/config_page.dart)
    +    Tela de configuração
-
-Arquitetura da aplicação
-__
-A arquitetura está especificada no arquivo [arquitetura.md](docs/arquitetura.md)
