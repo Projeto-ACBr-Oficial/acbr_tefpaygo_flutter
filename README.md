@@ -3,7 +3,6 @@
 </p>
 
 # DemoTefPayGoSimples #
------
 DemoTefPayGoSimples é um projeto de exemplo que demonstra a integração
 
 
