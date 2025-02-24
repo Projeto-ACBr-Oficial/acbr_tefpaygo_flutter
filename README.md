@@ -43,11 +43,11 @@ Também Contém propriedades configuráveis que permitem:
 +   Habilitar/Desabilitar a impressão do comprovante
 +   Trocar a [impressora](docs/arquitetura.md#generic-printer)
 
-View
+### View ###
 ---
 Responsável por mostrar as informações para o usuário.
 
-### screens ###
+#### screens ####
 Telas da aplicação
 
 [MyHomePage](lib/view/screens/home_page.dart) é a tela principal da aplicação.<br/>
