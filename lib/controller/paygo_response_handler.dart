@@ -100,8 +100,12 @@ class PayGOResponseHandler {
       if (resposta.operation == "CANCELAMENTO") {
         if (resposta?.transactionResult == PayGoRetornoConsts.PWRET_OK) {
           _callBack.onFinishTransaction(resposta);
-        } else
+        } else if (resposta?.transactionResult ==
+            PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+          _callBack.onPendingTransaction(_getStringPendingData());
+        } else {
           _callBack.onReceiveMessage(resposta.resultMessage);
+        }
       }
     }
   }
@@ -129,10 +133,7 @@ class PayGOResponseHandler {
           //tratamento para transacao pendente
         } else if (resposta?.transactionResult ==
             PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-          String pendingTransactionId =
-              _intent?.extra?["TransacaoPendenteDados"] ?? "";
-
-          _callBack.onPendingTransaction(pendingTransactionId);
+          _callBack.onPendingTransaction(_getStringPendingData());
         } else {
           _callBack.onReceiveMessage(resposta.resultMessage);
         }
@@ -169,4 +170,12 @@ class PayGOResponseHandler {
           );
     }
   }
+
+
+  /**
+   * Método auxiliar para obter os dados da transação pendente
+   */
+  String _getStringPendingData(){
+      return _intent?.extra?["TransacaoPendenteDados"] ?? "";
+    }
 }
