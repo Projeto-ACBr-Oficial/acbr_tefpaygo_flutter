@@ -64,13 +64,15 @@ Responsável por mostrar as informações para o usuário.
 Telas da aplicação
 
 [MyHomePage](lib/view/screens/home_page.dart) é a tela principal da aplicação.<br/>
-Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html) para navegar entre as telas.
+Essa tela implementa  [bottomNavigationBar](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html) para navegar entre as telas:
++  [PaymentPage](lib/view/screens/payment_page.dart)
++  [ConfigurationPage](lib/view/screens/config/config_page.dart)
 
 [PaymentPage](lib/view/screens/payment_page.dart)<br/>
-Tela com teclado numérico para inserir o valor de pagamento
-
-[PaymentMode](lib/view/screens/payment/payment_mode.dart)<br/>
-Tela que permite escolher o modo de pagamento
+Tela que contém o teclado numérico para inserir o valor de pagamento.
 
 [ConfigurationPage](lib/view/screens/config/config_page.dart)<br/>
-Tela de configuração
+Tela de configuração. Permite instalar, manutenção e configuração do PayGo Integrado.
+
+[PaymentMode](lib/view/screens/payment/payment_mode.dart)<br/>
+Tela que permite escolher o modo de pagamento.
