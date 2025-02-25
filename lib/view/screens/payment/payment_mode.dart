@@ -81,6 +81,9 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void onClickButtonFrota(){
+
+    //Cartão frota é um cartão corporativo, emitido por uma empresa para seus funcionários
+    // muito usado em postos de gasolina.
     _tefController
         .payGORequestHandler
         .setCardType(CardType.cartaoFrota);
@@ -89,6 +92,9 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void onClickButtonPrivateLabel(){
+
+    //privateLabel é um cartão (geralmente de crédito) emitido por uma loja ou empresa.
+
     _tefController
         .payGORequestHandler
         .setCardType(CardType.cartaoPrivateLabel);
