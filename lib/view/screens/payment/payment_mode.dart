@@ -48,7 +48,7 @@ class _PaymentPageState extends State<PaymentPage> {
               Button(text: "Credito", onPressed: onClickButtonCredito),
               Button(text: "Voucher", onPressed: onClickButtonVoucher),
               Button(text:"Frota", onPressed: onClickButtonFrota),
-              Button(text: "Private Label", onPressed: onClickButtonPrivateLabel)
+              Button(text: "Cartão da Loja", onPressed: onClickButtonPrivateLabel)
             ],
           ),
         )
