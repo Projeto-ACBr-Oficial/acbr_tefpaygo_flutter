@@ -74,6 +74,7 @@ class PayGOResponseHandler {
           break;
       }
     }
+    _intent =null;
   }
 
 

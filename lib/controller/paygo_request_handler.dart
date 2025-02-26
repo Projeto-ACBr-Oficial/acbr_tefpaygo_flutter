@@ -53,13 +53,13 @@ class PayGoRequestHandler {
         dadosAutomacao: dadosAutomacao);
   }
 
-  Future<void> confirmarTransacao(String id) async {
+  Future<void> confirmarTransacao(String id, [TransactionStatus status = TransactionStatus.confirmadoAutomatico]) async {
     await _repository.integrado
         .confirmarTransacao(
       intentAction: IntentAction.confirmation,
       requisicao: TransacaoRequisicaoConfirmacao(
         confirmationTransactionId: id,
-        status: TransactionStatus.confirmadoAutomatico,
+        status: status,
       ),
     )
         .then((value) {
@@ -122,15 +122,14 @@ class PayGoRequestHandler {
    * Metodo para resolver pendencia
    */
 
-  Future<void> resolverPendencia(Uri uri) async {
-    if (uri != null) {
+  Future<void> resolverPendencia(String transacaoPendenteDados, [TransactionStatus status = TransactionStatus.desfeitoManual]) async {
+
       await _repository.integrado.resolucaoPendencia(
         intentAction: IntentAction.confirmation,
-        requisicaoPendencia: uri.toString(),
+        requisicaoPendencia: transacaoPendenteDados,
         requisicaoConfirmacao: TransacaoRequisicaoPendencia(
-          status: TransactionStatus.desfeitoManual,
+          status: status
         ),
       );
-    }
   }
 }

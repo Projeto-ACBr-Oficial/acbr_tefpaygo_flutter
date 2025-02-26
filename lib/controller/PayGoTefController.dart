@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
 class HomeBinding extends Bindings {
   @override
@@ -99,15 +100,12 @@ class TefController extends GetxController implements TefPayGoCallBack {
     // TODO: implement onPendingTransaction
     switch (_pendingTransactionActions) {
       case PendingTransactionActions.CONFIRM:
-        String id = Uri.parse(transactionPendingData)
-                .queryParameters["transactionId"] ??
-            "";
-        _payGORequestHandler.confirmarTransacao(id);
+      _payGORequestHandler.resolverPendencia(transactionPendingData, TransactionStatus.confirmadoManual);
         break;
 
       case PendingTransactionActions.MANUAL_UNDO:
-        _payGORequestHandler
-            .resolverPendencia(Uri.parse(transactionPendingData));
+        print('tentando desfazer xxxxxxxxx' + transactionPendingData);
+        _payGORequestHandler.resolverPendencia(transactionPendingData);
         break;
 
       case PendingTransactionActions.NONE:
