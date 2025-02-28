@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_response_handler.dart';
@@ -13,7 +15,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TefController>(() => TefController());
+    Get.lazyPut<TefController>(() => TefController(), fenix: true);
   }
 }
 
