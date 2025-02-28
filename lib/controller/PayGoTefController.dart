@@ -34,7 +34,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
   late PayGOResponseHandler _payGOResponseHandler;
   late TefPayGoConfiguracoes _configuracoes = TefPayGoConfiguracoes();
 
-
   // Getters e Setter
   PayGoRequestHandler get payGORequestHandler => _payGORequestHandler;
   PayGOResponseHandler get payGOResponseHandler => _payGOResponseHandler;
@@ -56,8 +55,12 @@ class TefController extends GetxController implements TefPayGoCallBack {
       case "REIMPRESSAO":
       case "CANCELAMENTO":
         _printRecepits(resposta);
-
         break;
+
+      case "INSTALACAO":
+       _printInstall(resposta);
+        break;
+      break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
@@ -82,9 +85,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
     );
   }
 
-  double _convertAmountToDouble (String amount){
-    return double.parse(amount)/ 100.00;
-  }
+
   @override
   void onFinishTransaction(TransacaoRequisicaoResposta response) {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
@@ -98,13 +99,11 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
     //a impressão é opcional
     onPrinter(response);
-
-    //
   }
 
   @override
   void onPendingTransaction(String transactionPendingData) {
-    // TODO: implement onPendingTransaction
+
     switch (_configuracoes.pendingTransactionActions) {
       case PendingTransactionActions.CONFIRM:
       _payGORequestHandler.resolverPendencia(transactionPendingData, TransactionStatus.confirmadoManual);
@@ -145,6 +144,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
   }
 
+
   /**
    * Metodo auxiliar para imprimir o relatório
    */
@@ -161,6 +161,20 @@ class TefController extends GetxController implements TefPayGoCallBack {
     if (_configuracoes.isPrintMerchantReceipt) _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
     //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
+  }
+
+  void _printInstall(TransacaoRequisicaoResposta resposta){
+    if ( resposta.fullReceipt != null){
+      if ( resposta.fullReceipt.isNotEmpty){
+        _printer.printerText(resposta.fullReceipt);
+      }
+    }
+  }
+  /**
+   * Metodo auxiliar para converter o valor da transação para double
+   */
+  double _convertAmountToDouble (String amount){
+    return double.parse(amount)/ 100.00;
   }
 
 

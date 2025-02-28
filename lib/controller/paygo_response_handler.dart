@@ -59,13 +59,13 @@ class PayGOResponseHandler {
         case "RELATORIO_SINTETICO":
         case "RELATORIO_DETALHADO":
         case "RELATORIO_RESUMIDO":
+        case "INSTALACAO":
           _handleImpressao(resposta);
           break;
 
         // não exigem ação imediata
         case "EXIBE_PDC":
         case "MANUTENCAO":
-        case "INSTALACAO":
         case "ADMINISTRATIVA":
         case "TESTE_COMUNICACAO":
         case "OPERACAO_DESCONHECIDA":
