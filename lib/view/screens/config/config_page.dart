@@ -79,7 +79,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void onclickButtonSelectProvider(){
-     var providers =  { "DEMO", "REDE", "CIELO" } ;
+     var providers =  { "DEMO", "REDE", "PIX C6 BANK" } ;
      showDialog(
        context: context,
        builder: (BuildContext context) {
@@ -105,5 +105,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
        },
      );
 
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    debugPrint("dispose config");
+    super.dispose();
   }
 }

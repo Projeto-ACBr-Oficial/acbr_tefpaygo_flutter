@@ -238,7 +238,9 @@ class TefController extends GetxController implements TefPayGoCallBack {
   @override
   void onClose() {
     // TODO: implement onClose
-    super.onClose();
+    debugPrint("Fechando controller");
     _payGOResponseHandler.finalizar();
+    super.onClose();
+
   }
 }
