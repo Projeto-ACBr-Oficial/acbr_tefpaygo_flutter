@@ -39,9 +39,14 @@ class TefController extends GetxController implements TefPayGoCallBack {
   late bool _isPrintcardholderReceipt = true;
   late bool _isPrintMerchantReceipt = true;
   late bool _isPrintReport = true;
+  late bool _isTestScript = false;
 
   late PendingTransactionActions _pendingTransactionActions =
-      PendingTransactionActions.CONFIRM;
+      PendingTransactionActions.MANUAL_UNDO;
+
+  late TransactionStatus _tipoDeConfirmacao = TransactionStatus.confirmadoAutomatico;
+
+
 
 
   @override
@@ -67,29 +72,29 @@ class TefController extends GetxController implements TefPayGoCallBack {
 
   @override
   void onReceiveMessage(String message) {
-    showDialog(
-        context: Get.context!,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Resposta do PayGo Integrado"),
-            content: Text(message),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Fechar"),
-              ),
-            ],
-          );
-        });
+    Get.defaultDialog(
+      title: "Resposta do PayGo Integrado",
+      middleText: message,
+      textConfirm: "Fechar",
+      onConfirm: () {
+        Get.back();
+      },
+    );
   }
 
+  double _convertAmountToDouble (String amount){
+    return double.parse(amount)/ 100.00;
+  }
   @override
   void onFinishTransaction(TransacaoRequisicaoResposta response) {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
     if (checkRequirmentsToConfirmTransaction()) {
-      _payGORequestHandler.confirmarTransacao(response.transactionId);
+      if (! _isTestScript ) {
+        _payGORequestHandler.confirmarTransacao(
+            response.transactionId, _tipoDeConfirmacao);
+      }else{
+        ;
+      }
     }
     //a impressão é opcional
     onPrinter(response);
@@ -155,6 +160,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
   void _printRecepits(TransacaoRequisicaoResposta resposta) {
     if (_isPrintMerchantReceipt) _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
+    //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
   // Getters e Setters
@@ -172,6 +178,11 @@ class TefController extends GetxController implements TefPayGoCallBack {
   get payGORequestHandler => _payGORequestHandler;
 
   get payGOResponseHandler => _payGOResponseHandler;
+
+  get tipoDeConfirmacao => _tipoDeConfirmacao;
+
+  get isTestScript => _isTestScript;
+
 
   void setPendingTransactionActions(
       PendingTransactionActions pendingTransactionActions) {
@@ -197,6 +208,15 @@ class TefController extends GetxController implements TefPayGoCallBack {
   void setPrinter(GenericPrinter printer) {
     _printer = printer;
   }
+
+  void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao){
+    _tipoDeConfirmacao = tipoDeConfirmacao;
+  }
+
+  void setIsTestScript(bool isTestScript){
+    _isTestScript = isTestScript;
+  }
+
 
 
   // Métodos de controle de estado
