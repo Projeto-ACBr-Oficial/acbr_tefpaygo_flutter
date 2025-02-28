@@ -38,9 +38,18 @@ class TefController extends GetxController implements TefPayGoCallBack {
   late PayGOResponseHandler _payGOResponseHandler;
   late TefPayGoConfiguracoes _configuracoes = TefPayGoConfiguracoes();
 
+
+  // Getters e Setter
+  PayGoRequestHandler get payGORequestHandler => _payGORequestHandler;
+  PayGOResponseHandler get payGOResponseHandler => _payGOResponseHandler;
   TefPayGoConfiguracoes get configuracoes => _configuracoes;
+
   set configuracoes(TefPayGoConfiguracoes configuracoes) {
     _configuracoes = configuracoes;
+  }
+
+  set printer(GenericPrinter printer) {
+    _printer = printer;
   }
 
 
@@ -156,16 +165,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
     if (_configuracoes.isPrintMerchantReceipt) _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
     //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
-  }
-
-  // Getters e Setter
-
-  get payGORequestHandler => _payGORequestHandler;
-
-  get payGOResponseHandler => _payGOResponseHandler;
-
-  void setPrinter(GenericPrinter printer) {
-    _printer = printer;
   }
 
 
