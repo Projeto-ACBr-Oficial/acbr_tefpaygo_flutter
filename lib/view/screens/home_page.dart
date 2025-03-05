@@ -18,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
-    CommandPage(title: "Comandos"),
+    PaymentPage(title: "Comandos"),
     ConfigurationPage(),
   ];
   int _currentIndex = 0;
@@ -35,40 +35,39 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  void dispose() {
+    debugPrint("dispose");
+    Get.deleteAll();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TefController _tefController = Get.put(TefController());
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (bool dip, dynamic result) {
-        setCurrentIndex(0);
-      },
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text(widget.title),
-          ),
-          body: _pages[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: setCurrentIndex,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home",
-                ),
-
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: "Configurações",
-                ),
-              ])),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
+        ),
+        body: Center(
+          child: LayoutBuilder(builder: (context, constraint) {
+            return Container(
+                width: constraint.maxWidth * 0.7,
+                height: constraint.maxHeight * 0.7,
+                child: _pages[_currentIndex]);
+          }),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: setCurrentIndex,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: "Configurações",
+              ),
+            ]));
   }
-
-
-
 }
