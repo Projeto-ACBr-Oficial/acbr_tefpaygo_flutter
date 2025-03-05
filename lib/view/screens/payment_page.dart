@@ -7,15 +7,15 @@ import 'package:get/get.dart';
 
 import '../widget/keyboard.dart';
 
-class CommandPage extends StatefulWidget {
-  const CommandPage({Key? key, required this.title}) : super(key: key);
+class PaymentPage extends StatefulWidget {
+  const PaymentPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<CommandPage> createState() => _CommandPageState();
+  State<PaymentPage> createState() => _PaymentPageState();
 }
 
-class _CommandPageState extends State<CommandPage> {
+class _PaymentPageState extends State<PaymentPage> {
   final TefController _tefController = Get.find();
   double _valorVenda = 0.0;
   String _valorVendaString = "0,00";
@@ -81,7 +81,10 @@ class _CommandPageState extends State<CommandPage> {
       );
       return;
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(valorPagamento:_valorVenda)));
+
+   // _tefController.payGORequestHandler.venda(_valorVenda);
+    Navigator.
+    push(context, MaterialPageRoute(builder: (context) => PaymentViewMode(valorPagamento:_valorVenda)));
   }
 
 
