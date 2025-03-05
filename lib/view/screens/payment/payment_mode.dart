@@ -67,35 +67,36 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoDebito
-      ..finType = FinType.aVista;
+      ..cardType = CardType.cartaoDebito;
+
+    transacao.finType = FinType.aVista;
+
+    //..finType = FinType.aVista;
     pagar(transacao);
   }
 
-  void onClickButtonCredito() {
+  void onClickButtonCredito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoCredito
-      ..finType = FinType.aVista;
-
-    pagar(transacao);
+      ..cardType = CardType.cartaoCredito;
+    await _obterModoDeFinanciamento(transacao);
+    await pagar(transacao);
   }
 
-  void onClickButtonVoucher() {
+  void onClickButtonVoucher() async {
+    // não é possível testar voucher em modo de sandbox
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoVoucher
-      ..finType = FinType.aVista;
-
+      ..cardType = CardType.cartaoVoucher;
+    //..finType = FinType.aVista;
     pagar(transacao);
   }
 
   void onClickButtonFrota() {
     //Cartão frota é um cartão corporativo, emitido por uma empresa para seus funcionários
     // muito usado em postos de gasolina.
-
 
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
@@ -128,8 +129,65 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     await _tefController.payGORequestHandler.venda(transacao);
   }
 
-  void pagar( TransacaoRequisicaoVenda transacao) async {
-    _tefController.payGORequestHandler.venda(transacao);
+  Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
+    await _tefController.payGORequestHandler.venda(transacao);
     Navigator.pop(context);
+  }
+
+  Future<void> _obterModoDeFinanciamento(
+      TransacaoRequisicaoVenda transacao) async {
+    FinType currentFinType = await _selecionaFinanciamento();
+    print('entrei em modo de pagamento');
+    switch (currentFinType) {
+      case FinType.parceladoEmissor:
+      case FinType.parceladoEstabelecimento:
+        transacao.finType = currentFinType;
+        double quantidadeParcelas = _obterQuantidadesDeParcelas(transacao);
+        transacao.installments = quantidadeParcelas;
+        break;
+
+      default:
+        transacao.finType = FinType.aVista;
+        break;
+    }
+  }
+
+  Future<FinType> _selecionaFinanciamento() async {
+    var listFinType = {
+      FinType.aVista,
+      FinType.parceladoEmissor,
+      FinType.parceladoEstabelecimento
+    };
+
+    var currenFinType = FinType.aVista;
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          FinType? selectedFinType = currenFinType;
+          return AlertDialog(
+              title: Text("Selecione a forma de Financimento"),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: listFinType
+                      .map((e) => RadioListTile<FinType>(
+                            title: Text(e.finTypeString),
+                            value: e,
+                            groupValue: selectedFinType,
+                            onChanged: (FinType? value) {
+                              setState(() {
+                                print(value!);
+                                selectedFinType = value;
+                                currenFinType = selectedFinType!;
+                              });
+                              Navigator.pop(context);
+                            },
+                          ))
+                      .toList()));
+        });
+    return currenFinType;
+  }
+
+  double _obterQuantidadesDeParcelas(TransacaoRequisicaoVenda transacao) {
+    return 2.0;
   }
 }
