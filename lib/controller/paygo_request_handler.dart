@@ -2,6 +2,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
@@ -15,22 +16,11 @@ class PayGoRequestHandler {
 
   get provider => _provider;
 
-  late CardType _cardType = CardType.cartaoDebito;
-  late FinType _finType = FinType.aVista;
-
-  void setCardType(CardType cardType) {
-    _cardType = cardType;
-  }
-
-  void setFinType(FinType finType) {
-    _finType = finType;
-  }
-
   void setProvider(String provider) {
     _provider = provider;
   }
 
-  Future<void> venda(double valor) async {
+  Future<void> venda( TransacaoRequisicaoVenda dadosVenda) async {
     // configura dados da automacao (obrigatorio  para o TefPayGo)
     final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
       "Exemplo TEF",
@@ -42,18 +32,17 @@ class PayGoRequestHandler {
       allowDueAmount: true,
       allowShortReceipt: true,
     );
-    await _repository.integrado.venda(
-        requisicaoVenda: TransacaoRequisicaoVenda(
-            amount: valor, currencyCode: CurrencyCode.iso4217Real)
-          ..provider = _provider //autorizador  (adquirente)
-          ..cardType = _cardType, //tipo de transação
-         // ..finType = _finType, //tipo de parcelamento
-       // ..installments = 1, / quantidade de parcelas
 
-        dadosAutomacao: dadosAutomacao);
+
+    await _repository.integrado.venda(
+        requisicaoVenda: dadosVenda,
+        dadosAutomacao: dadosAutomacao
+    );
   }
 
-  Future<void> confirmarTransacao(String id, [TransactionStatus status = TransactionStatus.confirmadoAutomatico]) async {
+  Future<void> confirmarTransacao(String id,
+      [TransactionStatus status =
+          TransactionStatus.confirmadoAutomatico]) async {
     await _repository.integrado
         .confirmarTransacao(
       intentAction: IntentAction.confirmation,
@@ -122,14 +111,12 @@ class PayGoRequestHandler {
    * Metodo para resolver pendencia
    */
 
-  Future<void> resolverPendencia(String transacaoPendenteDados, [TransactionStatus status = TransactionStatus.desfeitoManual]) async {
-
-      await _repository.integrado.resolucaoPendencia(
-        intentAction: IntentAction.confirmation,
-        requisicaoPendencia: transacaoPendenteDados,
-        requisicaoConfirmacao: TransacaoRequisicaoPendencia(
-          status: status
-        ),
-      );
+  Future<void> resolverPendencia(String transacaoPendenteDados,
+      [TransactionStatus status = TransactionStatus.desfeitoManual]) async {
+    await _repository.integrado.resolucaoPendencia(
+      intentAction: IntentAction.confirmation,
+      requisicaoPendencia: transacaoPendenteDados,
+      requisicaoConfirmacao: TransacaoRequisicaoPendencia(status: status),
+    );
   }
 }
