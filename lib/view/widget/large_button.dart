@@ -12,21 +12,26 @@ class LargeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-        color: color == null ? Theme.of(context).colorScheme.primary : color,
-        textColor: Theme.of(context).colorScheme.onPrimary,
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 180.0),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(
-              color: color == null ? Theme.of(context).colorScheme.primary : color!,
-              width: 2.0,
-            )),
-        onPressed: () {
-          processKeyBoardInput(text);
-        },
-        child: Column(
-          children: [icon == null ? Text(text) : icon!],
-        ));
+    return
+      (SizedBox(
+        width: 360,
+        height: 60,
+      child: MaterialButton(
+            color: color == null ? Theme.of(context).colorScheme.primary : color,
+            textColor: Theme.of(context).colorScheme.onPrimary,
+            padding: EdgeInsets.all(16.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: BorderSide(
+                  color: color == null ? Theme.of(context).colorScheme.primary : color!,
+                  width: 2.0,
+                )),
+            onPressed: () {
+              processKeyBoardInput(text);
+            },
+            child: Column(
+              children: [icon == null ? Text(text) : icon!],
+            ))
+    ));
   }
 }
