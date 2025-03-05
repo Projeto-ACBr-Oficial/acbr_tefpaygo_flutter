@@ -43,11 +43,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             Button(onPressed: onclickButtonSelectProvider, text: "Selecionar Provedor")
 
 
+
           ],
         ),
       ),
     );
   }
+
 
   void onclickButtonInstalacao() async {
     await _tefController.payGORequestHandler.instalacao();
