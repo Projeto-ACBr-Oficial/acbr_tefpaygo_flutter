@@ -175,30 +175,40 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       FinType.parceladoEstabelecimento
     };
 
-    var currenFinType = FinType.aVista;
+    FinType currenFinType  = FinType.financiamentoNaoDefinido;
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          FinType? selectedFinType = currenFinType;
+          FinType? selectedFinType ;
           return AlertDialog(
               title: Text("Selecione a forma de Financimento"),
               content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: listFinType
                       .map((e) => RadioListTile<FinType>(
-                            title: Text(e.finTypeString),
-                            value: e,
-                            groupValue: selectedFinType,
-                            onChanged: (FinType? value) {
-                              setState(() {
-                                print(value!);
-                                selectedFinType = value;
-                                currenFinType = selectedFinType!;
-                              });
-                              Navigator.pop(context);
-                            },
-                          ))
-                      .toList()));
+                          title: Text(e.finTypeString
+                              .replaceAll('_', ' ')
+                              .toLowerCase()),
+                          value: e,
+                          groupValue: selectedFinType,
+                          onChanged: (FinType? value) {
+                            setState(() {
+                              print(value!);
+                              selectedFinType = value;
+                              currenFinType = selectedFinType!;
+                            });
+                            Navigator.pop(context,true);
+                          }))
+                      .toList()),
+            actions: [
+              TextButton(
+                child: const Text("Cancelar"),
+                onPressed: () {
+                Navigator.pop(context,false);
+              },
+
+              )
+          ],);
         });
     return currenFinType;
   }
