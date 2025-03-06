@@ -219,6 +219,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
             TextButton(
               child: const Text("Cancelar"),
               onPressed: () {
+               _onCancelOperation();
                 Navigator.pop(context);
               },
             )
@@ -268,6 +269,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
               TextButton(
                 child: const Text("Cancelar"),
                 onPressed: () {
+                  _onCancelOperation();
                 Navigator.pop(context,false);
               },
 
@@ -297,5 +299,9 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       return quantidadeMaximaDeParcelas;
     }
     return quantidadeDeParcelas.floorToDouble();
+  }
+
+  void _onCancelOperation(){
+    Fluttertoast.showToast(msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
   }
 }
