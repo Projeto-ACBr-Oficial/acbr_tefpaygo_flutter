@@ -1,7 +1,9 @@
+import 'package:demo_tefpaygo_simples/exception/valor_pagamento_invalido.dart';
 import 'package:demo_tefpaygo_simples/view/widget/button.dart';
 import 'package:demo_tefpaygo_simples/view/widget/text_price.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
@@ -84,13 +86,21 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoCredito;
-    await _obterModoDeFinanciamento(transacao);
-    if ( transacao.finType ==  null) {
-      navegarParaTelaAnterior();
-      return;
-    }
+    try {
+      await _obterModoDeFinanciamento(transacao);
+      if (transacao.finType == null) {
+        navegarParaTelaAnterior();
+        return;
+      }
+      await pagar(transacao);
+    } on ValorPagamentoInvalidoException  {
+      Fluttertoast.showToast(
+          msg: "Valor mínimo para parcelamento é R\$ 10,00",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 16.0);
 
-    await pagar(transacao);
+      navegarParaTelaAnterior();
+    }
   }
 
   void onClickButtonVoucher() async {
@@ -266,7 +276,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     print(valor);
     if (valor < valorMinimoParcelavel) {
-      throw new Exception(
+      throw new ValorPagamentoInvalidoException(
           "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
     }
     double quantidadeDeParcelas = valor / valordeParcelaMinimo;
