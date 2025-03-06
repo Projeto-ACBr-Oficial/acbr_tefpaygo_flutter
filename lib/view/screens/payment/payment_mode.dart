@@ -85,6 +85,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoCredito;
     await _obterModoDeFinanciamento(transacao);
+    if ( transacao.finType ==  null) {
+      navegarParaTelaAnterior();
+      return;
+    }
+
     await pagar(transacao);
   }
 
@@ -147,15 +152,18 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     FinType currentFinType = await _selecionaFinanciamento();
     print('entrei em modo de pagamento');
     switch (currentFinType) {
+      case FinType.aVista:
+        transacao.finType = currentFinType;
+        break;
       case FinType.parceladoEmissor:
       case FinType.parceladoEstabelecimento:
         transacao.finType = currentFinType;
-        double quantidadeParcelas = _obterQuantidadesDeParcelas(transacao);
-        transacao.installments = quantidadeParcelas;
+        double quantidadeParcelas =
+            2; //_obterQuantidadeMaximaDeParcelas(transacao);
         break;
 
       default:
-        transacao.finType = FinType.aVista;
+        transacao.finType = null;
         break;
     }
   }
