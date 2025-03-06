@@ -175,7 +175,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
           return;
         }
         transacao.installments = quantidadeParcelas;
-
         break;
 
       default:
@@ -189,17 +188,17 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     var parcelas  = List.generate(quantidadeMaximaDeParcelas.toInt(), (i)=>(i+1))
     .sublist(1);
 
-    double quantidadeParcelas  =1.0;
+    double quantidadeParcelas  = 1.0;
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        int? selectedInstallments;
+        int? selectedInstallments =2;
         return AlertDialog(
           title: Text("Selecione a quantidade de parcelas"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: parcelas.map((e) => RadioListTile<int>(
-              title: Text(e.toString()),
+              title: Text(e.toString() + "x"),
               value: e,
               groupValue: selectedInstallments,
               onChanged: (int? value) {
@@ -211,6 +210,14 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
               },
             )).toList(),
           ),
+          actions: [
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
         );
       },
     );
