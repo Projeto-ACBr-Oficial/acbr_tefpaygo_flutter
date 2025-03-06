@@ -210,10 +210,25 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
               )
           ],);
         });
+
     return currenFinType;
   }
 
-  double _obterQuantidadesDeParcelas(TransacaoRequisicaoVenda transacao) {
-    return 2.0;
+  double _obterQuantidadeMaximaDeParcelas(TransacaoRequisicaoVenda transacao) {
+    double valordeParcelaMinimo = 5.00;
+    double valorMinimoParcelavel = 2 * valordeParcelaMinimo;
+    double quantidadeMaximaDeParcelas = 99.0;
+    double valor = transacao.amount / 100.00;
+
+    if (valor < valorMinimoParcelavel) {
+      throw new Exception(
+          "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
+    }
+    double quantidadeDeParcelas = valor / valordeParcelaMinimo;
+
+    if (quantidadeDeParcelas > quantidadeMaximaDeParcelas) {
+      return quantidadeMaximaDeParcelas;
+    }
+    return quantidadeDeParcelas.floorToDouble();
   }
 }
