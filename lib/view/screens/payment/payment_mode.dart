@@ -57,7 +57,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                   text: "Cartão da Loja", onPressed: onClickButtonPrivateLabel),
               Button(
                   text: "Carteira Digital",
-                  onPressed: onClickButtonCarteiraDigital)
+                  onPressed: onClickButtonCarteiraDigital),
+              Button(
+                text: "Cancelar",
+                onPressed: navegarParaTelaAnterior,
+              )
             ],
           ),
         ));
@@ -127,6 +131,10 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..paymentMode = PaymentMode.pagamentoCarteiraVirtual;
 
     await _tefController.payGORequestHandler.venda(transacao);
+  }
+
+  void navegarParaTelaAnterior() {
+    Navigator.pop(context);
   }
 
   Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
