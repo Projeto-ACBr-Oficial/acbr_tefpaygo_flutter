@@ -150,7 +150,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   Future<void> _obterModoDeFinanciamento(
       TransacaoRequisicaoVenda transacao) async {
     FinType currentFinType = await _selecionaFinanciamento();
-    print('entrei em modo de pagamento');
+    double minimoParcelas = 2.0;
+
     switch (currentFinType) {
       case FinType.aVista:
         transacao.finType = currentFinType;
@@ -158,14 +159,55 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       case FinType.parceladoEmissor:
       case FinType.parceladoEstabelecimento:
         transacao.finType = currentFinType;
-        double quantidadeParcelas =
-            2; //_obterQuantidadeMaximaDeParcelas(transacao);
+        double quantidadeParcelas = await _selecionaQuantidadeDeParcelas(transacao.amount);
+        if (quantidadeParcelas < minimoParcelas){
+          transacao.finType = null;
+          return;
+        }
+        transacao.installments = quantidadeParcelas;
+
         break;
 
       default:
         transacao.finType = null;
         break;
     }
+  }
+
+  Future<double> _selecionaQuantidadeDeParcelas( double valor) async {
+    double quantidadeMaximaDeParcelas = _obterQuantidadeMaximaDeParcelas(valor);
+    var parcelas  = List.generate(quantidadeMaximaDeParcelas.toInt(), (i)=>(i+1))
+    .sublist(1);
+
+    double quantidadeParcelas  =1.0;
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        int? selectedInstallments;
+        return AlertDialog(
+          title: Text("Selecione a quantidade de parcelas"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: parcelas.map((e) => RadioListTile<int>(
+              title: Text(e.toString()),
+              value: e,
+              groupValue: selectedInstallments,
+              onChanged: (int? value) {
+                setState(() {
+                  selectedInstallments = value ;
+                  quantidadeParcelas = selectedInstallments!.toDouble();
+                });
+                Navigator.pop(context);
+              },
+            )).toList(),
+          ),
+        );
+      },
+    );
+
+    return quantidadeParcelas;
+
+
   }
 
   Future<FinType> _selecionaFinanciamento() async {
@@ -181,7 +223,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         builder: (BuildContext context) {
           FinType? selectedFinType ;
           return AlertDialog(
-              title: Text("Selecione a forma de Financimento"),
+              title: Text("Selecione a forma de Financiamento"),
               content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: listFinType
@@ -214,12 +256,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return currenFinType;
   }
 
-  double _obterQuantidadeMaximaDeParcelas(TransacaoRequisicaoVenda transacao) {
+  /**
+   * Função auxiliar para obter a quantidade máxima de parcelas
+   */
+  double _obterQuantidadeMaximaDeParcelas(double valor) {
     double valordeParcelaMinimo = 5.00;
     double valorMinimoParcelavel = 2 * valordeParcelaMinimo;
     double quantidadeMaximaDeParcelas = 99.0;
-    double valor = transacao.amount / 100.00;
 
+    print(valor);
     if (valor < valorMinimoParcelavel) {
       throw new Exception(
           "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
