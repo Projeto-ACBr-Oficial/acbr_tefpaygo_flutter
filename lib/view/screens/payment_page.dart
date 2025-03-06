@@ -68,7 +68,7 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
-  void _pagar(){
+  void _pagar() async{
     if ( _valorVenda < 1){
       Fluttertoast.showToast(
           msg: "Valor mínimo de venda é R\$ 1,00",
@@ -83,8 +83,9 @@ class _PaymentPageState extends State<PaymentPage> {
     }
 
    // _tefController.payGORequestHandler.venda(_valorVenda);
-    Navigator.
+    await Navigator.
     push(context, MaterialPageRoute(builder: (context) => PaymentViewMode(valorPagamento:_valorVenda)));
+    _onClearVenda();
   }
 
 
