@@ -195,20 +195,25 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         int? selectedInstallments =2;
         return AlertDialog(
           title: Text("Selecione a quantidade de parcelas"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: parcelas.map((e) => RadioListTile<int>(
-              title: Text(e.toString() + "x"),
-              value: e,
-              groupValue: selectedInstallments,
-              onChanged: (int? value) {
-                setState(() {
-                  selectedInstallments = value ;
-                  quantidadeParcelas = selectedInstallments!.toDouble();
-                });
-                Navigator.pop(context);
-              },
-            )).toList(),
+          content: Container(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: parcelas.map((e) => RadioListTile<int>(
+                  title: Text(e.toString() + "x"),
+                  value: e,
+                  groupValue: selectedInstallments,
+                  onChanged: (int? value) {
+                    setState(() {
+                      selectedInstallments = value ;
+                      quantidadeParcelas = selectedInstallments!.toDouble();
+                    });
+                    Navigator.pop(context);
+                  },
+                )).toList(),
+              ),
+            ),
           ),
           actions: [
             TextButton(
