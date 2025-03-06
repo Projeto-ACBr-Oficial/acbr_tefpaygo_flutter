@@ -192,7 +192,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        int? selectedInstallments =2;
+        int? selectedInstallments;
         return AlertDialog(
           title: Text("Selecione a quantidade de parcelas"),
           content: Container(
