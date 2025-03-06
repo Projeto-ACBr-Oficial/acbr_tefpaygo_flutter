@@ -110,10 +110,10 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoVoucher;
     //..finType = FinType.aVista;
-    pagar(transacao);
+   await pagar(transacao);
   }
 
-  void onClickButtonFrota() {
+  void onClickButtonFrota() async {
     //Cartão frota é um cartão corporativo, emitido por uma empresa para seus funcionários
     // muito usado em postos de gasolina.
 
@@ -123,10 +123,10 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..cardType = CardType.cartaoFrota
       ..finType = FinType.aVista;
 
-    pagar(transacao);
+    await pagar(transacao);
   }
 
-  void onClickButtonPrivateLabel() {
+  void onClickButtonPrivateLabel()  async{
     //privateLabel é um cartão (geralmente de crédito) emitido por uma loja ou empresa.
 
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
@@ -135,7 +135,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..cardType = CardType.cartaoPrivateLabel
       ..finType = FinType.aVista;
 
-    pagar(transacao);
+   await pagar(transacao);
   }
 
   void onClickButtonCarteiraDigital() async {
@@ -145,7 +145,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..finType = FinType.aVista
       ..paymentMode = PaymentMode.pagamentoCarteiraVirtual;
 
-    await _tefController.payGORequestHandler.venda(transacao);
+    await pagar(transacao);
   }
 
   void navegarParaTelaAnterior() {
