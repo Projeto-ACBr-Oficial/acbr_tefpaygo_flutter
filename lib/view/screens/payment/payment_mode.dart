@@ -157,6 +157,9 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     Navigator.pop(context);
   }
 
+  /**
+   * Função auxiliar para obter o modo de financiamento
+   */
   Future<void> _obterModoDeFinanciamento(
       TransacaoRequisicaoVenda transacao) async {
     FinType currentFinType = await _selecionaFinanciamento();
@@ -183,10 +186,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     }
   }
 
+  /**
+   * Função auxiliar para selecionar a quantidade de parcelas
+   *
+   */
   Future<double> _selecionaQuantidadeDeParcelas( double valor) async {
     double quantidadeMaximaDeParcelas = _obterQuantidadeMaximaDeParcelas(valor);
-    var parcelas  = List.generate(quantidadeMaximaDeParcelas.toInt(), (i)=>(i+1))
-    .sublist(1);
+    var parcelas  = List
+        .generate(quantidadeMaximaDeParcelas.toInt(), (i)=>(i+1))
+        .sublist(1);
 
     double quantidadeParcelas  = 1.0;
     await showDialog(
@@ -233,6 +241,9 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   }
 
+  /**
+   * Função auxiliar para selecionar a forma de financiamento
+   */
   Future<FinType> _selecionaFinanciamento() async {
     var listFinType = {
       FinType.aVista,
@@ -281,14 +292,13 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   }
 
   /**
-   * Função auxiliar para obter a quantidade máxima de parcelas
+   * Função auxiliar para  calcular a quantidade máxima de parcelas
    */
   double _obterQuantidadeMaximaDeParcelas(double valor) {
     double valordeParcelaMinimo = 5.00;
     double valorMinimoParcelavel = 2 * valordeParcelaMinimo;
     double quantidadeMaximaDeParcelas = 99.0;
 
-    print(valor);
     if (valor < valorMinimoParcelavel) {
       throw new ValorPagamentoInvalidoException(
           "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
