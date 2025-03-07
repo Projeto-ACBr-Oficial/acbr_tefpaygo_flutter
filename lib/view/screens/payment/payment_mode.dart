@@ -269,7 +269,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                           groupValue: selectedFinType,
                           onChanged: (FinType? value) {
                             setState(() {
-                              print(value!);
                               selectedFinType = value;
                               currenFinType = selectedFinType!;
                             });
