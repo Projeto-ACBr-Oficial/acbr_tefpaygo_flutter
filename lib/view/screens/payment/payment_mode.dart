@@ -81,11 +81,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     pagar(transacao);
   }
 
-  void onClickButtonCredito() async {
-    TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
-        amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoCredito;
+
+  /**
+   * Função auxiliar para pagamento com cartão de crédito
+   */
+  void _pagamentoCredito(TransacaoRequisicaoVenda transacao) async {
     try {
       await _obterModoDeFinanciamento(transacao);
       if (transacao.finType == null) {
@@ -93,14 +93,25 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         return;
       }
       await pagar(transacao);
-    } on ValorPagamentoInvalidoException  {
+    } on ValorPagamentoInvalidoException {
       Fluttertoast.showToast(
           msg: "Valor mínimo para parcelamento é R\$ 10,00",
           toastLength: Toast.LENGTH_LONG,
           fontSize: 16.0);
-
       navegarParaTelaAnterior();
     }
+  }
+
+  /**
+   * Método executado quando clicar no botão de crédito
+   *
+   */
+  void onClickButtonCredito() async {
+    TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
+        amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
+      ..provider = _tefController.payGORequestHandler.provider
+      ..cardType = CardType.cartaoCredito;
+     _pagamentoCredito(transacao);
   }
 
   void onClickButtonVoucher() async {
@@ -134,8 +145,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoPrivateLabel
       ..finType = FinType.aVista;
-
-   await pagar(transacao);
+    _pagamentoCredito(transacao);
   }
 
   void onClickButtonCarteiraDigital() async {
