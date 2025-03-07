@@ -16,8 +16,9 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TefController>(() => TefController(), fenix: true);
+    Get.put<TefController>(TefController(), permanent: false);
   }
+
 }
 
 /**
