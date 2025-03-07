@@ -82,25 +82,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   }
 
 
-  /**
-   * Função auxiliar para pagamento com cartão de crédito
-   */
-  void _pagamentoCredito(TransacaoRequisicaoVenda transacao) async {
-    try {
-      await _obterModoDeFinanciamento(transacao);
-      if (transacao.finType == null) {
-        navegarParaTelaAnterior();
-        return;
-      }
-      await pagar(transacao);
-    } on ValorPagamentoInvalidoException {
-      Fluttertoast.showToast(
-          msg: "Valor mínimo para parcelamento é R\$ 10,00",
-          toastLength: Toast.LENGTH_LONG,
-          fontSize: 16.0);
-      navegarParaTelaAnterior();
-    }
-  }
+  // Métodos onClick
+
 
   /**
    * Método executado quando clicar no botão de crédito
@@ -157,6 +140,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     await pagar(transacao);
   }
+
+  // Métodos auxiliares
 
   void navegarParaTelaAnterior() {
     Navigator.pop(context);
@@ -322,5 +307,26 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   void _onCancelOperation(){
     Fluttertoast.showToast(msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
+  }
+
+
+  /**
+   * Função auxiliar para pagamento com cartão de crédito
+   */
+  void _pagamentoCredito(TransacaoRequisicaoVenda transacao) async {
+    try {
+      await _obterModoDeFinanciamento(transacao);
+      if (transacao.finType == null) {
+        navegarParaTelaAnterior();
+        return;
+      }
+      await pagar(transacao);
+    } on ValorPagamentoInvalidoException {
+      Fluttertoast.showToast(
+          msg: "Valor mínimo para parcelamento é R\$ 10,00",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 16.0);
+      navegarParaTelaAnterior();
+    }
   }
 }
