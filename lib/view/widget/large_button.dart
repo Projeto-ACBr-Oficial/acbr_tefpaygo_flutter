@@ -13,10 +13,7 @@ class LargeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      (SizedBox(
-        width: 360,
-        height: 60,
-      child: MaterialButton(
+    MaterialButton(
             color: color == null ? Theme.of(context).colorScheme.primary : color,
             textColor: Theme.of(context).colorScheme.onPrimary,
             padding: EdgeInsets.all(16.0),
@@ -31,7 +28,7 @@ class LargeButton extends StatelessWidget {
             },
             child: Column(
               children: [icon == null ? Text(text) : icon!],
-            ))
-    ));
+            )
+    );
   }
 }

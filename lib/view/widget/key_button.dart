@@ -16,40 +16,24 @@ class KeyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-    builder: (context,contraint) {
-      return  MaterialButton(
-        color:  color == null ? Theme
-            .of(context)
-            .colorScheme
-            .primary : color,
-        textColor: Theme
-            .of(context)
-            .colorScheme
-            .onPrimary,
-        padding:EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(
-              color: color == null ? Theme
-                  .of(context)
-                  .colorScheme
-                  .primary : color!,
-              width: 2.0,
-            )
+    return MaterialButton(
+      color: color == null ? Theme.of(context).colorScheme.primary : color,
+      textColor: Theme.of(context).colorScheme.onPrimary,
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(
+          color: color == null ? Theme.of(context).colorScheme.primary : color!,
+          width: 2.0,
         ),
-        onPressed: () {
-          processKeyBoardInput(text);
-
-        },
-        child: Column(
-          children:  icon == null ?[ Text(text)] : [icon!],
-        ),
-
-      );
-    }
+      ),
+      onPressed: () {
+        processKeyBoardInput(text);
+      },
+      child: Column(
+        children: icon == null ? [Text(text)] : [icon!],
+      ),
     );
-
   }
 
 }
