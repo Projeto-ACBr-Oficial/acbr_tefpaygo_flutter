@@ -51,13 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Center(
-          child: LayoutBuilder(builder: (context, constraint) {
-            return Container(
-                width: constraint.maxWidth * 0.7,
-                height: constraint.maxHeight * 0.7,
-                child: _pages[_currentIndex]);
-          }),
-        ),
+            child: _pages[_currentIndex]),
+
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: setCurrentIndex,

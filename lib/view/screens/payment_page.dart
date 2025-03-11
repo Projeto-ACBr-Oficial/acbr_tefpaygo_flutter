@@ -20,39 +20,35 @@ class _PaymentPageState extends State<PaymentPage> {
   double _valorVenda = 0.0;
   String _valorVendaString = "0,00";
 
-  void _setInputVenta(String value){
+  void _setInputVenta(String value) {
     setState(() {
-      _valorVenda = double.parse(value)/100;
-      _valorVendaString = _valorVenda
-          .toStringAsFixed(2)
-      .replaceFirst(".", ",")
-      ;
+      _valorVenda = double.parse(value) / 100;
+      _valorVendaString = _valorVenda.toStringAsFixed(2).replaceFirst(".", ",");
     });
   }
 
-  void _parseInputVenda(String value){
-
+  void _parseInputVenda(String value) {
     String digits = _onlyNumber(_valorVendaString) + value;
     _setInputVenta(digits);
   }
 
-  String _onlyNumber(String numberStr){
+  String _onlyNumber(String numberStr) {
     return numberStr.replaceFirst(",", "").replaceAll(".", "");
   }
 
-  void  _clearLatestDigit(){
+  void _clearLatestDigit() {
     String digits = _onlyNumber(_valorVendaString);
-    if(digits.length > 1){
+    if (digits.length > 1) {
       digits = digits.substring(0, digits.length - 1);
-    }else{
+    } else {
       digits = "0";
     }
     _setInputVenta(digits);
-
   }
-  void _processInputKeyBoard(String value){
+
+  void _processInputKeyBoard(String value) {
     value = value.toUpperCase();
-    switch(value){
+    switch (value) {
       case "C":
         _onClearVenda();
         break;
@@ -63,13 +59,13 @@ class _PaymentPageState extends State<PaymentPage> {
         _pagar();
         break;
       default:
-          _parseInputVenda(value);
+        _parseInputVenda(value);
         break;
     }
   }
 
-  void _pagar() async{
-    if ( _valorVenda < 1){
+  void _pagar() async {
+    if (_valorVenda < 1) {
       Fluttertoast.showToast(
           msg: "Valor mínimo de venda é R\$ 1,00",
           toastLength: Toast.LENGTH_SHORT,
@@ -77,40 +73,30 @@ class _PaymentPageState extends State<PaymentPage> {
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0
-      );
+          fontSize: 16.0);
       return;
     }
 
-   // _tefController.payGORequestHandler.venda(_valorVenda);
-    await Navigator.
-    push(context, MaterialPageRoute(builder: (context) => PaymentViewMode(valorPagamento:_valorVenda)));
+    // _tefController.payGORequestHandler.venda(_valorVenda);
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                PaymentViewMode(valorPagamento: _valorVenda)));
     _onClearVenda();
   }
 
-
-  void _onClearVenda(){
+  void _onClearVenda() {
     _setInputVenta("0.00");
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context,constraint){
-        return Container(
-            width: constraint.maxWidth *0.7,
-            child:Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 2,
-              children: [
-                TextPrice(_valorVendaString),
-                CustomKeyBoard(processKeyBoardInput:_processInputKeyBoard),
-              ],
-            )
-
-        );
-      }
-    );
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextPrice(_valorVendaString),
+          CustomKeyBoard(processKeyBoardInput: _processInputKeyBoard),
+          ]);
   }
 }
