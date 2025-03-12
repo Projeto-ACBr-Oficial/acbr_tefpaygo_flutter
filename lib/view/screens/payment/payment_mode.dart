@@ -1,11 +1,8 @@
 import 'package:demo_tefpaygo_simples/exception/valor_pagamento_invalido.dart';
-import 'package:demo_tefpaygo_simples/view/widget/button.dart';
-import 'package:demo_tefpaygo_simples/view/widget/text_price.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:demo_tefpaygo_simples/view/widget/text_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
@@ -34,119 +31,82 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Pagamento")),
+        appBar: AppBar(title: Text("Forma de Pagamento")),
         body: Center(
-      child: Container(
-      color: Colors.grey[200],
-      padding: EdgeInsets.all(16),
-      child: ListView(
-        children: <Widget>[
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  Text("Total"),
-                  Text(_formatPayment(), style: TextStyle(fontSize: 30)),
-                ],
-              ),
+          child: Container(
+            color: Colors.grey[200],
+            padding: EdgeInsets.all(16),
+            child: ListView(
+              children: <Widget>[
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        Text("Total"),
+                        Text(_formatPayment(), style: TextStyle(fontSize: 30)),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text("Escolha a forma de pagamento:",
+                      style:  TextStyle(fontSize: 20),textAlign: TextAlign.center),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClicKButtonDebito,
+                    text: "Debito",
+                    icon: Icon(Icons.credit_card),
+                  )
+                  ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClickButtonCredito,
+                    text: "Credito",
+                    icon: Icon(Icons.credit_card),
+                  ),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClickButtonVoucher,
+                    text: "Voucher",
+                    icon: Icon(Icons.credit_card),
+                  ),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClickButtonFrota,
+                    text: "Cartão Frota",
+                    icon: Icon(Icons.credit_card),
+                  ),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClickButtonPrivateLabel,
+                    text: "Private Label",
+                    icon: Icon(Icons.credit_card),
+                  ),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: onClickButtonCarteiraDigital,
+                    text: "Carteira Digital",
+                    icon: Icon(Icons.credit_card),
+                  ),
+                ),
+                Card(
+                  child: CustomButton(
+                    onPressed: navegarParaTelaAnterior,
+                    text: "Cancelar",
+                    icon: Icon(Icons.cancel),
+                  ),
+                ),
+              ],
             ),
           ),
-          Card(
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Text("Escolha a forma de pagamento:",
-                  style: TextStyle(fontSize: 20)),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClicKButtonDebito,
-              child: Row(
-                children: [
-                  Icon(Icons.credit_card),
-                  SizedBox(width: 8),
-                  Text("Debito"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClickButtonCredito,
-              child: Row(
-                children: [
-                  Icon(Icons.credit_card),
-                  SizedBox(width: 8),
-                  Text("Credito"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClickButtonVoucher,
-              child: Row(
-                children: [
-                  Icon(Icons.card_giftcard),
-                  SizedBox(width: 8),
-                  Text("Voucher"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClickButtonFrota,
-              child: Row(
-                children: [
-                  Icon(Icons.local_gas_station),
-                  SizedBox(width: 8),
-                  Text("Frota"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClickButtonPrivateLabel,
-              child: Row(
-                children: [
-                  Icon(Icons.store),
-                  SizedBox(width: 8),
-                  Text("Cartão da Loja"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: onClickButtonCarteiraDigital,
-              child: Row(
-                children: [
-                  Icon(Icons.account_balance_wallet),
-                  SizedBox(width: 8),
-                  Text("Carteira Digital"),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            child: MaterialButton(
-              onPressed: navegarParaTelaAnterior,
-              child: Row(
-                children: [
-                  Icon(Icons.cancel),
-                  SizedBox(width: 8),
-                  Text("Cancelar"),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-    ));
+        ));
   }
 
   void onClicKButtonDebito() {
