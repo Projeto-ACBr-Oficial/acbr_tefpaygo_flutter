@@ -10,15 +10,16 @@ import '../../controller/PayGoTefController.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  String title = "";
+  MyHomePage({super.key});
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<String> _titles = ["Home", "Configurações"];
   final List<Widget> _pages = [
     PaymentPage(title: "Comandos"),
     ConfigurationPage(),
@@ -48,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: Text(_titles[_currentIndex]),
         ),
         body: Center(
             child: _pages[_currentIndex]),
