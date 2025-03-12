@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/PayGoTefController.dart';
 import '../../widget/button.dart';
+import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({Key? key}) : super(key: key);
@@ -17,33 +18,58 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 5,
+        child: ListView(
+          padding: const EdgeInsets.all(8),
           children: <Widget>[
-            Button(
-              onPressed: onclickButtonInstalacao,
-              text: 'Instalação',
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonInstalacao,
+                text: 'Instalação',
+                icon: Icon(Icons.build,)
+              ),
             ),
-            Button(
-              onPressed: onclickButtonManutencao,
-              text: ' Manutenção',
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonManutencao,
+                text: 'Manutenção',
+                icon: Icon(Icons.settings)
+              ),
             ),
-            Button(
-              onPressed: onclickButtonPainelAdministrativo,
-              text: 'Administrativo',
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonPainelAdministrativo,
+                text: 'Administrativo',
+                icon: Icon(Icons.admin_panel_settings)
+              ),
             ),
-            Button( onPressed: onclickButtonExibePDC,
-              text: "Exibe PDC",)
-            ,
-            Button(onPressed: onClickButtonRelatorioDetalhado,
-                text: "Relatório Detalhado"),
-            Button(onPressed: onclickButtonRelatorioResumido,
-                text: "Relatório Resumido"),
-            Button(onPressed: onclickButtonSelectProvider, text: "Selecionar Provedor")
-
-
-
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonExibePDC,
+                text: 'Exibe PDC',
+                icon: Icon(Icons.visibility),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onClickButtonRelatorioDetalhado,
+                text: 'Relatório Detalhado',
+                icon: Icon(Icons.description),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonRelatorioResumido,
+                text: 'Relatório Resumido',
+                icon: Icon(Icons.summarize),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonSelectProvider,
+                text: 'Selecionar Provedor',
+                icon: Icon(Icons.select_all),
+              ),
+            ),
           ],
         ),
       ),
