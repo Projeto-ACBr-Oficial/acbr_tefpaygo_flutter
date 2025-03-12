@@ -36,37 +36,117 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return Scaffold(
         appBar: AppBar(title: Text("Pagamento")),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 2,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Text("Total"),
-                    Text(_formatPayment(), style: TextStyle(fontSize: 30)),
-                  ],
-                ),
+      child: Container(
+      color: Colors.grey[200],
+      padding: EdgeInsets.all(16),
+      child: ListView(
+        children: <Widget>[
+          Card(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Text("Total"),
+                  Text(_formatPayment(), style: TextStyle(fontSize: 30)),
+                ],
               ),
-              Text("Escolha a forma de pagamento:",
-                  style: TextStyle(fontSize: 20)),
-              Button(text: "Debito", onPressed: onClicKButtonDebito),
-              Button(text: "Credito", onPressed: onClickButtonCredito),
-              Button(text: "Voucher", onPressed: onClickButtonVoucher),
-              Button(text: "Frota", onPressed: onClickButtonFrota),
-              Button(
-                  text: "Cartão da Loja", onPressed: onClickButtonPrivateLabel),
-              Button(
-                  text: "Carteira Digital",
-                  onPressed: onClickButtonCarteiraDigital),
-              Button(
-                text: "Cancelar",
-                onPressed: navegarParaTelaAnterior,
-              )
-            ],
+            ),
           ),
-        ));
+          Card(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Text("Escolha a forma de pagamento:",
+                  style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClicKButtonDebito,
+              child: Row(
+                children: [
+                  Icon(Icons.credit_card),
+                  SizedBox(width: 8),
+                  Text("Debito"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClickButtonCredito,
+              child: Row(
+                children: [
+                  Icon(Icons.credit_card),
+                  SizedBox(width: 8),
+                  Text("Credito"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClickButtonVoucher,
+              child: Row(
+                children: [
+                  Icon(Icons.card_giftcard),
+                  SizedBox(width: 8),
+                  Text("Voucher"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClickButtonFrota,
+              child: Row(
+                children: [
+                  Icon(Icons.local_gas_station),
+                  SizedBox(width: 8),
+                  Text("Frota"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClickButtonPrivateLabel,
+              child: Row(
+                children: [
+                  Icon(Icons.store),
+                  SizedBox(width: 8),
+                  Text("Cartão da Loja"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: onClickButtonCarteiraDigital,
+              child: Row(
+                children: [
+                  Icon(Icons.account_balance_wallet),
+                  SizedBox(width: 8),
+                  Text("Carteira Digital"),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: MaterialButton(
+              onPressed: navegarParaTelaAnterior,
+              child: Row(
+                children: [
+                  Icon(Icons.cancel),
+                  SizedBox(width: 8),
+                  Text("Cancelar"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    ));
   }
 
   void onClicKButtonDebito() {
