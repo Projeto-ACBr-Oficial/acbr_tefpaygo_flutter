@@ -85,7 +85,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonPrivateLabel,
-                    text: "Private Label",
+                    text: "Cartão da loja",
                     icon: Icon(Icons.store),
                   ),
                 ),
