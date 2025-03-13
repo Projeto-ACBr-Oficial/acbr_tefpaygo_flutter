@@ -94,6 +94,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 5,
         children: [
           TextPrice(_valorVendaString),
           CustomKeyBoard(processKeyBoardInput: _processInputKeyBoard),
