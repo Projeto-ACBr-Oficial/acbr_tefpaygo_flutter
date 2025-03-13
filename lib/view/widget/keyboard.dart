@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'key_button.dart';
 
 class CustomKeyBoard extends StatelessWidget {
@@ -8,70 +7,73 @@ class CustomKeyBoard extends StatelessWidget {
   const CustomKeyBoard({Key? key, required this.processKeyBoardInput})
       : super(key: key);
 
-  final double _spacing = 2.0;
-
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraint) {
-      return Container(
-          child: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            KeyButton('1', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('2', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('3', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton("C",
-                processKeyBoardInput: processKeyBoardInput,
-                color: Colors.red,
-                icon: Icon(Icons.backspace)),
-          ],
+    final List<String> keys = [
+      '1', '2', '3',
+      '4', '5', '6',
+      '7', '8', '9',
+      'C', '0', 'CE',
+      'PAGAR'
+    ];
+
+    return Expanded(
+      child: GridView.builder(
+        padding: const EdgeInsets.all(8.0),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 2.0,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
         ),
-        SizedBox(height: _spacing),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            KeyButton('4', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('5', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('6', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton("CE",
-                processKeyBoardInput: processKeyBoardInput,
-                color: Colors.yellow,
-                icon: Icon(Icons.clear)),
-          ],
-        ),
-        SizedBox(height: _spacing),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            KeyButton('7', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('8', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton('9', processKeyBoardInput: processKeyBoardInput),
-            SizedBox(width: _spacing),
-            KeyButton("PAGAR",
-                processKeyBoardInput: processKeyBoardInput,
-                color: Colors.green,
-                icon: Icon(Icons.check)),
-          ],
-        ),
-        SizedBox(height: _spacing),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Flexible(
-            child: SizedBox(
-              width: 360,
-              child: KeyButton("0", processKeyBoardInput: processKeyBoardInput)
-            ),
-          )
-        ]),
-      ]));
-    });
+        itemCount: keys.length,
+        itemBuilder: (context, index) {
+          final key = keys[index];
+          if (key == 'PAGAR') {
+            return GridTile(
+              child: GridTile(
+                child: ElevatedButton(
+                  onPressed: () => processKeyBoardInput(key),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.check),
+                      SizedBox(width: 4),
+                      Text(key),
+                    ],
+                  ),
+                ),
+                footer: SizedBox(height: 8.0),
+              ),
+              footer: SizedBox(height: 8.0),
+            );
+          } else if (key == 'C') {
+            return GridTile(
+              child: ElevatedButton(
+                onPressed: () => processKeyBoardInput(key),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: Icon(Icons.backspace),
+              ),
+            );
+          } else if (key == 'CE') {
+            return GridTile(
+              child: ElevatedButton(
+                onPressed: () => processKeyBoardInput(key),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow),
+                child: Icon(Icons.clear),
+              ),
+            );
+          } else {
+            return GridTile(
+              child: ElevatedButton(
+                onPressed: () => processKeyBoardInput(key),
+                child: Text(key),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }
