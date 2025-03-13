@@ -72,28 +72,28 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                   child: CustomButton(
                     onPressed: onClickButtonVoucher,
                     text: "Voucher",
-                    icon: Icon(Icons.credit_card),
+                    icon: Icon(Icons.card_giftcard),
                   ),
                 ),
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonFrota,
                     text: "Cartão Frota",
-                    icon: Icon(Icons.credit_card),
+                    icon: Icon(Icons.local_gas_station),
                   ),
                 ),
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonPrivateLabel,
                     text: "Private Label",
-                    icon: Icon(Icons.credit_card),
+                    icon: Icon(Icons.store),
                   ),
                 ),
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonCarteiraDigital,
                     text: "Carteira Digital",
-                    icon: Icon(Icons.credit_card),
+                    icon: Icon(Icons.account_balance),
                   ),
                 ),
                 Card(
@@ -121,9 +121,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     pagar(transacao);
   }
 
-
   // Métodos onClick
-
 
   /**
    * Método executado quando clicar no botão de crédito
@@ -134,7 +132,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoCredito;
-     _pagamentoCredito(transacao);
+    _pagamentoCredito(transacao);
   }
 
   void onClickButtonVoucher() async {
@@ -144,7 +142,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       ..provider = _tefController.payGORequestHandler.provider
       ..cardType = CardType.cartaoVoucher;
     //..finType = FinType.aVista;
-   await pagar(transacao);
+    await pagar(transacao);
   }
 
   void onClickButtonFrota() async {
@@ -160,7 +158,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     await pagar(transacao);
   }
 
-  void onClickButtonPrivateLabel()  async{
+  void onClickButtonPrivateLabel() async {
     //privateLabel é um cartão (geralmente de crédito) emitido por uma loja ou empresa.
 
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
@@ -207,8 +205,9 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       case FinType.parceladoEmissor:
       case FinType.parceladoEstabelecimento:
         transacao.finType = currentFinType;
-        double quantidadeParcelas = await _selecionaQuantidadeDeParcelas(transacao.amount);
-        if (quantidadeParcelas < minimoParcelas){
+        double quantidadeParcelas =
+            await _selecionaQuantidadeDeParcelas(transacao.amount);
+        if (quantidadeParcelas < minimoParcelas) {
           transacao.finType = null;
           return;
         }
@@ -225,13 +224,13 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
    * Função auxiliar para selecionar a quantidade de parcelas
    *
    */
-  Future<double> _selecionaQuantidadeDeParcelas( double valor) async {
+  Future<double> _selecionaQuantidadeDeParcelas(double valor) async {
     double quantidadeMaximaDeParcelas = _obterQuantidadeMaximaDeParcelas(valor);
-    var parcelas  = List
-        .generate(quantidadeMaximaDeParcelas.toInt(), (i)=>(i+1))
-        .sublist(1);
+    var parcelas =
+        List.generate(quantidadeMaximaDeParcelas.toInt(), (i) => (i + 1))
+            .sublist(1);
 
-    double quantidadeParcelas  = 1.0;
+    double quantidadeParcelas = 1.0;
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -243,18 +242,21 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: parcelas.map((e) => RadioListTile<int>(
-                  title: Text(e.toString() + "x"),
-                  value: e,
-                  groupValue: selectedInstallments,
-                  onChanged: (int? value) {
-                    setState(() {
-                      selectedInstallments = value ;
-                      quantidadeParcelas = selectedInstallments!.toDouble();
-                    });
-                    Navigator.pop(context);
-                  },
-                )).toList(),
+                children: parcelas
+                    .map((e) => RadioListTile<int>(
+                          title: Text(e.toString() + "x"),
+                          value: e,
+                          groupValue: selectedInstallments,
+                          onChanged: (int? value) {
+                            setState(() {
+                              selectedInstallments = value;
+                              quantidadeParcelas =
+                                  selectedInstallments!.toDouble();
+                            });
+                            Navigator.pop(context);
+                          },
+                        ))
+                    .toList(),
               ),
             ),
           ),
@@ -262,7 +264,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
             TextButton(
               child: const Text("Cancelar"),
               onPressed: () {
-               _onCancelOperation();
+                _onCancelOperation();
                 Navigator.pop(context);
               },
             )
@@ -272,8 +274,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     );
 
     return quantidadeParcelas;
-
-
   }
 
   /**
@@ -286,40 +286,39 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
       FinType.parceladoEstabelecimento
     };
 
-    FinType currenFinType  = FinType.financiamentoNaoDefinido;
+    FinType currenFinType = FinType.financiamentoNaoDefinido;
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          FinType? selectedFinType ;
+          FinType? selectedFinType;
           return AlertDialog(
-              title: Text("Selecione a forma de Financiamento"),
-              content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: listFinType
-                      .map((e) => RadioListTile<FinType>(
-                          title: Text(e.finTypeString
-                              .replaceAll('_', ' ')
-                              .toLowerCase()),
-                          value: e,
-                          groupValue: selectedFinType,
-                          onChanged: (FinType? value) {
-                            setState(() {
-                              selectedFinType = value;
-                              currenFinType = selectedFinType!;
-                            });
-                            Navigator.pop(context,true);
-                          }))
-                      .toList()),
+            title: Text("Selecione a forma de Financiamento"),
+            content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: listFinType
+                    .map((e) => RadioListTile<FinType>(
+                        title: Text(
+                            e.finTypeString.replaceAll('_', ' ').toLowerCase()),
+                        value: e,
+                        groupValue: selectedFinType,
+                        onChanged: (FinType? value) {
+                          setState(() {
+                            selectedFinType = value;
+                            currenFinType = selectedFinType!;
+                          });
+                          Navigator.pop(context, true);
+                        }))
+                    .toList()),
             actions: [
               TextButton(
                 child: const Text("Cancelar"),
                 onPressed: () {
                   _onCancelOperation();
-                Navigator.pop(context,false);
-              },
-
+                  Navigator.pop(context, false);
+                },
               )
-          ],);
+            ],
+          );
         });
 
     return currenFinType;
@@ -345,10 +344,10 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return quantidadeDeParcelas.floorToDouble();
   }
 
-  void _onCancelOperation(){
-    Fluttertoast.showToast(msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
+  void _onCancelOperation() {
+    Fluttertoast.showToast(
+        msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
   }
-
 
   /**
    * Função auxiliar para pagamento com cartão de crédito
