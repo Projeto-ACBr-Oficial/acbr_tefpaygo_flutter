@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:demo_tefpaygo_simples/view/width_helper.dart';
 import 'package:flutter/material.dart';
 
 class TextPrice extends StatefulWidget {
@@ -13,7 +13,7 @@ class _TextPriceState extends State<TextPrice> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double width = constraints.maxWidth * 0.8;
+        double width = calculeWidth(constraints.maxWidth);
         return Container(
           width: width,
           padding: const EdgeInsets.all(15.0),

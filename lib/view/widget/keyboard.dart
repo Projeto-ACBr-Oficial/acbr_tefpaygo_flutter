@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'key_button.dart';
+
+import '../width_helper.dart';
 
 class CustomKeyBoard extends StatelessWidget {
   final Function(String) processKeyBoardInput;
@@ -7,12 +8,14 @@ class CustomKeyBoard extends StatelessWidget {
   const CustomKeyBoard({Key? key, required this.processKeyBoardInput})
       : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        double width = constraints.maxWidth * 0.8;
+        print( "max width "+ constraints.maxWidth.toString() + "max height" + constraints.maxHeight.toString());
+        double width = calculeWidth(constraints.maxWidth);
         return Container(
           width: width,
           padding: const EdgeInsets.all(12.0),
