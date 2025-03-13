@@ -9,18 +9,19 @@ class CustomKeyBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        double width = constraints.maxWidth * 0.8;
+        double width = constraints.maxWidth * 0.9;
         return Container(
           width: width,
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: theme.shadowColor.withOpacity(0.2),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
@@ -31,8 +32,8 @@ class CustomKeyBoard extends StatelessWidget {
             children: [
               GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 1.5,
                   crossAxisSpacing: 12,
@@ -46,38 +47,82 @@ class CustomKeyBoard extends StatelessWidget {
                     '7', '8', '9',
                     'C', '0', 'CE'
                   ];
-                  return _buildButton(context, buttons[index]);
+                  return NumericKeyButton(
+                    text: buttons[index],
+                    onPressed: () => processKeyBoardInput(buttons[index]),
+                  );
                 },
               ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: processKeyBoardInput('PAGAR'),
-                child: Text('Pagar', style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  backgroundColor: Colors.blue,
-                ),
-              ),
+              const SizedBox(height: 16),
+              PayButton(onPressed: () => processKeyBoardInput('PAGAR')),
             ],
           ),
         );
       },
     );
   }
+}
 
-  Widget _buildButton(BuildContext context, String text) {
+class NumericKeyButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+
+  const NumericKeyButton({Key? key, required this.text, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    Color buttonColor = theme.colorScheme.primaryContainer;
+    Color textColor = theme.colorScheme.onPrimaryContainer;
+    Widget buttonChild = Center(
+      child: Text(
+        text,
+        style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+
+    if (text == 'C') {
+      buttonColor = Colors.red;
+      buttonChild = const Icon(Icons.clear, color: Colors.white, size: 22);
+    } else if (text == 'CE') {
+      buttonColor = Colors.amber;
+      buttonChild = const Icon(Icons.backspace, color: Colors.white, size: 22);
+    }
+
     return ElevatedButton(
-      onPressed: () => processKeyBoardInput(text),
-      child: Text(text, style: TextStyle(color: Colors.black)),
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: EdgeInsets.symmetric(vertical: 16),
-        backgroundColor: Colors.grey[300],
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        backgroundColor: buttonColor,
       ),
+      child: buttonChild,
     );
   }
 }
 
+class PayButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const PayButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        backgroundColor: Colors.green,
+      ),
+      child: const Center(
+        child: Text(
+          'Pagar',
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ),
+    );
+  }
+}
