@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/PayGoTefController.dart';
-import '../../widget/button.dart';
 import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
