@@ -12,22 +12,30 @@ class TextPrice extends StatefulWidget {
 class _TextPriceState extends State<TextPrice> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 400,
-        height: 120,
-        child: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.all(15.0),
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-                color: Theme.of(context).colorScheme.primary, width: 2.0),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10.0,
+            offset: Offset(0, 2.5),
           ),
-          child: Text(
+        ],
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
             "R\$ " + widget._initialPrice,
             style: TextStyle(fontSize: 30.0),
           ),
-        ));
+        ],
+      ),
+    );
   }
 }
