@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> _titles = ["Home", "Configurações"];
+  final List<String> _titles = ["Pagamento", "Configurações"];
   final List<Widget> _pages = [
     PaymentPage(title: "Comandos"),
     ConfigurationPage(),
