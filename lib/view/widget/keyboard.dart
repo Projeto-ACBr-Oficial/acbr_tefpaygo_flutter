@@ -12,7 +12,7 @@ class CustomKeyBoard extends StatelessWidget {
     final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        double width = constraints.maxWidth * 0.9;
+        double width = constraints.maxWidth * 0.8;
         return Container(
           width: width,
           padding: const EdgeInsets.all(12.0),
