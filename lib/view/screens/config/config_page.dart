@@ -13,6 +13,7 @@ class ConfigurationPage extends StatefulWidget {
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
   final TefController _tefController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,25 +22,72 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             Card(
-              child: CustomButton(
-                onPressed: onclickButtonInstalacao,
-                text: 'Instalação',
-                icon: Icon(Icons.build,)
+              child: SwitchListTile(
+                title: Text('Confirmação Automática'),
+                value: _tefController.configuracoes.isAutoConfirm,
+                onChanged: (value) {
+                  setState(() {
+                    _tefController.configuracoes.setIsAutoConfirm(value);
+                  });
+                },
+              ),
+            ),
+            Card(
+              child: ExpansionTile(
+                title: Text('Configurações de Impressão'),
+                children: <Widget>[
+                  SwitchListTile(
+                    title: Text('Imprimir via do Cliente'),
+                    value:
+                        _tefController.configuracoes.isPrintcardholderReceipt,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.configuracoes
+                            .setIsPrintcardholderReceipt(value);
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Imprimir via do Estabelecimento'),
+                    value: _tefController.configuracoes.isPrintMerchantReceipt,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.configuracoes
+                            .setIsPrintMerchantReceipt(value);
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Imprimir Relatório'),
+                    value: _tefController.configuracoes.isPrintReport,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.configuracoes.setIsPrintReport(value);
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             Card(
               child: CustomButton(
-                onPressed: onclickButtonManutencao,
-                text: 'Manutenção',
-                icon: Icon(Icons.settings)
-              ),
+                  onPressed: onclickButtonInstalacao,
+                  text: 'Instalação',
+                  icon: Icon(
+                    Icons.build,
+                  )),
             ),
             Card(
               child: CustomButton(
-                onPressed: onclickButtonPainelAdministrativo,
-                text: 'Administrativo',
-                icon: Icon(Icons.admin_panel_settings)
-              ),
+                  onPressed: onclickButtonManutencao,
+                  text: 'Manutenção',
+                  icon: Icon(Icons.settings)),
+            ),
+            Card(
+              child: CustomButton(
+                  onPressed: onclickButtonPainelAdministrativo,
+                  text: 'Administrativo',
+                  icon: Icon(Icons.admin_panel_settings)),
             ),
             Card(
               child: CustomButton(
@@ -74,7 +122,6 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       ),
     );
   }
-
 
   void onclickButtonInstalacao() async {
     await _tefController.payGORequestHandler.instalacao();
