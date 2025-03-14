@@ -30,17 +30,17 @@ class TefPayGoConfiguracoes {
 
   get pendingTransactionActions => _pendingTransactionActions;
 
-  get isAutoConfirm => _isAutoConfirm;
+  bool get isAutoConfirm => _isAutoConfirm;
 
-  get isPrintcardholderReceipt => _isPrintcardholderReceipt;
+  bool get isPrintcardholderReceipt => _isPrintcardholderReceipt;
 
-  get isPrintMerchantReceipt => _isPrintMerchantReceipt;
+  bool get isPrintMerchantReceipt => _isPrintMerchantReceipt;
 
-  get isPrintReport => _isPrintReport;
+  bool get isPrintReport => _isPrintReport;
 
-  get tipoDeConfirmacao => _tipoDeConfirmacao;
+   get tipoDeConfirmacao => _tipoDeConfirmacao;
 
-  get isTestScript => _isTestScript;
+  bool get isTestScript => _isTestScript;
 
 
   void setPendingTransactionActions(
