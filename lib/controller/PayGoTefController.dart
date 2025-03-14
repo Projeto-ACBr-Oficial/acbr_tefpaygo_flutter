@@ -34,6 +34,8 @@ class TefController extends GetxController implements TefPayGoCallBack {
   late GenericPrinter _printer = CustomPrinter();
   late PayGOResponseHandler _payGOResponseHandler;
   late TefPayGoConfiguracoes _configuracoes = TefPayGoConfiguracoes();
+  static final VALOR_MINIMO_VENDA = 1.00;
+  static final VALOR_MAXIMO_VENDA = 100000.000;
 
   // Getters e Setter
   PayGoRequestHandler get payGORequestHandler => _payGORequestHandler;
