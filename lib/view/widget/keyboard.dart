@@ -14,7 +14,6 @@ class CustomKeyBoard extends StatelessWidget {
     final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        print( "max width "+ constraints.maxWidth.toString() + "max height" + constraints.maxHeight.toString());
         double width = calculeWidth(constraints.maxWidth);
         return Container(
           width: width,
