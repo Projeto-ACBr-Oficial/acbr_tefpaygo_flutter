@@ -22,49 +22,63 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             Card(
-              child: SwitchListTile(
+              child: ListTile(
+                leading: Icon(Icons.check_circle),
                 title: Text('Confirmação Automática'),
-                value: _tefController.configuracoes.isAutoConfirm,
-                onChanged: (value) {
-                  setState(() {
-                    _tefController.configuracoes.setIsAutoConfirm(value);
-                  });
-                },
+                trailing: Switch(
+                  value: _tefController.configuracoes.isAutoConfirm,
+                  onChanged: (value) {
+                    setState(() {
+                      _tefController.configuracoes.setIsAutoConfirm(value);
+                    });
+                  },
+                ),
               ),
             ),
             Card(
               child: ExpansionTile(
+                leading: Icon(Icons.print),
                 title: Text('Configurações de Impressão'),
                 children: <Widget>[
-                  SwitchListTile(
+                  ListTile(
+                    leading: Icon(Icons.receipt),
                     title: Text('Imprimir via do Cliente'),
-                    value:
-                        _tefController.configuracoes.isPrintcardholderReceipt,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.configuracoes
-                            .setIsPrintcardholderReceipt(value);
-                      });
-                    },
+                    trailing: Switch(
+                      value:
+                          _tefController.configuracoes.isPrintcardholderReceipt,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes
+                              .setIsPrintcardholderReceipt(value);
+                        });
+                      },
+                    ),
                   ),
-                  SwitchListTile(
+                  ListTile(
+                    leading: Icon(Icons.store),
                     title: Text('Imprimir via do Estabelecimento'),
-                    value: _tefController.configuracoes.isPrintMerchantReceipt,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.configuracoes
-                            .setIsPrintMerchantReceipt(value);
-                      });
-                    },
+                    trailing: Switch(
+                      value:
+                          _tefController.configuracoes.isPrintMerchantReceipt,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes
+                              .setIsPrintMerchantReceipt(value);
+                        });
+                      },
+                    ),
                   ),
-                  SwitchListTile(
+                  ListTile(
+                    leading: Icon(Icons.report),
                     title: Text('Imprimir Relatório'),
-                    value: _tefController.configuracoes.isPrintReport,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.configuracoes.setIsPrintReport(value);
-                      });
-                    },
+                    trailing: Switch(
+                      value: _tefController.configuracoes.isPrintReport,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes.setIsPrintReport(value);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -133,54 +147,55 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   void onclickButtonPainelAdministrativo() async {
     await _tefController.payGORequestHandler.painelAdministrativo();
-   Navigator.canPop(context);
+    Navigator.canPop(context);
   }
 
   void onclickButtonExibePDC() async {
     await _tefController.payGORequestHandler.exibePDC();
-   Navigator.canPop(context);
+    Navigator.canPop(context);
   }
 
-  void onClickButtonRelatorioDetalhado() async{
+  void onClickButtonRelatorioDetalhado() async {
     await _tefController.payGORequestHandler.relatorioDetalhado();
-   Navigator.canPop(context);
+    Navigator.canPop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
     await _tefController.payGORequestHandler.relatorioResumido();
 
-   Navigator.canPop(context);
+    Navigator.canPop(context);
   }
 
-  void onclickButtonSelectProvider(){
-     var providers =  { "DEMO", "REDE", "PIX C6 BANK" } ;
-     showDialog(
-       context: context,
-       builder: (BuildContext context) {
-         String? selectedProvider = _tefController.payGORequestHandler.provider;
-         return AlertDialog(
-           title: Text("Selecione o provedor"),
-           content: Column(
-             mainAxisSize: MainAxisSize.min,
-             children: providers.map((e) => RadioListTile<String>(
-               title: Text(e),
-               value: e,
-               groupValue: selectedProvider,
-               onChanged: (String? value) {
-                 setState(() {
-                   selectedProvider = value;
-                   _tefController.payGORequestHandler.setProvider(value!);
-                 });
-                 Navigator.pop(context);
-               },
-             )).toList(),
-           ),
-         );
-       },
-     );
-
+  void onclickButtonSelectProvider() {
+    var providers = {"DEMO", "REDE", "PIX C6 BANK"};
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String? selectedProvider = _tefController.payGORequestHandler.provider;
+        return AlertDialog(
+          title: Text("Selecione o provedor"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: providers
+                .map((e) => RadioListTile<String>(
+                      title: Text(e),
+                      value: e,
+                      groupValue: selectedProvider,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedProvider = value;
+                          _tefController.payGORequestHandler
+                              .setProvider(value!);
+                        });
+                        Navigator.pop(context);
+                      },
+                    ))
+                .toList(),
+          ),
+        );
+      },
+    );
   }
-
 
   @override
   void dispose() {
