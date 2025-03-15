@@ -11,6 +11,7 @@ class TextPrice extends StatefulWidget {
 
 class _TextPriceState extends State<TextPrice> {
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = calculeWidth(constraints.maxWidth);
@@ -22,19 +23,22 @@ class _TextPriceState extends State<TextPrice> {
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.5) : theme.shadowColor.withOpacity(0.2),
                 blurRadius: 10.0,
                 offset: Offset(0, 2.5),
               ),
             ],
-            color: Colors.white,
+            color: theme.colorScheme.surface,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 "R\$ " + widget._initialPrice,
-                style: TextStyle(fontSize: 30.0),
+                style: TextStyle(
+                  fontSize: 30.0,
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
             ],
           ),

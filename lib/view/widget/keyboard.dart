@@ -23,7 +23,7 @@ class CustomKeyBoard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: theme.shadowColor.withOpacity(0.2),
+              color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.5) : theme.shadowColor.withOpacity(0.2),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
