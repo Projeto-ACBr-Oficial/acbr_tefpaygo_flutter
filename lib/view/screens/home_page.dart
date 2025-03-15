@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 .withOpacity(0.9),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withOpacity(0.3),
-                spreadRadius: 1,
+                color:  Theme.of(context).shadowColor.withOpacity(0.2),
+                spreadRadius: 3.0,
                 blurRadius: 5,
                 offset: Offset(0, 3),
               ),
