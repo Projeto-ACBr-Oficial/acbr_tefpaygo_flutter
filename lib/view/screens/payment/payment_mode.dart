@@ -34,7 +34,9 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         appBar: AppBar(title: Text("Forma de Pagamento")),
         body: Center(
           child: Container(
-            color: Colors.grey[200],
+            color: Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).colorScheme.surface
+              : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             padding: EdgeInsets.all(16),
             child: ListView(
               children: <Widget>[
@@ -44,7 +46,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                     child: Column(
                       children: [
                         Text("Total"),
-                        Text(_formatPayment(), style: TextStyle(fontSize: 30)),
+                        Text(_formatPayment(), style: TextStyle(fontSize: 30,color: Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
