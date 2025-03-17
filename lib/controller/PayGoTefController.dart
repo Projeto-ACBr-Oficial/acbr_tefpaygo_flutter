@@ -89,6 +89,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
   void _showDialog(String title, String message, Color backgroundColor, IconData icon) {
     Get.defaultDialog(
       title: title,
+      titleStyle: TextStyle(color: Colors.white),
       backgroundColor: backgroundColor,
       middleText: message,
       barrierDismissible: false,
