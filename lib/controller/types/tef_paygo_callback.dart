@@ -15,7 +15,13 @@ abstract class TefPayGoCallBack {
    * Método chamado quando uma mensagem é recebida
    * Aqui você pode implementar a lógica para exibir a mensagem recebida
    */
-  void onReceiveMessage(String message);
+  void onSuccessMessage(String message);
+
+  /**
+   * Metodo chamado quando uma mensagem de erro é recebida
+   */
+
+  void onErrorMessage(String message);
 
   /**
    * Método chamado quando a transação é finalizada

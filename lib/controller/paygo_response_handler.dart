@@ -89,7 +89,7 @@ class PayGOResponseHandler {
           _callBack.onPendingTransaction(_getStringPendingData());
           break;
         default:
-          _callBack.onReceiveMessage(resposta.resultMessage +
+          _callBack.onErrorMessage(resposta.resultMessage +
               "\n" +
               "Resultado da transação: ${resposta.transactionResult}");
           break;
@@ -100,12 +100,7 @@ class PayGOResponseHandler {
 
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
-      _callBack.onReceiveMessage("Resposta do PayGo Integrado:\n" +
-          "Operation: ${resposta?.operation} \n" +
-          "${resposta?.resultMessage}\n"+
-          "Resultado da transação: ${resposta?.transactionResult}\n" +
-          "ID: ${resposta?.transactionId}\n"
-          );
+      _callBack.onSuccessMessage(resposta.resultMessage);
     }
   }
 
@@ -117,7 +112,7 @@ class PayGOResponseHandler {
       if ( resposta.transactionResult == PayGoRetornoConsts.PWRET_OK) {
         _callBack.onPrinter(resposta);
       } else {
-        _callBack.onReceiveMessage(resposta.resultMessage);
+        _callBack.onErrorMessage(resposta.resultMessage);
       }
     }
   }

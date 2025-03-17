@@ -72,20 +72,41 @@ class TefController extends GetxController implements TefPayGoCallBack {
         break;
 
       default:
-        onReceiveMessage("Operação não suportada");
+        onErrorMessage("Operação não suportada");
     }
   }
 
   @override
-  void onReceiveMessage(String message) {
+  void onSuccessMessage(String message) {
+    _showDialog("Resultado", message, Colors.green, Icons.check_circle);
+  }
+
+  @override
+  void onErrorMessage(String message) {
+    _showDialog("Resultado", message, Colors.red, Icons.error);
+  }
+
+  void _showDialog(String title, String message, Color backgroundColor, IconData icon) {
     Get.defaultDialog(
-      title: "Resposta do PayGo Integrado",
+      title: title,
+      backgroundColor: backgroundColor,
       middleText: message,
-      textConfirm: "Fechar",
-      onConfirm: () {
-        Get.back();
-      },
+      barrierDismissible: false,
+      radius: 10.0,
+      content: Column(
+        children: [
+          Icon(icon, color: Colors.white, size: 50),
+          SizedBox(height: 10),
+          Text(message, style: TextStyle(color: Colors.white)),
+        ],
+      ),
     );
+
+    Future.delayed(Duration(seconds: 3), () {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    });
   }
 
 
@@ -96,6 +117,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
       if (! _configuracoes.isTestScript) {
         _payGORequestHandler.confirmarTransacao(
             response.transactionId, _configuracoes.tipoDeConfirmacao);
+        onSuccessMessage(response.resultMessage);
       }else{
         ;
       }
