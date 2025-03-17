@@ -100,7 +100,10 @@ class PayGOResponseHandler {
 
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
-      _callBack.onSuccessMessage(resposta.resultMessage);
+      if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
+        _callBack.onSuccessMessage(resposta.resultMessage);
+      else
+        _callBack.onErrorMessage(resposta.resultMessage);
     }
   }
 
