@@ -98,11 +98,30 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 5,
-        children: [
-          TextPrice(_valorVendaString),
-          CustomKeyBoard(processKeyBoardInput: _processInputKeyBoard),
-          ]);
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 16),
+                  TextPrice(_valorVendaString),
+                  const SizedBox(height: 16),
+                  Flexible(
+                    child: CustomKeyBoard(
+                      processKeyBoardInput: _processInputKeyBoard,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        )
+      ],
+    );
   }
+
+
 }

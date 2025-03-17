@@ -8,13 +8,14 @@ class CustomKeyBoard extends StatelessWidget {
   const CustomKeyBoard({Key? key, required this.processKeyBoardInput})
       : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = calculeWidth(constraints.maxWidth);
+        double height = calculeWidth(constraints.maxHeight);
+        print("Keyboard height: ${constraints.maxHeight}");
         return Container(
           width: width,
           padding: const EdgeInsets.all(12.0),
@@ -34,10 +35,10 @@ class CustomKeyBoard extends StatelessWidget {
             children: [
               GridView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.5,
+                physics: const ScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: width / 3,
+                  childAspectRatio: width/height*1.5,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
