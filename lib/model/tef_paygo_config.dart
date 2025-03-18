@@ -18,7 +18,7 @@ import '../controller/types/PendingTransactionActions.dart';
 class TefPayGoConfiguracoes {
   late bool _isAutoConfirm = true;
   late bool _isPrintcardholderReceipt = true;
-  late bool _isPrintMerchantReceipt = true;
+  late bool _isPrintMerchantReceipt = false;
   late bool _isPrintReport = true;
   late bool _isTestScript = false;
 
