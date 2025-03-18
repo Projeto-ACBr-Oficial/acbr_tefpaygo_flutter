@@ -64,7 +64,7 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
-  void _showMessage(String s){
+  void _showMessage(String s) {
     Fluttertoast.showToast(
         msg: s,
         toastLength: Toast.LENGTH_SHORT,
@@ -74,10 +74,10 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   void _pagar() async {
-    if (_valorVenda <  TefController.VALOR_MINIMO_VENDA) {
-     _showMessage("Valor de venda mínimo é R\$ 1,00");
+    if (_valorVenda < TefController.VALOR_MINIMO_VENDA) {
+      _showMessage("Valor de venda mínimo é R\$ 1,00");
       return;
-    }else if ( _valorVenda > TefController.VALOR_MAXIMO_VENDA) {
+    } else if (_valorVenda > TefController.VALOR_MAXIMO_VENDA) {
       _showMessage("Valor de venda deve ser menor ou igual que R\$ 100.000,00");
       return;
     }

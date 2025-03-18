@@ -23,7 +23,7 @@ class _TextPriceState extends State<TextPrice> {
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
-                color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.5) : theme.shadowColor.withOpacity(0.2),
+                color: theme.brightness == Brightness.dark ? Colors.white.withOpacity(0.2) : theme.shadowColor.withOpacity(0.2),
                 blurRadius: 10.0,
                 offset: Offset(0, 2.5),
               ),

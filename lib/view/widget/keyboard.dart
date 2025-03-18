@@ -24,7 +24,9 @@ class CustomKeyBoard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-              color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.5) : theme.shadowColor.withOpacity(0.2),
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white.withOpacity(0.2)
+                    : theme.shadowColor.withOpacity(0.2),
                 blurRadius: 8,
                 spreadRadius: 2,
               ),
@@ -45,10 +47,18 @@ class CustomKeyBoard extends StatelessWidget {
                 itemCount: 12,
                 itemBuilder: (context, index) {
                   List<String> buttons = [
-                    '1', '2', '3',
-                    '4', '5', '6',
-                    '7', '8', '9',
-                    'C', '0', 'CE'
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    'C',
+                    '0',
+                    'CE'
                   ];
                   return NumericKeyButton(
                     text: buttons[index],
@@ -70,7 +80,9 @@ class NumericKeyButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const NumericKeyButton({Key? key, required this.text, required this.onPressed}) : super(key: key);
+  const NumericKeyButton(
+      {Key? key, required this.text, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +92,8 @@ class NumericKeyButton extends StatelessWidget {
     Widget buttonChild = Center(
       child: Text(
         text,
-        style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
 
