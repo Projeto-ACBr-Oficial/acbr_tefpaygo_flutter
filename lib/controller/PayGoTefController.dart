@@ -78,12 +78,12 @@ class TefController extends GetxController implements TefPayGoCallBack {
 
   @override
   void onSuccessMessage(String message) {
-    _showDialog("Resultado", message, Colors.green, Icons.check_circle);
+    _showDialog("Resultado:", message, Colors.green, Icons.check_circle);
   }
 
   @override
   void onErrorMessage(String message) {
-    _showDialog("Resultado", message, Colors.red, Icons.error);
+    _showDialog("Erro:", message, Colors.red, Icons.error);
   }
 
   void _showDialog(String title, String message, Color backgroundColor, IconData icon) {
