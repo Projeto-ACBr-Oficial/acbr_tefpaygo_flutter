@@ -15,7 +15,6 @@ class CustomKeyBoard extends StatelessWidget {
       builder: (context, constraints) {
         double width = calculeWidth(constraints.maxWidth);
         double height = calculeWidth(constraints.maxHeight);
-        print("Keyboard height: ${constraints.maxHeight}");
         return Container(
           width: width,
           padding: const EdgeInsets.all(12.0),
