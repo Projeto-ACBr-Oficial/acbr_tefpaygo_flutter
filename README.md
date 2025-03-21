@@ -26,6 +26,7 @@ Getting Started
    1. Digitar o id do ponto de captura 
    2. Digitar CPNJ do usuário 
    3. Digitar o endereço do servidor:
+   4. Digitar a porta do servidor
 
 \* Lembre-se de baixar a versão correta para produção ou homologação
 
