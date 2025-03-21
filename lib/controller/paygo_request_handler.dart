@@ -1,14 +1,10 @@
-import 'package:demo_tefpaygo_simples/utils/paygo_sdk_helper.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_generica.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_venda.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/intent_action.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/operation.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
-
+import 'package:paygo_sdk/paygo_sdk.dart';
 
 /**
  * PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
@@ -16,7 +12,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
  */
 class PayGoRequestHandler {
   String _provider = "DEMO";
-  final _repository = PayGOSdkHelper().paygoSdk;
+  final _repository = PayGOSdk();
 
   get provider => _provider;
 
@@ -24,7 +20,7 @@ class PayGoRequestHandler {
     _provider = provider;
   }
 
-  Future<void> venda(double valor) async {
+  Future<void> venda( TransacaoRequisicaoVenda dadosVenda) async {
     // configura dados da automacao (obrigatorio  para o TefPayGo)
     final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
       "Exemplo TEF",
@@ -36,21 +32,23 @@ class PayGoRequestHandler {
       allowDueAmount: true,
       allowShortReceipt: true,
     );
+
+
     await _repository.integrado.venda(
-        requisicaoVenda: TransacaoRequisicaoVenda(
-            amount: valor, currencyCode: CurrencyCode.iso4217Real)
-          ..provider = _provider
-    , dadosAutomacao: dadosAutomacao
+        requisicaoVenda: dadosVenda,
+        dadosAutomacao: dadosAutomacao
     );
   }
 
-  Future<void> confirmarTransacao(String id) async {
+  Future<void> confirmarTransacao(String id,
+      [TransactionStatus status =
+          TransactionStatus.confirmadoAutomatico]) async {
     await _repository.integrado
         .confirmarTransacao(
       intentAction: IntentAction.confirmation,
       requisicao: TransacaoRequisicaoConfirmacao(
         confirmationTransactionId: id,
-        status: TransactionStatus.confirmadoAutomatico,
+        status: status,
       ),
     )
         .then((value) {
@@ -59,7 +57,6 @@ class PayGoRequestHandler {
       print("Erro ao confirmar venda: $error");
     });
   }
-
 
   Future<void> reimpressao() async {
     await _repository.integrado.generico(
@@ -114,15 +111,12 @@ class PayGoRequestHandler {
    * Metodo para resolver pendencia
    */
 
-  Future<void>resolverPendencia(Uri uri) async {
-    if (uri != null) {
-      await _repository.integrado.resolucaoPendencia(
-        intentAction: IntentAction.confirmation,
-        requisicaoPendencia: uri.toString(),
-        requisicaoConfirmacao: TransacaoRequisicaoPendencia(
-          status: TransactionStatus.desfeitoManual,
-        ),
-      );
-    }
+  Future<void> resolverPendencia(String transacaoPendenteDados,
+      [TransactionStatus status = TransactionStatus.desfeitoManual]) async {
+    await _repository.integrado.resolucaoPendencia(
+      intentAction: IntentAction.confirmation,
+      requisicaoPendencia: transacaoPendenteDados,
+      requisicaoConfirmacao: TransacaoRequisicaoPendencia(status: status),
+    );
   }
 }

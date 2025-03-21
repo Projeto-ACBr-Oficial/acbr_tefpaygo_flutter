@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../controller/paygo_request_handler.dart';
-import '../../../utils/paygo_request_handler_helper.dart';
-import '../../widget/button.dart';
+import '../../../controller/PayGoTefController.dart';
+import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({Key? key}) : super(key: key);
@@ -12,37 +12,125 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandlerHelper().payGoRequestHandler;
+  final TefController _tefController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 5,
+        child: ListView(
+          padding: const EdgeInsets.all(8),
           children: <Widget>[
-            Button(
-              onPressed: onclickButtonInstalacao,
-              text: 'Abrir menu de instalação',
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.check_circle),
+                title: Text('Confirmação Automática'),
+                trailing: Switch(
+                  value: _tefController.configuracoes.isAutoConfirm,
+                  onChanged: (value) {
+                    setState(() {
+                      _tefController.configuracoes.setIsAutoConfirm(value);
+                    });
+                  },
+                ),
+              ),
             ),
-            Button(
-              onPressed: onclickButtonManutencao,
-              text: 'Abrir menu de manutenção',
+            Card(
+              child: ExpansionTile(
+                leading: Icon(Icons.print),
+                title: Text('Configurações de Impressão'),
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.receipt),
+                    title: Text('Imprimir via do Cliente'),
+                    trailing: Switch(
+                      value:
+                          _tefController.configuracoes.isPrintcardholderReceipt,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes
+                              .setIsPrintcardholderReceipt(value);
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.store),
+                    title: Text('Imprimir via do Estabelecimento'),
+                    trailing: Switch(
+                      value:
+                          _tefController.configuracoes.isPrintMerchantReceipt,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes
+                              .setIsPrintMerchantReceipt(value);
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.report),
+                    title: Text('Imprimir Relatório'),
+                    trailing: Switch(
+                      value: _tefController.configuracoes.isPrintReport,
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.configuracoes.setIsPrintReport(value);
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Button(
-              onPressed: onclickButtonPainelAdministrativo,
-              text: 'Abrir Painel Administrativo',
+            Card(
+              child: CustomButton(
+                  onPressed: onclickButtonInstalacao,
+                  text: 'Instalação',
+                  icon: Icon(
+                    Icons.build,
+                  )),
             ),
-            Button( onPressed: onclickButtonExibePDC,
-              text: "Exibe PDC",)
-            ,
-            Button(onPressed: onClickButtonRelatorioDetalhado,
-                text: "Relatório Detalhado"),
-            Button(onPressed: onclickButtonRelatorioResumido,
-                text: "Relatório Resumido"),
-            Button(onPressed: onclickButtonSelectProvider, text: "Selecionar Provedor")
-
+            Card(
+              child: CustomButton(
+                  onPressed: onclickButtonManutencao,
+                  text: 'Manutenção',
+                  icon: Icon(Icons.settings)),
+            ),
+            Card(
+              child: CustomButton(
+                  onPressed: onclickButtonPainelAdministrativo,
+                  text: 'Administrativo',
+                  icon: Icon(Icons.admin_panel_settings)),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonExibePDC,
+                text: 'Exibe PDC',
+                icon: Icon(Icons.visibility),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onClickButtonRelatorioDetalhado,
+                text: 'Relatório Detalhado',
+                icon: Icon(Icons.description),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonRelatorioResumido,
+                text: 'Relatório Resumido',
+                icon: Icon(Icons.summarize),
+              ),
+            ),
+            Card(
+              child: CustomButton(
+                onPressed: onclickButtonSelectProvider,
+                text: 'Selecionar Provedor',
+                icon: Icon(Icons.select_all),
+              ),
+            ),
           ],
         ),
       ),
@@ -50,60 +138,69 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void onclickButtonInstalacao() async {
-    await _payGORequestHandler.instalacao();
+    await _tefController.payGORequestHandler.instalacao();
   }
 
   void onclickButtonManutencao() async {
-    await _payGORequestHandler.manutencao();
+    await _tefController.payGORequestHandler.manutencao();
   }
 
   void onclickButtonPainelAdministrativo() async {
-    await _payGORequestHandler.painelAdministrativo();
-   Navigator.canPop(context);
+    await _tefController.payGORequestHandler.painelAdministrativo();
+    Navigator.canPop(context);
   }
 
   void onclickButtonExibePDC() async {
-    await _payGORequestHandler.exibePDC();
-   Navigator.canPop(context);
+    await _tefController.payGORequestHandler.exibePDC();
+    Navigator.canPop(context);
   }
 
-  void onClickButtonRelatorioDetalhado() async{
-    await _payGORequestHandler.relatorioDetalhado();
-   Navigator.canPop(context);
+  void onClickButtonRelatorioDetalhado() async {
+    await _tefController.payGORequestHandler.relatorioDetalhado();
+    Navigator.canPop(context);
   }
 
   void onclickButtonRelatorioResumido() async {
-    await _payGORequestHandler.relatorioResumido();
+    await _tefController.payGORequestHandler.relatorioResumido();
 
-   Navigator.canPop(context);
+    Navigator.canPop(context);
   }
 
-  void onclickButtonSelectProvider(){
-     var providers =  { "DEMO", "REDE", "CIELO" } ;
-     showDialog(
-       context: context,
-       builder: (BuildContext context) {
-         String? selectedProvider = _payGORequestHandler.provider;
-         return AlertDialog(
-           title: Text("Selecione o provedor"),
-           content: Column(
-             mainAxisSize: MainAxisSize.min,
-             children: providers.map((e) => RadioListTile<String>(
-               title: Text(e),
-               value: e,
-               groupValue: selectedProvider,
-               onChanged: (String? value) {
-                 setState(() {
-                   selectedProvider = value;
-                   _payGORequestHandler.setProvider(value!);
-                 });
-                 Navigator.canPop(context);
-               },
-             )).toList(),
-           ),
-         );
-       },
-     );
+  void onclickButtonSelectProvider() {
+    var providers = {"DEMO", "REDE", "PIX C6 BANK"};
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String? selectedProvider = _tefController.payGORequestHandler.provider;
+        return AlertDialog(
+          title: Text("Selecione o provedor"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: providers
+                .map((e) => RadioListTile<String>(
+                      title: Text(e),
+                      value: e,
+                      groupValue: selectedProvider,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedProvider = value;
+                          _tefController.payGORequestHandler
+                              .setProvider(value!);
+                        });
+                        Navigator.pop(context);
+                      },
+                    ))
+                .toList(),
+          ),
+        );
+      },
+    );
+  }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    debugPrint("dispose config");
+    super.dispose();
   }
 }

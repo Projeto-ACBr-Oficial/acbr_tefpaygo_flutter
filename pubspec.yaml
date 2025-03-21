@@ -33,16 +33,18 @@ dependencies:
   paygo_sdk:
     git:
       url: https://github.com/doszapro/paygo_sdk.git
-  receive_intent:
-    git:
-      url: https://github.com/kee-org/receive_intent.git
+
+  receive_intent: ^0.2.7
   tectoy_sunmiprinter:
-    path: ./tectoy_sunmiprinter
+    git:
+      url: https://github.com/doszapro/demo-sunmiprinter.git
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   fluttertoast: ^8.2.10
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:

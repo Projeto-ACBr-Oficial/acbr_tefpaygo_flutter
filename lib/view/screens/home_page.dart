@@ -1,27 +1,22 @@
-import 'dart:async';
-
-import 'package:demo_tefpaygo_simples/view/screens/commands_page.dart';
+import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
-import 'package:receive_intent/receive_intent.dart' as receive_intent;
+import 'package:get/get.dart';
 
-import '../../controller/paygo_response_handler.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  String title = "";
 
-  final String title;
+  MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late StreamSubscription _subscription;
-
-
+  final List<String> _titles = ["Pagamento", "Configurações"];
   final List<Widget> _pages = [
-    CommandPage(title: "Comandos"),
+    PaymentPage(title: "Comandos"),
     ConfigurationPage(),
   ];
   int _currentIndex = 0;
@@ -33,65 +28,60 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void dispose() {
+    debugPrint("dispose");
+    Get.deleteAll();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool dip, dynamic result) {
-        setCurrentIndex(0);
-      },
-      child: Scaffold(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            title: Text(widget.title),
+            title: Text(_titles[_currentIndex]),
           ),
-          body: _pages[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
+          body: Center(child: _pages[_currentIndex]),
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).shadowColor.withOpacity(0.2),
+                  spreadRadius: 3.0,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Colors.transparent,
+              selectedItemColor: Theme.of(context).colorScheme.onSurface,
+              unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              elevation: 0,
               currentIndex: _currentIndex,
               onTap: setCurrentIndex,
-              items: [
+              items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  label: "Comandos",
+                  label: "Home",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
                   label: "Configurações",
                 ),
-              ])
-      ),
+              ],
+            ),
+          ),
+        );
+      },
     );
-  }
-
-  /**
-   * Metodo para inicializar o listener de intent
-   * Esse metodo obtem a resposta do PayGo Integrado
-   */
-
-  void _initIntentListener() {
-    _subscription = receive_intent.ReceiveIntent.receivedIntentStream
-        .listen((receive_intent.Intent? intent) {
-      PayGOResponseHandler responseHandler = PayGOResponseHandler(context);
-
-      //existem situações em que a regra de negócio não deve confirmar automaticamente uma transação
-      //nesse caso, o método setIsAutoConfirm deve ser chamado com o valor false
-      //responseHandler.setIsAutoConfirm(false);
-      responseHandler.processarResposta(intent);
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _subscription?.cancel();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _initIntentListener();
   }
 }
