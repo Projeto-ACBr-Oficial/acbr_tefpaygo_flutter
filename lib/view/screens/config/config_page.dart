@@ -17,7 +17,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+        body: Center(
+      child: Container(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
@@ -130,11 +134,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 text: 'Selecionar Provedor',
                 icon: Icon(Icons.select_all),
               ),
-            ),
+            )
           ],
         ),
       ),
-    );
+    ));
   }
 
   void onclickButtonInstalacao() async {
