@@ -117,7 +117,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
     if (checkRequirmentsToConfirmTransaction()) {
       if (! _configuracoes.isTestScript) {
         _payGORequestHandler.confirmarTransacao(
-            response.transactionId, _configuracoes.tipoDeConfirmacao);
+            response.confirmationTransactionId, _configuracoes.tipoDeConfirmacao);
         onSuccessMessage(response.resultMessage);
       }else{
         ;
