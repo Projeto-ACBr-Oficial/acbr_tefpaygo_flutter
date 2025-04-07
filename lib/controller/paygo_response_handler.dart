@@ -60,23 +60,31 @@ class PayGOResponseHandler {
         case "RELATORIO_DETALHADO":
         case "RELATORIO_RESUMIDO":
         case "INSTALACAO":
-          _handleImpressao(resposta);
-          break;
-
-        // não exigem ação imediata
         case "EXIBE_PDC":
         case "MANUTENCAO":
         case "ADMINISTRATIVA":
         case "TESTE_COMUNICACAO":
         case "OPERACAO_DESCONHECIDA":
         default:
-          _handleOutraOperacao(resposta);
+          _handleOperacao(resposta);
           break;
       }
     }
-    _intent =null;
+    _intent = null;
   }
 
+  void _handleOperacao(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.transactionResult ==
+          PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
+        _callBack.onPendingTransaction(_getStringPendingData());
+      } else if ( resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
+        _callBack.onFinishOperation(resposta);
+      else{
+        _callBack.onErrorMessage(resposta.resultMessage);
+      }
+    }
+  }
 
   void _handleTransacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
@@ -93,29 +101,6 @@ class PayGOResponseHandler {
               "\n" +
               "Resultado da transação: ${resposta.transactionResult}");
           break;
-      }
-    }
-  }
-
-
-  void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
-        _callBack.onSuccessMessage(resposta.resultMessage);
-      else
-        _callBack.onErrorMessage(resposta.resultMessage);
-    }
-  }
-
-  /**
-   * Método auxiliar para tratar a impressão
-   */
-  void _handleImpressao(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if ( resposta.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-        _callBack.onPrinter(resposta);
-      } else {
-        _callBack.onErrorMessage(resposta.resultMessage);
       }
     }
   }

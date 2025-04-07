@@ -13,12 +13,13 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
+import '../utils/paygo_consts.dart';
+
 class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<TefController>(TefController(), permanent: false);
   }
-
 }
 
 /**
@@ -39,7 +40,9 @@ class TefController extends GetxController implements TefPayGoCallBack {
 
   // Getters e Setter
   PayGoRequestHandler get payGORequestHandler => _payGORequestHandler;
+
   PayGOResponseHandler get payGOResponseHandler => _payGOResponseHandler;
+
   TefPayGoConfiguracoes get configuracoes => _configuracoes;
 
   set configuracoes(TefPayGoConfiguracoes configuracoes) {
@@ -49,7 +52,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
   set printer(GenericPrinter printer) {
     _printer = printer;
   }
-
 
   @override
   void onPrinter(TransacaoRequisicaoResposta resposta) {
@@ -61,9 +63,9 @@ class TefController extends GetxController implements TefPayGoCallBack {
         break;
 
       case "INSTALACAO":
-       _printInstall(resposta);
+        _printer.printerText(resposta.fullReceipt);
         break;
-      break;
+        break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
@@ -86,7 +88,8 @@ class TefController extends GetxController implements TefPayGoCallBack {
     _showDialog("Erro:", message, Colors.red, Icons.error);
   }
 
-  void _showDialog(String title, String message, Color backgroundColor, IconData icon) {
+  void _showDialog(
+      String title, String message, Color backgroundColor, IconData icon) {
     Get.defaultDialog(
       title: title,
       titleStyle: TextStyle(color: Colors.white),
@@ -110,16 +113,16 @@ class TefController extends GetxController implements TefPayGoCallBack {
     });
   }
 
-
   @override
   void onFinishTransaction(TransacaoRequisicaoResposta response) {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
     if (checkRequirmentsToConfirmTransaction()) {
-      if (! _configuracoes.isTestScript) {
+      if (!_configuracoes.isTestScript) {
         _payGORequestHandler.confirmarTransacao(
-            response.confirmationTransactionId, _configuracoes.tipoDeConfirmacao);
+            response.confirmationTransactionId,
+            _configuracoes.tipoDeConfirmacao);
         onSuccessMessage(response.resultMessage);
-      }else{
+      } else {
         ;
       }
     }
@@ -129,14 +132,13 @@ class TefController extends GetxController implements TefPayGoCallBack {
 
   @override
   void onPendingTransaction(String transactionPendingData) {
-
     switch (_configuracoes.pendingTransactionActions) {
       case PendingTransactionActions.CONFIRM:
-      _payGORequestHandler.resolverPendencia(transactionPendingData, TransactionStatus.confirmadoManual);
+        _payGORequestHandler.resolverPendencia(
+            transactionPendingData, TransactionStatus.confirmadoManual);
         break;
 
       case PendingTransactionActions.MANUAL_UNDO:
-        print('tentando desfazer xxxxxxxxx' + transactionPendingData);
         _payGORequestHandler.resolverPendencia(transactionPendingData);
         break;
 
@@ -147,7 +149,41 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
   }
 
+  @override
+  void onFinishOperation(TransacaoRequisicaoResposta response) {
+    switch (response.operation) {
+      case "REIMPRESSAO":
+      case "RELATORIO_SINTETICO":
+      case "RELATORIO_DETALHADO":
+      case "RELATORIO_RESUMIDO":
+        onPrinter(response);
+        break;
 
+      case "INSTALACAO":
+        _handleInstall(response);
+        break;
+        
+        //outras operacoes
+      case "EXIBE_PDC":
+      case "MANUTENCAO":
+      case "ADMINISTRATIVA":
+      case "TESTE_COMUNICACAO":
+      case "OPERACAO_DESCONHECIDA":
+      default:
+        _handleOutraOperacao(response);
+        break;
+    }
+  }
+
+
+  void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
+    if (resposta != null) {
+      if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
+        this.onSuccessMessage(resposta.resultMessage);
+      else
+        this.onErrorMessage(resposta.resultMessage);
+    }
+  }
 
   /**
    * Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
@@ -159,8 +195,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
     return _configuracoes.isAutoConfirm == true;
   }
 
-
-
   /**
    * Metodo auxiliar para imprimir o comprovante (via  do cliente)
    */
@@ -170,13 +204,13 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
   }
 
-
   /**
    * Metodo auxiliar para imprimir o relatório
    */
   void _printReport(TransacaoRequisicaoResposta resposta) {
     if (_configuracoes.isPrintReport) {
-      _printer.printerText(resposta.fullReceipt);
+      if ( resposta.fullReceipt != "")
+        _printer.printerText(resposta.fullReceipt);
     }
   }
 
@@ -184,26 +218,31 @@ class TefController extends GetxController implements TefPayGoCallBack {
    * Metodo auxiliar para imprimir os comprovantes
    */
   void _printRecepits(TransacaoRequisicaoResposta resposta) {
-    if (_configuracoes.isPrintMerchantReceipt) _printer.printerText(resposta.merchantReceipt);
+    if (_configuracoes.isPrintMerchantReceipt)
+      _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
     //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
-  void _printInstall(TransacaoRequisicaoResposta resposta){
-    if ( resposta.fullReceipt != null){
-      if ( resposta.fullReceipt.isNotEmpty){
-        _printer.printerText(resposta.fullReceipt);
-      }
+  /**
+   * Metodo auxiliar para tratar a instalação
+   */
+  void _handleInstall(TransacaoRequisicaoResposta resposta) {
+    if (resposta.transactionResult ==
+        PayGoRetornoConsts.PWRET_OK) {
+      onPrinter(resposta);
+      onSuccessMessage(resposta.resultMessage);
+    } else {
+      onErrorMessage(resposta.resultMessage);
     }
   }
+
   /**
    * Metodo auxiliar para converter o valor da transação para double
    */
-  double _convertAmountToDouble (String amount){
-    return double.parse(amount)/ 100.00;
+  double _convertAmountToDouble(String amount) {
+    return double.parse(amount) / 100.00;
   }
-
-
 
   // Métodos de controle de estado
 
@@ -227,6 +266,5 @@ class TefController extends GetxController implements TefPayGoCallBack {
     debugPrint("Fechando controller");
     _payGOResponseHandler.finalizar();
     super.onClose();
-
   }
 }
