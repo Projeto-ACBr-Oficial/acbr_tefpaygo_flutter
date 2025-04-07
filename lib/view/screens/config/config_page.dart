@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 
 import '../../../controller/PayGoTefController.dart';
+import '../../../controller/types/PendingTransactionActions.dart';
 import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -27,19 +28,138 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             Card(
-              child: ListTile(
-                leading: Icon(Icons.check_circle),
-                title: Text('Confirmação Automática'),
-                trailing: Switch(
-                  value: _tefController.configuracoes.isAutoConfirm,
-                  onChanged: (value) {
-                    setState(() {
-                      _tefController.configuracoes.setIsAutoConfirm(value);
-                    });
-                  },
-                ),
+              child: ExpansionTile(
+                leading: Icon(Icons.settings),
+                title: Text('Configurações de Automação'),
+                children: <Widget>[
+
+                  ListTile(
+                    leading: Icon(Icons.label),
+                    title: Text('Nome da Automação'),
+                    subtitle: TextField(
+                      controller: TextEditingController(
+                          text: _tefController
+                              .payGORequestHandler.dadosAutomacao.posName),
+                      onChanged: (value) {
+                        _tefController
+                            .payGORequestHandler.dadosAutomacao.posName = value;
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.label),
+                    title: Text('Versão da Automação'),
+                    subtitle: TextField(
+                      controller: TextEditingController(
+                          text: _tefController
+                              .payGORequestHandler.dadosAutomacao.posVersion),
+                      onChanged: (value) {
+                        _tefController.payGORequestHandler.dadosAutomacao
+                            .posVersion = value;
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.label),
+                    title: Text('Software House'),
+                    subtitle: TextField(
+                      controller: TextEditingController(
+                          text: _tefController
+                              .payGORequestHandler.dadosAutomacao.posDeveloper),
+                      onChanged: (value) {
+                        setState(() {
+                          _tefController.payGORequestHandler.dadosAutomacao
+                              .posDeveloper = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SwitchListTile(
+                    title: Text('Permitir Recibos com via diferenciadas'),
+                    value: _tefController.payGORequestHandler.dadosAutomacao
+                        .allowDifferentReceipts,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.payGORequestHandler.dadosAutomacao
+                            .allowDifferentReceipts = value;
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Permitir Desconto'),
+                    value: _tefController
+                        .payGORequestHandler.dadosAutomacao.allowDiscount,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.payGORequestHandler.dadosAutomacao
+                            .allowDiscount = value;
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Permitir Voucher para Desconto'),
+                    value: _tefController
+                        .payGORequestHandler.dadosAutomacao.allowDueAmount,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.payGORequestHandler.dadosAutomacao
+                            .allowDueAmount = value;
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text('Permitir Via Reduzida'),
+                    value: _tefController
+                        .payGORequestHandler.dadosAutomacao.allowShortReceipt,
+                    onChanged: (value) {
+                      setState(() {
+                        _tefController.payGORequestHandler.dadosAutomacao
+                            .allowShortReceipt = value;
+                      });
+                    },
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.pending_actions),
+                      title: Text('Transação Pendente'),
+                      trailing: DropdownButton<PendingTransactionActions>(
+                        value: _tefController
+                            .configuracoes.pendingTransactionActions,
+                        onChanged: (PendingTransactionActions? newValue) {
+                          setState(() {
+                            _tefController.configuracoes
+                                .setPendingTransactionActions(newValue!);
+                          });
+                        },
+                        items: PendingTransactionActions.values
+                            .map<DropdownMenuItem<PendingTransactionActions>>(
+                                (PendingTransactionActions value) {
+                              return DropdownMenuItem<PendingTransactionActions>(
+                                value: value,
+                                child: Text(value.toValue().replaceAll("_", " ")),
+                              );
+                            }).toList(),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.check_circle),
+                      title: Text('Confirmação Automática de Transação'),
+                      trailing: Switch(
+                        value: _tefController.configuracoes.isAutoConfirm,
+                        onChanged: (value) {
+                          setState(() {
+                            _tefController.configuracoes.setIsAutoConfirm(value);
+                          });
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
+
             Card(
               child: ExpansionTile(
                 leading: Icon(Icons.print),
@@ -136,84 +256,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 icon: Icon(Icons.select_all),
               ),
             ),
-            Card(
-              child: ExpansionTile(
-                leading: Icon(Icons.settings),
-                title: Text('Configurações de Automação'),
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.label),
-                    title: Text('Nome da Automação'),
-                    subtitle: TextField(
-                      controller: TextEditingController(text: _tefController.payGORequestHandler.dadosAutomacao.posName),
-                      onChanged: (value) {
-                        _tefController.payGORequestHandler.dadosAutomacao.posName = value;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.label),
-                    title: Text('Versão da Automação'),
-                    subtitle: TextField(
-                      controller: TextEditingController(text: _tefController.payGORequestHandler.dadosAutomacao.posVersion),
-                      onChanged: (value) {
-                        _tefController.payGORequestHandler.dadosAutomacao.posVersion = value;
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.label),
-                    title: Text('Desenvolvedor da Automação'),
-                    subtitle: TextField(
-                      controller: TextEditingController(text: _tefController.payGORequestHandler.dadosAutomacao.posDeveloper),
-                      onChanged: (value) {
-                        _tefController.payGORequestHandler.dadosAutomacao.posDeveloper = value;
-                      },
-                    ),
-                  ),
-                  SwitchListTile(
-                    title: Text('Permitir Recibos Diferentes'),
-                    value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts = value;
-                      });
-                    },
-                  ),
-                  SwitchListTile(
-                    title: Text('Permitir Desconto'),
-                    value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
-                      });
-                    },
-                  ),
-                  SwitchListTile(
-                    title: Text( 'Permitir Voucher para Desconto'),
-                    value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
-                      });
-                    },
-                  ),
-                  SwitchListTile(
-                    title: Text('Permitir Via Reduzida'),
-                    value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
           ],
-
         ),
-
       ),
     ));
   }
