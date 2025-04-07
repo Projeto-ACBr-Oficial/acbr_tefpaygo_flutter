@@ -32,7 +32,6 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 leading: Icon(Icons.settings),
                 title: Text('Configurações de Automação'),
                 children: <Widget>[
-
                   ListTile(
                     leading: Icon(Icons.label),
                     title: Text('Nome da Automação'),
@@ -74,49 +73,69 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       },
                     ),
                   ),
-                  SwitchListTile(
-                    title: Text('Permitir Recibos com via diferenciadas'),
-                    value: _tefController.payGORequestHandler.dadosAutomacao
-                        .allowDifferentReceipts,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao
-                            .allowDifferentReceipts = value;
-                      });
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.receipt),
+                      title: Text('Permitir Recibos com via diferenciadas'),
+                      trailing: Switch(
+                        value: _tefController.payGORequestHandler.dadosAutomacao
+                            .allowDifferentReceipts,
+                        onChanged: (value) {
+                          setState(() {
+                            _tefController.payGORequestHandler.dadosAutomacao
+                                .allowDifferentReceipts = value;
+                          });
+                        },
+                      ),
+                    ),
                   ),
-                  SwitchListTile(
-                    title: Text('Permitir Desconto'),
-                    value: _tefController
-                        .payGORequestHandler.dadosAutomacao.allowDiscount,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao
-                            .allowDiscount = value;
-                      });
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.discount),
+                      title: Text('Permitir Desconto'),
+                      trailing: Switch(
+                        value: _tefController
+                            .payGORequestHandler.dadosAutomacao.allowDiscount,
+                        onChanged: (value) {
+                          setState(() {
+                            _tefController.payGORequestHandler.dadosAutomacao
+                                .allowDiscount = value;
+                          });
+                        },
+                      ),
+                    ),
                   ),
-                  SwitchListTile(
-                    title: Text('Permitir Voucher para Desconto'),
-                    value: _tefController
-                        .payGORequestHandler.dadosAutomacao.allowDueAmount,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao
-                            .allowDueAmount = value;
-                      });
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.card_giftcard),
+                      title: Text('Permitir Voucher para Desconto'),
+                      trailing: Switch(
+                        value: _tefController
+                            .payGORequestHandler.dadosAutomacao.allowDueAmount,
+                        onChanged: (value) {
+                          setState(() {
+                            _tefController.payGORequestHandler.dadosAutomacao
+                                .allowDueAmount = value;
+                          });
+                        },
+                      ),
+                    ),
                   ),
-                  SwitchListTile(
-                    title: Text('Permitir Via Reduzida'),
-                    value: _tefController
-                        .payGORequestHandler.dadosAutomacao.allowShortReceipt,
-                    onChanged: (value) {
-                      setState(() {
-                        _tefController.payGORequestHandler.dadosAutomacao
-                            .allowShortReceipt = value;
-                      });
-                    },
+                  Card(
+                    child: ListTile(
+                      leading: Icon(Icons.receipt_long),
+                      title: Text('Permitir Via Reduzida'),
+                      trailing: Switch(
+                        value: _tefController.payGORequestHandler.dadosAutomacao
+                            .allowShortReceipt,
+                        onChanged: (value) {
+                          setState(() {
+                            _tefController.payGORequestHandler.dadosAutomacao
+                                .allowShortReceipt = value;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                   Card(
                     child: ListTile(
@@ -134,11 +153,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         items: PendingTransactionActions.values
                             .map<DropdownMenuItem<PendingTransactionActions>>(
                                 (PendingTransactionActions value) {
-                              return DropdownMenuItem<PendingTransactionActions>(
-                                value: value,
-                                child: Text(value.toValue().replaceAll("_", " ")),
-                              );
-                            }).toList(),
+                          return DropdownMenuItem<PendingTransactionActions>(
+                            value: value,
+                            child: Text(value.toValue().replaceAll("_", " ")),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ),
@@ -150,7 +169,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         value: _tefController.configuracoes.isAutoConfirm,
                         onChanged: (value) {
                           setState(() {
-                            _tefController.configuracoes.setIsAutoConfirm(value);
+                            _tefController.configuracoes
+                                .setIsAutoConfirm(value);
                           });
                         },
                       ),
@@ -159,7 +179,6 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 ],
               ),
             ),
-
             Card(
               child: ExpansionTile(
                 leading: Icon(Icons.print),
