@@ -1,4 +1,5 @@
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
@@ -20,97 +21,128 @@ class PayGoRequestHandler {
     _provider = provider;
   }
 
-  Future<void> venda( TransacaoRequisicaoVenda dadosVenda) async {
-    // configura dados da automacao (obrigatorio  para o TefPayGo)
-    final dadosAutomacao = await TransacaoRequisicaoDadosAutomacao(
-      "Exemplo TEF",
-      "1.0",
-      "ACBr",
-      allowCashback: true,
-      allowDifferentReceipts: true,
-      allowDiscount: true,
-      allowDueAmount: true,
-      allowShortReceipt: true,
-    );
+  late TransacaoRequisicaoDadosAutomacao _dadosAutomacao =
+  dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
 
+    "Exemplo TEF",
+    "1.0",
+    "ACBr",
 
-    await _repository.integrado.venda(
-        requisicaoVenda: dadosVenda,
-        dadosAutomacao: dadosAutomacao
-    );
+    allowCashback: true,
+    allowDifferentReceipts: true,
+    allowDiscount: true,
+    allowDueAmount: true,
+    allowShortReceipt: true,
+  );
+
+  set dadosAutomacao(TransacaoRequisicaoDadosAutomacao dadosAutomacao) {
+    _dadosAutomacao = dadosAutomacao;
   }
 
+  TransacaoRequisicaoDadosAutomacao get dadosAutomacao => _dadosAutomacao;
+
+  
+  Future<void> venda(TransacaoRequisicaoVenda dadosVenda) async {
+    // configura dados da automacao (obrigatorio para o TefPayGo)
+    await _repository.integrado.venda(
+      requisicaoVenda: dadosVenda,
+      dadosAutomacao: _dadosAutomacao,
+    );
+  }
+  
+
+  
   Future<void> confirmarTransacao(String id,
-      [TransactionStatus status =
-          TransactionStatus.confirmadoAutomatico]) async {
-    await _repository.integrado
-        .confirmarTransacao(
+      [TransactionStatus status = TransactionStatus.confirmadoAutomatico]) async {
+    await _repository.integrado.confirmarTransacao(
       intentAction: IntentAction.confirmation,
       requisicao: TransacaoRequisicaoConfirmacao(
         confirmationTransactionId: id,
         status: status,
-      ),
-    )
-        .then((value) {
+      )
+    ).then((value) {
       print("Venda confirmada");
     }).catchError((error) {
       print("Erro ao confirmar venda: $error");
     });
   }
+  
 
+  
   Future<void> reimpressao() async {
     await _repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao:
-            TransacaoRequisicaoGenerica(operation: Operation.reimpressao));
+      intentAction: IntentAction.payment,
+      requisicao: TransacaoRequisicaoGenerica(operation: Operation.reimpressao),
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
+  
 
+  
   Future<void> instalacao() async {
     await _repository.integrado.generico(
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.instalacao,
-        ),
-        intentAction: IntentAction.payment);
+      requisicao: TransacaoRequisicaoGenerica(
+        operation: Operation.instalacao,
+      ),
+      intentAction: IntentAction.payment,
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
+  
 
+  
   Future<void> manutencao() async {
     await _repository.integrado.generico(
       requisicao: TransacaoRequisicaoGenerica(
         operation: Operation.manutencao,
       ),
       intentAction: IntentAction.payment,
+      dadosAutomacao: _dadosAutomacao,
     );
   }
+  
 
+  
   Future<void> painelAdministrativo() async {
-    await _repository.integrado.administrativo();
+    await _repository.integrado.administrativo(
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
+  
 
+  
   Future<void> exibePDC() async {
     await _repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc));
+      intentAction: IntentAction.payment,
+      requisicao: TransacaoRequisicaoGenerica(operation: Operation.exibePdc),
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
+  
 
+  
   Future<void> relatorioDetalhado() async {
     await _repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(
-            operation: Operation.relatorioDetalhado));
+      intentAction: IntentAction.payment,
+      requisicao: TransacaoRequisicaoGenerica(
+        operation: Operation.relatorioDetalhado,
+      ),
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
+  
 
+  
   Future<void> relatorioResumido() async {
     await _repository.integrado.generico(
-        intentAction: IntentAction.payment,
-        requisicao: TransacaoRequisicaoGenerica(
-          operation: Operation.relatorioResumido,
-        ));
+      intentAction: IntentAction.payment,
+      requisicao: TransacaoRequisicaoGenerica(
+        operation: Operation.relatorioResumido,
+      ),
+      dadosAutomacao: _dadosAutomacao,
+    );
   }
-
-  /**
-   * Metodo para resolver pendencia
-   */
-
+  
   Future<void> resolverPendencia(String transacaoPendenteDados,
       [TransactionStatus status = TransactionStatus.desfeitoManual]) async {
     await _repository.integrado.resolucaoPendencia(
