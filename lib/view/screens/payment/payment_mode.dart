@@ -10,6 +10,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
 import '../../../controller/PayGoTefController.dart';
+import '../../widget/generic_dialog.dart';
 
 class PaymentViewMode extends StatefulWidget {
   final double valorPagamento;
@@ -227,59 +228,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   }
 
   /**
-   * Função auxilia para montar um dialog generico
-   * @param title titulo do dialog
-   * @param options lista de opções
-   * @param selectedValue valor selecionado
-   * @param displayText função para exibir o texto
-   * @param onSelected função para selecionar o valor
-   */
-  Future<T?> _showSelectionDialog<T>({
-    required String title,
-    required List<T> options,
-    required T? selectedValue,
-    required String Function(T) displayText,
-    required void Function(T) onSelected,
-  }) async {
-    await showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: options
-                .map((option) => RadioListTile<T>(
-                      title: Text(displayText(option)),
-                      value: option,
-                      groupValue: selectedValue,
-                      onChanged: (T? value) {
-                        if (value != null) {
-                          setState(() {
-                            onSelected(value);
-                          });
-                          Navigator.pop(context);
-                        }
-                      },
-                    ))
-                .toList(),
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancelar"),
-              onPressed: () {
-                _onCancelOperation();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  /**
    * Função auxiliar para selecionar a quantidade de parcelas
    *
    */
@@ -290,13 +238,17 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
             .sublist(1);
 
     double quantidadeParcelas = 1.0;
-    await _showSelectionDialog<int>(
+    await showGenericDialog<int>(
+      context: context,
       title: "Selecione a quantidade de parcelas",
       options: parcelas,
       selectedValue: null,
       displayText: (e) => "$e x",
       onSelected: (value) {
         quantidadeParcelas = value.toDouble();
+      },
+      onCancel: () {
+        _onCancelOperation();
       },
     );
     return quantidadeParcelas;
@@ -313,13 +265,17 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     };
 
     FinType currenFinType = FinType.financiamentoNaoDefinido;
-    await _showSelectionDialog<FinType>(
+    await showGenericDialog<FinType>(
+      context: context,
       title: "Selecione a forma de Financiamento",
       options: listFinType.toList(),
       selectedValue: null,
       displayText: (e) => e.finTypeString.replaceAll('_', ' ').toLowerCase(),
       onSelected: (value) {
         currenFinType = value;
+      },
+      onCancel: () {
+        _onCancelOperation();
       },
     );
     return currenFinType;

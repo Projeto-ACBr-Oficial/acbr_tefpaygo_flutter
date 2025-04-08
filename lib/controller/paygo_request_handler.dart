@@ -24,9 +24,9 @@ class PayGoRequestHandler {
   late TransacaoRequisicaoDadosAutomacao _dadosAutomacao =
   dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
 
-    "Exemplo TEF",
+    "Exemplo TEF PayGo Flutter",
     "1.0",
-    "ACBr",
+    "",
 
     allowCashback: true,
     allowDifferentReceipts: true,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 
 import '../../../controller/PayGoTefController.dart';
 import '../../../controller/types/PendingTransactionActions.dart';
+import '../../widget/generic_dialog.dart';
 import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class ConfigurationPage extends StatefulWidget {
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
   final TefController _tefController = Get.find();
+  late TextEditingController _posNameController;
+  late TextEditingController _posVersionController;
+  late TextEditingController _posDeveloperController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,147 +40,99 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     leading: Icon(Icons.label),
                     title: Text('Nome da Automação'),
                     subtitle: TextField(
-                      controller: TextEditingController(
-                          text: _tefController
-                              .payGORequestHandler.dadosAutomacao.posName),
-                      onChanged: (value) {
-                        _tefController
-                            .payGORequestHandler.dadosAutomacao.posName = value;
-                      },
+                      controller: _posNameController,
+                      onChanged: _onPosNameChanged,
                     ),
                   ),
                   ListTile(
                     leading: Icon(Icons.label),
                     title: Text('Versão da Automação'),
                     subtitle: TextField(
-                      controller: TextEditingController(
-                          text: _tefController
-                              .payGORequestHandler.dadosAutomacao.posVersion),
-                      onChanged: (value) {
-                        _tefController.payGORequestHandler.dadosAutomacao
-                            .posVersion = value;
-                      },
+                      controller: _posVersionController,
+                      onChanged: _onPosVersionChanged,
                     ),
                   ),
                   ListTile(
                     leading: Icon(Icons.label),
                     title: Text('Software House'),
                     subtitle: TextField(
-                      controller: TextEditingController(
-                          text: _tefController
-                              .payGORequestHandler.dadosAutomacao.posDeveloper),
-                      onChanged: (value) {
-                        setState(() {
-                          _tefController.payGORequestHandler.dadosAutomacao
-                              .posDeveloper = value;
-                        });
-                      },
+                      controller: _posDeveloperController,
+                      onChanged: _onPosDeveloperChanged,
                     ),
                   ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.receipt),
-                      title: Text('Permitir Recibos com via diferenciadas'),
-                      trailing: Switch(
-                        value: _tefController.payGORequestHandler.dadosAutomacao
-                            .allowDifferentReceipts,
-                        onChanged: (value) {
-                          setState(() {
-                            _tefController.payGORequestHandler.dadosAutomacao
-                                .allowDifferentReceipts = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.discount),
-                      title: Text('Permitir Desconto'),
-                      trailing: Switch(
-                        value: _tefController
-                            .payGORequestHandler.dadosAutomacao.allowDiscount,
-                        onChanged: (value) {
-                          setState(() {
-                            _tefController.payGORequestHandler.dadosAutomacao
-                                .allowDiscount = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.card_giftcard),
-                      title: Text('Permitir Voucher para Desconto'),
-                      trailing: Switch(
-                        value: _tefController
-                            .payGORequestHandler.dadosAutomacao.allowDueAmount,
-                        onChanged: (value) {
-                          setState(() {
-                            _tefController.payGORequestHandler.dadosAutomacao
-                                .allowDueAmount = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.receipt_long),
-                      title: Text('Permitir Via Reduzida'),
-                      trailing: Switch(
-                        value: _tefController.payGORequestHandler.dadosAutomacao
-                            .allowShortReceipt,
-                        onChanged: (value) {
-                          setState(() {
-                            _tefController.payGORequestHandler.dadosAutomacao
-                                .allowShortReceipt = value;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.pending_actions),
-                      title: Text('Transação Pendente'),
-                      trailing: DropdownButton<PendingTransactionActions>(
-                        value: _tefController
-                            .configuracoes.pendingTransactionActions,
-                        onChanged: (PendingTransactionActions? newValue) {
-                          setState(() {
-                            _tefController.configuracoes
-                                .setPendingTransactionActions(newValue!);
-                          });
-                        },
-                        items: PendingTransactionActions.values
-                            .map<DropdownMenuItem<PendingTransactionActions>>(
-                                (PendingTransactionActions value) {
-                          return DropdownMenuItem<PendingTransactionActions>(
-                            value: value,
-                            child: Text(value.toValue().replaceAll("_", " ")),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.check_circle),
-                      title: Text('Confirmação Automática de Transação'),
-                      trailing: Switch(
-                        value: _tefController.configuracoes.isAutoConfirm,
-                        onChanged: (value) {
-                          setState(() {
-                            _tefController.configuracoes
-                                .setIsAutoConfirm(value);
-                          });
-                        },
-                      ),
-                    ),
-                  )
                 ],
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.receipt),
+                title: Text('Permitir Recibos com via diferenciadas'),
+                trailing: Switch(
+                  value: _tefController.payGORequestHandler.dadosAutomacao
+                      .allowDifferentReceipts,
+                  onChanged: _onAllowDifferentReceiptsChanged,
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.discount),
+                title: Text('Permitir Desconto'),
+                trailing: Switch(
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowDiscount,
+                  onChanged: _onAllowDiscountChanged,
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.card_giftcard),
+                title: Text('Permitir Voucher para Desconto'),
+                trailing: Switch(
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowDueAmount,
+                  onChanged: _onAllowDueAmountChanged,
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.receipt_long),
+                title: Text('Permitir Via Reduzida'),
+                trailing: Switch(
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowShortReceipt,
+                  onChanged: _onAllowShortReceiptChanged,
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.pending_actions),
+                title: Text('Transação Pendente'),
+                trailing: DropdownButton<PendingTransactionActions>(
+                  value: _tefController.configuracoes.pendingTransactionActions,
+                  onChanged: _onPendingTransactionActionsChanged,
+                  items: PendingTransactionActions.values
+                      .map<DropdownMenuItem<PendingTransactionActions>>(
+                          (PendingTransactionActions value) {
+                    return DropdownMenuItem<PendingTransactionActions>(
+                      value: value,
+                      child: Text(value.toValue().replaceAll("_", " ")),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.check_circle),
+                title: Text('Confirmação Automática de Transação'),
+                trailing: Switch(
+                  value: _tefController.configuracoes.isAutoConfirm,
+                  onChanged: _onIsAutoConfirmChanged,
+                ),
               ),
             ),
             Card(
@@ -190,12 +146,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     trailing: Switch(
                       value:
                           _tefController.configuracoes.isPrintcardholderReceipt,
-                      onChanged: (value) {
-                        setState(() {
-                          _tefController.configuracoes
-                              .setIsPrintcardholderReceipt(value);
-                        });
-                      },
+                      onChanged: _onIsPrintCardholderReceiptChanged,
                     ),
                   ),
                   ListTile(
@@ -204,12 +155,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     trailing: Switch(
                       value:
                           _tefController.configuracoes.isPrintMerchantReceipt,
-                      onChanged: (value) {
-                        setState(() {
-                          _tefController.configuracoes
-                              .setIsPrintMerchantReceipt(value);
-                        });
-                      },
+                      onChanged: _onIsPrintMerchantReceiptChanged,
                     ),
                   ),
                   ListTile(
@@ -217,11 +163,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     title: Text('Imprimir Relatório'),
                     trailing: Switch(
                       value: _tefController.configuracoes.isPrintReport,
-                      onChanged: (value) {
-                        setState(() {
-                          _tefController.configuracoes.setIsPrintReport(value);
-                        });
-                      },
+                      onChanged: _onIsPrintReportChanged,
                     ),
                   ),
                 ],
@@ -310,41 +252,114 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     Navigator.canPop(context);
   }
 
-  void onclickButtonSelectProvider() {
+  void onclickButtonSelectProvider() async {
     var providers = {"DEMO", "REDE", "PIX C6 BANK"};
-    showDialog(
+    await showGenericDialog<String>(
       context: context,
-      builder: (BuildContext context) {
-        String? selectedProvider = _tefController.payGORequestHandler.provider;
-        return AlertDialog(
-          title: Text("Selecione o provedor"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: providers
-                .map((e) => RadioListTile<String>(
-                      title: Text(e),
-                      value: e,
-                      groupValue: selectedProvider,
-                      onChanged: (String? value) {
-                        setState(() {
-                          selectedProvider = value;
-                          _tefController.payGORequestHandler
-                              .setProvider(value!);
-                        });
-                        Navigator.pop(context);
-                      },
-                    ))
-                .toList(),
-          ),
-        );
+      title: "Selecione o provedor",
+      options: providers.toList(),
+      selectedValue: _tefController.payGORequestHandler.provider,
+      displayText: (e) => e,
+      onSelected: (value) {
+        setState(() {
+          _tefController.payGORequestHandler.setProvider(value);
+        });
+      },
+      onCancel: () {
+        Fluttertoast.showToast(
+            msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
       },
     );
   }
 
+  void _onPosNameChanged(String value) {
+    _tefController.payGORequestHandler.dadosAutomacao.posName = value;
+  }
+
+  void _onPosVersionChanged(String value) {
+    _tefController.payGORequestHandler.dadosAutomacao.posVersion = value;
+  }
+
+  void _onPosDeveloperChanged(String value) {
+    _tefController.payGORequestHandler.dadosAutomacao.posDeveloper = value;
+  }
+
+  void _onAllowDifferentReceiptsChanged(bool value) {
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts =
+          value;
+    });
+  }
+
+  void _onAllowDiscountChanged(bool value) {
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
+    });
+  }
+
+  void _onAllowDueAmountChanged(bool value) {
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
+    });
+  }
+
+  void _onAllowShortReceiptChanged(bool value) {
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt =
+          value;
+    });
+  }
+
+  void _onPendingTransactionActionsChanged(
+      PendingTransactionActions? newValue) {
+    setState(() {
+      _tefController.configuracoes.setPendingTransactionActions(newValue!);
+    });
+  }
+
+  void _onIsAutoConfirmChanged(bool value) {
+    setState(() {
+      _tefController.configuracoes.setIsAutoConfirm(value);
+    });
+  }
+
+  void _onIsPrintCardholderReceiptChanged(bool value) {
+    setState(() {
+      _tefController.configuracoes.setIsPrintcardholderReceipt(value);
+    });
+  }
+
+  void _onIsPrintMerchantReceiptChanged(bool value) {
+    setState(() {
+      _tefController.configuracoes.setIsPrintMerchantReceipt(value);
+    });
+  }
+
+  void _onIsPrintReportChanged(bool value) {
+    setState(() {
+      _tefController.configuracoes.setIsPrintReport(value);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Inicialize os controladores com os valores existentes
+    _posNameController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posName);
+    _posVersionController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posVersion);
+    _posDeveloperController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posDeveloper);
+  }
+
   @override
   void dispose() {
-    // TODO: implement dispose
-    debugPrint("dispose config");
+    // Libere os controladores
+    _posNameController.dispose();
+    _posVersionController.dispose();
+    _posDeveloperController.dispose();
     super.dispose();
   }
 }
