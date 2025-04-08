@@ -36,6 +36,14 @@ abstract class TefPayGoCallBack {
    **/
   void onPendingTransaction(String transactionPendingData);
 
+
+  /**
+   * Método chamadao quando uma operacao (não financeira) é finalizada
+   * Aqui deve implementar tratamento para as demais operações
+   * Como por exemplo: instalacao, relatorio, etc
+    */
+  void onFinishOperation(TransacaoRequisicaoResposta response);
+
   /**
    * Metodo auxiliar que verifica quais requisitos são necessários para confirmar a transação
    */

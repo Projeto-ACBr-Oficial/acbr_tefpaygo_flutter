@@ -35,8 +35,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         body: Center(
           child: Container(
             color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).colorScheme.surface
-              : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                ? Theme.of(context).colorScheme.surface
+                : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             padding: EdgeInsets.all(16),
             child: ListView(
               children: <Widget>[
@@ -46,7 +46,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                     child: Column(
                       children: [
                         Text("Total"),
-                        Text(_formatPayment(), style: TextStyle(fontSize: 30,color: Theme.of(context).colorScheme.onSurface)),
+                        Text(_formatPayment(),
+                            style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
@@ -54,15 +58,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                 Padding(
                   padding: EdgeInsets.all(8),
                   child: Text("Escolha a forma de pagamento:",
-                      style:  TextStyle(fontSize: 20),textAlign: TextAlign.center),
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center),
                 ),
                 Card(
-                  child: CustomButton(
-                    onPressed: onClicKButtonDebito,
-                    text: "Debito",
-                    icon: Icon(Icons.credit_card),
-                  )
-                  ),
+                    child: CustomButton(
+                  onPressed: onClicKButtonDebito,
+                  text: "Debito",
+                  icon: Icon(Icons.credit_card),
+                )),
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonCredito,
@@ -223,6 +227,59 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   }
 
   /**
+   * Função auxilia para montar um dialog generico
+   * @param title titulo do dialog
+   * @param options lista de opções
+   * @param selectedValue valor selecionado
+   * @param displayText função para exibir o texto
+   * @param onSelected função para selecionar o valor
+   */
+  Future<T?> _showSelectionDialog<T>({
+    required String title,
+    required List<T> options,
+    required T? selectedValue,
+    required String Function(T) displayText,
+    required void Function(T) onSelected,
+  }) async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: options
+                .map((option) => RadioListTile<T>(
+                      title: Text(displayText(option)),
+                      value: option,
+                      groupValue: selectedValue,
+                      onChanged: (T? value) {
+                        if (value != null) {
+                          setState(() {
+                            onSelected(value);
+                          });
+                          Navigator.pop(context);
+                        }
+                      },
+                    ))
+                .toList(),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () {
+                _onCancelOperation();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /**
    * Função auxiliar para selecionar a quantidade de parcelas
    *
    */
@@ -233,48 +290,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
             .sublist(1);
 
     double quantidadeParcelas = 1.0;
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        int? selectedInstallments;
-        return AlertDialog(
-          title: Text("Selecione a quantidade de parcelas"),
-          content: Container(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: parcelas
-                    .map((e) => RadioListTile<int>(
-                          title: Text(e.toString() + "x"),
-                          value: e,
-                          groupValue: selectedInstallments,
-                          onChanged: (int? value) {
-                            setState(() {
-                              selectedInstallments = value;
-                              quantidadeParcelas =
-                                  selectedInstallments!.toDouble();
-                            });
-                            Navigator.pop(context);
-                          },
-                        ))
-                    .toList(),
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancelar"),
-              onPressed: () {
-                _onCancelOperation();
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
+    await _showSelectionDialog<int>(
+      title: "Selecione a quantidade de parcelas",
+      options: parcelas,
+      selectedValue: null,
+      displayText: (e) => "$e x",
+      onSelected: (value) {
+        quantidadeParcelas = value.toDouble();
       },
     );
-
     return quantidadeParcelas;
   }
 
@@ -289,40 +313,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     };
 
     FinType currenFinType = FinType.financiamentoNaoDefinido;
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          FinType? selectedFinType;
-          return AlertDialog(
-            title: Text("Selecione a forma de Financiamento"),
-            content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: listFinType
-                    .map((e) => RadioListTile<FinType>(
-                        title: Text(
-                            e.finTypeString.replaceAll('_', ' ').toLowerCase()),
-                        value: e,
-                        groupValue: selectedFinType,
-                        onChanged: (FinType? value) {
-                          setState(() {
-                            selectedFinType = value;
-                            currenFinType = selectedFinType!;
-                          });
-                          Navigator.pop(context, true);
-                        }))
-                    .toList()),
-            actions: [
-              TextButton(
-                child: const Text("Cancelar"),
-                onPressed: () {
-                  _onCancelOperation();
-                  Navigator.pop(context, false);
-                },
-              )
-            ],
-          );
-        });
-
+    await _showSelectionDialog<FinType>(
+      title: "Selecione a forma de Financiamento",
+      options: listFinType.toList(),
+      selectedValue: null,
+      displayText: (e) => e.finTypeString.replaceAll('_', ' ').toLowerCase(),
+      onSelected: (value) {
+        currenFinType = value;
+      },
+    );
     return currenFinType;
   }
 
