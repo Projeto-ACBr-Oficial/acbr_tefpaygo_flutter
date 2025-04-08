@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 
 import '../../../controller/PayGoTefController.dart';
 import '../../../controller/types/PendingTransactionActions.dart';
+import '../../widget/generic_dialog.dart';
 import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -67,7 +68,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 leading: Icon(Icons.receipt),
                 title: Text('Permitir Recibos com via diferenciadas'),
                 trailing: Switch(
-                  value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
+                  value: _tefController.payGORequestHandler.dadosAutomacao
+                      .allowDifferentReceipts,
                   onChanged: _onAllowDifferentReceiptsChanged,
                 ),
               ),
@@ -77,7 +79,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 leading: Icon(Icons.discount),
                 title: Text('Permitir Desconto'),
                 trailing: Switch(
-                  value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowDiscount,
                   onChanged: _onAllowDiscountChanged,
                 ),
               ),
@@ -87,7 +90,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 leading: Icon(Icons.card_giftcard),
                 title: Text('Permitir Voucher para Desconto'),
                 trailing: Switch(
-                  value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowDueAmount,
                   onChanged: _onAllowDueAmountChanged,
                 ),
               ),
@@ -97,7 +101,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 leading: Icon(Icons.receipt_long),
                 title: Text('Permitir Via Reduzida'),
                 trailing: Switch(
-                  value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
+                  value: _tefController
+                      .payGORequestHandler.dadosAutomacao.allowShortReceipt,
                   onChanged: _onAllowShortReceiptChanged,
                 ),
               ),
@@ -112,11 +117,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   items: PendingTransactionActions.values
                       .map<DropdownMenuItem<PendingTransactionActions>>(
                           (PendingTransactionActions value) {
-                        return DropdownMenuItem<PendingTransactionActions>(
-                          value: value,
-                          child: Text(value.toValue().replaceAll("_", " ")),
-                        );
-                      }).toList(),
+                    return DropdownMenuItem<PendingTransactionActions>(
+                      value: value,
+                      child: Text(value.toValue().replaceAll("_", " ")),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
@@ -139,7 +144,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     leading: Icon(Icons.receipt),
                     title: Text('Imprimir via do Cliente'),
                     trailing: Switch(
-                      value: _tefController.configuracoes.isPrintcardholderReceipt,
+                      value:
+                          _tefController.configuracoes.isPrintcardholderReceipt,
                       onChanged: _onIsPrintCardholderReceiptChanged,
                     ),
                   ),
@@ -147,7 +153,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     leading: Icon(Icons.store),
                     title: Text('Imprimir via do Estabelecimento'),
                     trailing: Switch(
-                      value: _tefController.configuracoes.isPrintMerchantReceipt,
+                      value:
+                          _tefController.configuracoes.isPrintMerchantReceipt,
                       onChanged: _onIsPrintMerchantReceiptChanged,
                     ),
                   ),
@@ -245,33 +252,22 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     Navigator.canPop(context);
   }
 
-  void onclickButtonSelectProvider() {
+  void onclickButtonSelectProvider() async {
     var providers = {"DEMO", "REDE", "PIX C6 BANK"};
-    showDialog(
+    await showGenericDialog<String>(
       context: context,
-      builder: (BuildContext context) {
-        String? selectedProvider = _tefController.payGORequestHandler.provider;
-        return AlertDialog(
-          title: Text("Selecione o provedor"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: providers
-                .map((e) => RadioListTile<String>(
-                      title: Text(e),
-                      value: e,
-                      groupValue: selectedProvider,
-                      onChanged: (String? value) {
-                        setState(() {
-                          selectedProvider = value;
-                          _tefController.payGORequestHandler
-                              .setProvider(value!);
-                        });
-                        Navigator.pop(context);
-                      },
-                    ))
-                .toList(),
-          ),
-        );
+      title: "Selecione o provedor",
+      options: providers.toList(),
+      selectedValue: _tefController.payGORequestHandler.provider,
+      displayText: (e) => e,
+      onSelected: (value) {
+        setState(() {
+          _tefController.payGORequestHandler.setProvider(value);
+        });
+      },
+      onCancel: () {
+        Fluttertoast.showToast(
+            msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
       },
     );
   }
@@ -290,7 +286,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   void _onAllowDifferentReceiptsChanged(bool value) {
     setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts = value;
+      _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts =
+          value;
     });
   }
 
@@ -308,11 +305,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   void _onAllowShortReceiptChanged(bool value) {
     setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt = value;
+      _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt =
+          value;
     });
   }
 
-  void _onPendingTransactionActionsChanged(PendingTransactionActions? newValue) {
+  void _onPendingTransactionActionsChanged(
+      PendingTransactionActions? newValue) {
     setState(() {
       _tefController.configuracoes.setPendingTransactionActions(newValue!);
     });
