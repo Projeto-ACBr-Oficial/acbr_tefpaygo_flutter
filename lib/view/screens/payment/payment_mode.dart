@@ -234,6 +234,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     double quantidadeParcelas = 1.0;
     await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         int? selectedInstallments;
@@ -290,9 +291,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     FinType currenFinType = FinType.financiamentoNaoDefinido;
     await showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           FinType? selectedFinType;
+
           return AlertDialog(
             title: Text("Selecione a forma de Financiamento"),
             content: Column(
