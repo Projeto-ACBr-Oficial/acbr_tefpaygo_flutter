@@ -35,8 +35,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         body: Center(
           child: Container(
             color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).colorScheme.surface
-              : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                ? Theme.of(context).colorScheme.surface
+                : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             padding: EdgeInsets.all(16),
             child: ListView(
               children: <Widget>[
@@ -46,7 +46,11 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                     child: Column(
                       children: [
                         Text("Total"),
-                        Text(_formatPayment(), style: TextStyle(fontSize: 30,color: Theme.of(context).colorScheme.onSurface)),
+                        Text(_formatPayment(),
+                            style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    Theme.of(context).colorScheme.onSurface)),
                       ],
                     ),
                   ),
@@ -54,15 +58,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                 Padding(
                   padding: EdgeInsets.all(8),
                   child: Text("Escolha a forma de pagamento:",
-                      style:  TextStyle(fontSize: 20),textAlign: TextAlign.center),
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center),
                 ),
                 Card(
-                  child: CustomButton(
-                    onPressed: onClicKButtonDebito,
-                    text: "Debito",
-                    icon: Icon(Icons.credit_card),
-                  )
-                  ),
+                    child: CustomButton(
+                  onPressed: onClicKButtonDebito,
+                  text: "Debito",
+                  icon: Icon(Icons.credit_card),
+                )),
                 Card(
                   child: CustomButton(
                     onPressed: onClickButtonCredito,
