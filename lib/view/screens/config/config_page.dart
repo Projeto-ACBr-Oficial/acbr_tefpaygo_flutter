@@ -273,15 +273,21 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   void _onPosNameChanged(String value) {
-    _tefController.payGORequestHandler.dadosAutomacao.posName = value;
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.posName = value;
+    });
   }
 
   void _onPosVersionChanged(String value) {
-    _tefController.payGORequestHandler.dadosAutomacao.posVersion = value;
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.posVersion = value;
+    });
   }
 
   void _onPosDeveloperChanged(String value) {
-    _tefController.payGORequestHandler.dadosAutomacao.posDeveloper = value;
+    setState(() {
+      _tefController.payGORequestHandler.dadosAutomacao.posDeveloper = value;
+    });
   }
 
   void _onAllowDifferentReceiptsChanged(bool value) {
