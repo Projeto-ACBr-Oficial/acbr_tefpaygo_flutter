@@ -83,11 +83,7 @@ class _PaymentPageState extends State<PaymentPage> {
     }
 
     // _tefController.payGORequestHandler.venda(_valorVenda);
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                PaymentViewMode(valorPagamento: _valorVenda)));
+    await Get.toNamed('/payment', arguments: _valorVenda);
     _onClearVenda();
   }
 

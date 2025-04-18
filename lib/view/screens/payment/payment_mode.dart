@@ -189,12 +189,12 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   // Métodos auxiliares
 
   void navegarParaTelaAnterior() {
-    Navigator.pop(context);
+   Get.back();
   }
 
   Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
     await _tefController.payGORequestHandler.venda(transacao);
-    Navigator.pop(context);
+    navegarParaTelaAnterior();
   }
 
   /**

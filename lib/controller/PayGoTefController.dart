@@ -15,13 +15,6 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
 
 import '../utils/paygo_consts.dart';
 
-class HomeBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.put<TefController>(TefController(), permanent: false);
-  }
-}
-
 /**
  *  TefController é a classe que implenta as regras de negócio do TEF PayGo
  *  Propriedades configuráveis:
@@ -30,7 +23,7 @@ class HomeBinding extends Bindings {
  *
  */
 
-class TefController extends GetxController implements TefPayGoCallBack {
+class TefController extends GetxController with WidgetsBindingObserver implements TefPayGoCallBack {
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
   late GenericPrinter _printer = CustomPrinter();
   late PayGOResponseHandler _payGOResponseHandler;
@@ -251,6 +244,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
     // TODO: implement onInit
     super.onInit();
     _payGOResponseHandler = PayGOResponseHandler(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -262,9 +256,17 @@ class TefController extends GetxController implements TefPayGoCallBack {
 
   @override
   void onClose() {
-    // TODO: implement onClose
-    debugPrint("Fechando controller");
-    _payGOResponseHandler.finalizar();
+    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      // O app está sendo encerrado
+      _payGOResponseHandler.finalizar();
+      // Finalize o controlador ou outros recursos aqui
+      Get.delete<TefController>();
+    }
   }
 }

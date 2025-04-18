@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:demo_tefpaygo_simples/controller/types/tef_paygo_callback.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
@@ -29,6 +30,7 @@ class PayGOResponseHandler {
   }
 
   void finalizar() {
+    debugPrint("Finalizando o PayGOResponseHandler");
     _subscription.cancel();
   }
 

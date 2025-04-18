@@ -2,6 +2,7 @@ import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/PayGoTefController.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -30,12 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+    debugPrint("initState");
     super.initState();
   }
 
   void dispose() {
     debugPrint("dispose");
-    Get.deleteAll();
+    Get.delete<TefController>();
     super.dispose();
   }
 

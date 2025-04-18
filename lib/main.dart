@@ -1,33 +1,45 @@
 import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'view/screens/home_page.dart';
+  import 'package:demo_tefpaygo_simples/view/screens/home_page.dart';
+  import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
+  import 'package:flutter/material.dart';
+  import 'package:get/get.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
-    final colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
-    return GetMaterialApp(
-      initialBinding: HomeBinding(),
-      title: 'Demo PayGOSdk',
-      theme: ThemeData(
-        colorScheme: colorScheme,
-        useMaterial3: true
-      ),
-      darkTheme: ThemeData(
-       colorScheme: colorSchemeDark,
-
-        useMaterial3: true,
-      ),
-      home: MyHomePage(),
-    );
+  void main() {
+    runApp(const MyApp());
   }
-}
+
+  class MyApp extends StatelessWidget {
+    const MyApp({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+      final colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
+      final colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
+
+      return GetMaterialApp(
+        title: 'Demo PayGOSdk',
+        theme: ThemeData(
+          colorScheme: colorScheme,
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: colorSchemeDark,
+          useMaterial3: true,
+        ),
+        initialRoute: '/home',
+        getPages: [
+          GetPage(
+            name: '/home',
+            page: () => MyHomePage(),
+            binding: BindingsBuilder(() {
+              Get.put(TefController());
+            }),
+          ),
+          GetPage(
+            name: '/payment',
+            page: () => PaymentViewMode(valorPagamento: Get.arguments),
+          ),
+        ],
+      );
+    }
+  }
