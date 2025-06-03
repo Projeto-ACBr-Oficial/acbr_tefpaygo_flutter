@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  @override
   void dispose() {
     debugPrint("dispose");
     Get.delete<TefController>();

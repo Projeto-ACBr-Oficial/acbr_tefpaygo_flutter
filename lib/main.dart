@@ -17,6 +17,13 @@ import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
       final colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
 
       return GetMaterialApp(
+        onDispose: () {
+          debugPrint("GetMaterialApp onDispose");
+          Get.delete<TefController>();
+        },
+        initialBinding: BindingsBuilder(() {
+          Get.put(TefController());
+        }),
         title: 'Demo PayGOSdk',
         theme: ThemeData(
           colorScheme: colorScheme,

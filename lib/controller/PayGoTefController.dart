@@ -115,6 +115,7 @@ class TefController extends GetxController with WidgetsBindingObserver implement
             response.confirmationTransactionId,
             _configuracoes.tipoDeConfirmacao);
         onSuccessMessage(response.resultMessage);
+
       } else {
         ;
       }
@@ -269,4 +270,5 @@ class TefController extends GetxController with WidgetsBindingObserver implement
       Get.delete<TefController>();
     }
   }
+
 }
