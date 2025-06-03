@@ -38,9 +38,6 @@ import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
           GetPage(
             name: '/home',
             page: () => MyHomePage(),
-            binding: BindingsBuilder(() {
-              Get.put(TefController());
-            }),
           ),
           GetPage(
             name: '/payment',
