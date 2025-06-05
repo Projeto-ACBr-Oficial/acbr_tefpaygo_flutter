@@ -20,7 +20,6 @@ class TefPayGoConfiguracoes {
   late bool _isPrintcardholderReceipt = true;
   late bool _isPrintMerchantReceipt = false;
   late bool _isPrintReport = true;
-  late bool _isTestScript = false;
 
   late PendingTransactionActions _pendingTransactionActions =
   PendingTransactionActions.MANUAL_UNDO;
@@ -40,7 +39,6 @@ class TefPayGoConfiguracoes {
 
    get tipoDeConfirmacao => _tipoDeConfirmacao;
 
-  bool get isTestScript => _isTestScript;
 
 
   void setPendingTransactionActions(
@@ -66,10 +64,6 @@ class TefPayGoConfiguracoes {
 
   void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao){
     _tipoDeConfirmacao = tipoDeConfirmacao;
-  }
-
-  void setIsTestScript(bool isTestScript){
-    _isTestScript = isTestScript;
   }
 
 }

@@ -110,20 +110,19 @@ class TefController extends GetxController  implements TefPayGoCallBack {
   void onFinishTransaction(TransacaoRequisicaoResposta response) {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
     if (checkRequirmentsToConfirmTransaction()) {
-      if (!_configuracoes.isTestScript) {
-        _payGORequestHandler.confirmarTransacao(
-            response.confirmationTransactionId,
-            _configuracoes.tipoDeConfirmacao);
-        onSuccessMessage(response.resultMessage);
-        Get.offAllNamed('/home'); // Redireciona para a tela inicial após o sucesso
+      _payGORequestHandler.confirmarTransacao(
+          response.confirmationTransactionId,
+          _configuracoes.tipoDeConfirmacao
+      );
 
-      } else {
-        ;
-        ;
-      }
+      onSuccessMessage(response.resultMessage);
+
+      Get.offAllNamed(
+          '/home'); // Redireciona para a tela inicial após o sucesso
+
+      //a impressão é opcional
+      onPrinter(response);
     }
-    //a impressão é opcional
-    onPrinter(response);
   }
 
   @override
