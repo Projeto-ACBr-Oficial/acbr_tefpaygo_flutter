@@ -23,7 +23,7 @@ import '../utils/paygo_consts.dart';
  *
  */
 
-class TefController extends GetxController with WidgetsBindingObserver implements TefPayGoCallBack {
+class TefController extends GetxController  implements TefPayGoCallBack {
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
   late GenericPrinter _printer = CustomPrinter();
   late PayGOResponseHandler _payGOResponseHandler;
@@ -77,12 +77,12 @@ class TefController extends GetxController with WidgetsBindingObserver implement
   }
 
   @override
-  void onErrorMessage(String message) {
-    _showDialog("Erro:", message, Colors.red, Icons.error);
+  void onErrorMessage(String message)  {
+    Get.toNamed('/failure_screen', arguments: message); // Redireciona para a página de erro
   }
 
-  void _showDialog(
-      String title, String message, Color backgroundColor, IconData icon) {
+  void  _showDialog(
+      String title, String message, Color backgroundColor, IconData icon)  {
     Get.defaultDialog(
       title: title,
       titleStyle: TextStyle(color: Colors.white),
@@ -115,8 +115,10 @@ class TefController extends GetxController with WidgetsBindingObserver implement
             response.confirmationTransactionId,
             _configuracoes.tipoDeConfirmacao);
         onSuccessMessage(response.resultMessage);
+        Get.offAllNamed('/home'); // Redireciona para a tela inicial após o sucesso
 
       } else {
+        ;
         ;
       }
     }
@@ -245,7 +247,6 @@ class TefController extends GetxController with WidgetsBindingObserver implement
     // TODO: implement onInit
     super.onInit();
     _payGOResponseHandler = PayGOResponseHandler(this);
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -257,18 +258,10 @@ class TefController extends GetxController with WidgetsBindingObserver implement
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
+    _payGOResponseHandler.finalizar();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      // O app está sendo encerrado
-      _payGOResponseHandler.finalizar();
-      // Finalize o controlador ou outros recursos aqui
-      Get.delete<TefController>();
-    }
-  }
+
 
 }

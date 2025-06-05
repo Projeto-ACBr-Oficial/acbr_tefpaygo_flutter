@@ -1,6 +1,7 @@
 import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
   import 'package:demo_tefpaygo_simples/view/screens/home_page.dart';
   import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
+import 'package:demo_tefpaygo_simples/view/screens/screen_example.dart';
   import 'package:flutter/material.dart';
   import 'package:get/get.dart';
 
@@ -22,7 +23,7 @@ import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
           Get.delete<TefController>();
         },
         initialBinding: BindingsBuilder(() {
-          Get.put(TefController());
+          Get.put(TefController(), permanent: true);
         }),
         title: 'Demo PayGOSdk',
         theme: ThemeData(
@@ -42,6 +43,15 @@ import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
           GetPage(
             name: '/payment',
             page: () => PaymentViewMode(valorPagamento: Get.arguments),
+          ),
+
+          GetPage(
+           name: '/failure_screen',
+            page:() => ExampleErrorScreen( message: Get.arguments)
+          ),
+          GetPage(
+            name: '/success_screen',
+            page: () => ExampleSuccessScreen(),
           ),
         ],
       );

@@ -31,13 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    debugPrint("initState");
+    debugPrint(" home page initState");
     super.initState();
   }
 
   @override
   void dispose() {
-    debugPrint("dispose");
+    debugPrint("home_page dispose");
     Get.delete<TefController>();
     super.dispose();
   }

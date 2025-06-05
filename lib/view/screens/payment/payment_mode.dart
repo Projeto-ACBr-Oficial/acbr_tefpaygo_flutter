@@ -194,7 +194,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
     await _tefController.payGORequestHandler.venda(transacao);
-    navegarParaTelaAnterior();
+    //navegarParaTelaAnterior();
   }
 
   /**
