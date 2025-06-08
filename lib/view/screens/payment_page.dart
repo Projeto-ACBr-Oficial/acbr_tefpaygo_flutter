@@ -1,5 +1,4 @@
 import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
-import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
 import 'package:demo_tefpaygo_simples/view/widget/text_price.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,7 +15,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final TefController _tefController = Get.find();
   double _valorVenda = 0.0;
   String _valorVendaString = "0,00";
 

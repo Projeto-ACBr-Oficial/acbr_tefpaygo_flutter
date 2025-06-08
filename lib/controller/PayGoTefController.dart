@@ -53,7 +53,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
       case "INSTALACAO":
         _printer.printerText(resposta.fullReceipt);
         break;
-        break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
@@ -152,8 +151,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
       case "INSTALACAO":
         _handleInstall(response);
         break;
-        
-        //outras operacoes
+
       case "EXIBE_PDC":
       case "MANUTENCAO":
       case "ADMINISTRATIVA":
