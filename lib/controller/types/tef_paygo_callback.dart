@@ -9,7 +9,6 @@ abstract class TefPayGoCallBack {
   void onPrinter(TransacaoRequisicaoResposta resposta);
 
   /// [onSuccessMessage] é o método chamado quando uma mensagem de sucesso é recebida
-  /// * Método chamado quando uma mensagem é recebida
   /// * Aqui você pode implementar a lógica para exibir a mensagem recebida
   /// [message] é a mensagem de sucesso recebida
 
@@ -21,7 +20,6 @@ abstract class TefPayGoCallBack {
   void onErrorMessage(String message);
 
   /// [onFinishTransaction] é o método chamado quando a transação é finalizada
-  /// Método chamado quando a transação é finalizada
   /// Nele deve ser implementado a regra de negócio para finalizar a transação
   /// Aqui você pode implementar a lógica para imprimir o comprovante, salvar a transação no banco de dados, etc
 
