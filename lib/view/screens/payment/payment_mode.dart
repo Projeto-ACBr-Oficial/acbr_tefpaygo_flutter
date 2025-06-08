@@ -9,7 +9,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
-import '../../../controller/PayGoTefController.dart';
+import '../../../controller/paygo_tefcontroller.dart';
 import '../../widget/generic_dialog.dart';
 
 class PaymentViewMode extends StatefulWidget {

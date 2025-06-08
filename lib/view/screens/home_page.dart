@@ -2,7 +2,7 @@ import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/PayGoTefController.dart';
+import '../../controller/paygo_tefcontroller.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {

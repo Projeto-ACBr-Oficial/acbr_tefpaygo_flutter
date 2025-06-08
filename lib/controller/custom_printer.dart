@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
+import 'package:flutter/material.dart';
 import 'package:tectoy_sunmiprinter/tectoy_sunmiprinter.dart';
 
 /// * [CustomPrinter] é uma classe que implementa a interface [GenericPrinter]
@@ -19,7 +20,7 @@ class CustomPrinter implements GenericPrinter {
        _printer.cutPaper()
      ]);
     } catch (e) {
-      print(e);
+      debugPrint("Erro ao imprimir: $e");
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
-import '../controller/types/PendingTransactionActions.dart';
+import '../controller/types/pending_transaction_actions.dart';
 
 ///
 ///  [TefPayGoConfiguracoes] é uma classe que representa as configurações do TEF PayGo

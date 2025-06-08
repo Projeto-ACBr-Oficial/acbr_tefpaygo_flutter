@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-import '../../../controller/PayGoTefController.dart';
-import '../../../controller/types/PendingTransactionActions.dart';
+import '../../../controller/paygo_tefcontroller.dart';
+import '../../../controller/types/pending_transaction_actions.dart';
 import '../../widget/generic_dialog.dart';
 import '../../widget/text_button.dart';
 
