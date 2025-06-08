@@ -12,12 +12,14 @@ import '../controller/types/PendingTransactionActions.dart';
 /// [_isPrintReport]  booleano que define se o relatório deve ser impresso
 /// [_pendingTransactionActions] (enumerado) que define a ação a ser tomada quando a transação está pendente
 /// [_tipoDeConfirmacao] (enumerado) que define o tipo de confirmação da transação
+/// [_isPrintShortReceipt] booleano que define se o comprovante curto deve ser impresso
 
 class TefPayGoConfiguracoes {
   late bool _isAutoConfirm = true;
   late bool _isPrintcardholderReceipt = true;
   late bool _isPrintMerchantReceipt = false;
   late bool _isPrintReport = true;
+  late bool _isPrintShortReceipt = false;
 
   late PendingTransactionActions _pendingTransactionActions =
       PendingTransactionActions.MANUAL_UNDO;
@@ -35,8 +37,11 @@ class TefPayGoConfiguracoes {
 
   bool get isPrintReport => _isPrintReport;
 
-   get tipoDeConfirmacao => _tipoDeConfirmacao;
+  bool get isPrintShortReceipt => _isPrintShortReceipt;
 
+  set isPrintShortReceipt(bool isPrintShortReceipt) {
+    _isPrintShortReceipt = isPrintShortReceipt;
+  }
 
   get tipoDeConfirmacao => _tipoDeConfirmacao;
 
