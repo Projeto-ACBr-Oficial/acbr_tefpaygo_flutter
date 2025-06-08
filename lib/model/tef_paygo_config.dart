@@ -20,10 +20,10 @@ class TefPayGoConfiguracoes {
   late bool _isPrintReport = true;
 
   late PendingTransactionActions _pendingTransactionActions =
-  PendingTransactionActions.MANUAL_UNDO;
+      PendingTransactionActions.MANUAL_UNDO;
 
-  late TransactionStatus _tipoDeConfirmacao = TransactionStatus.confirmadoAutomatico;
-
+  late TransactionStatus _tipoDeConfirmacao =
+      TransactionStatus.confirmadoAutomatico;
 
   get pendingTransactionActions => _pendingTransactionActions;
 
@@ -38,6 +38,7 @@ class TefPayGoConfiguracoes {
    get tipoDeConfirmacao => _tipoDeConfirmacao;
 
 
+  get tipoDeConfirmacao => _tipoDeConfirmacao;
 
   void setPendingTransactionActions(
       PendingTransactionActions pendingTransactionActions) {
