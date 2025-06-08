@@ -15,8 +15,7 @@ class PayGoRequestHandler {
     _provider = provider;
   }
 
-  late TransacaoRequisicaoDadosAutomacao _dadosAutomacao =
-  dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
+  late TransacaoRequisicaoDadosAutomacao _dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
 
     "Exemplo TEF PayGo Flutter",
     "1.0",
@@ -29,11 +28,10 @@ class PayGoRequestHandler {
     allowShortReceipt: true,
   );
 
+  TransacaoRequisicaoDadosAutomacao get dadosAutomacao => _dadosAutomacao;
   set dadosAutomacao(TransacaoRequisicaoDadosAutomacao dadosAutomacao) {
     _dadosAutomacao = dadosAutomacao;
   }
-
-  TransacaoRequisicaoDadosAutomacao get dadosAutomacao => _dadosAutomacao;
 
   
   Future<void> venda(TransacaoRequisicaoVenda dadosVenda) async {

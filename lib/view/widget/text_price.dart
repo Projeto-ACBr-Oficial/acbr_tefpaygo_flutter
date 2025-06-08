@@ -1,15 +1,12 @@
 import 'package:demo_tefpaygo_simples/view/width_helper.dart';
 import 'package:flutter/material.dart';
 
-class TextPrice extends StatefulWidget {
-  String _initialPrice = "0,00";
+class TextPrice extends StatelessWidget {
 
-  TextPrice(this._initialPrice);
+  final String initialPrice;
+  TextPrice({super.key, required this.initialPrice});
 
-  _TextPriceState createState() => _TextPriceState();
-}
-
-class _TextPriceState extends State<TextPrice> {
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return LayoutBuilder(
@@ -23,7 +20,9 @@ class _TextPriceState extends State<TextPrice> {
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
-                color: theme.brightness == Brightness.dark ? Colors.white.withOpacity(0.2) : theme.shadowColor.withOpacity(0.2),
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white.withOpacity(0.2)
+                    : theme.shadowColor.withOpacity(0.2),
                 blurRadius: 10.0,
                 offset: Offset(0, 2.5),
               ),
@@ -34,7 +33,7 @@ class _TextPriceState extends State<TextPrice> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "R\$ " + widget._initialPrice,
+                "R\$  $initialPrice",
                 style: TextStyle(
                   fontSize: 30.0,
                   color: theme.colorScheme.onSurface,

@@ -26,7 +26,7 @@ class PayGOResponseHandler {
   void inicializar() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
-      this._processarIntent(intent);
+      _processarIntent(intent);
     });
   }
 
@@ -104,9 +104,7 @@ class PayGOResponseHandler {
           _callBack.onPendingTransaction(_getStringPendingData());
           break;
         default:
-          _callBack.onErrorMessage(resposta.resultMessage +
-              "\n" +
-              "Resultado da transação: ${resposta.transactionResult}");
+          _callBack.onErrorMessage("$resposta.resultMessage\nResultado da transação: ${resposta.transactionResult}");
           break;
       }
     }

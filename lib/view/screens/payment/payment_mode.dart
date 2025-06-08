@@ -281,7 +281,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     double quantidadeMaximaDeParcelas = 99.0;
 
     if (valor < valorMinimoParcelavel) {
-      throw new ValorPagamentoInvalidoException(
+      throw  ValorPagamentoInvalidoException(
           "Valor mínimo para parcelamento é R\$ $valorMinimoParcelavel");
     }
     double quantidadeDeParcelas = valor / valordeParcelaMinimo;

@@ -8,10 +8,10 @@ import '../../widget/generic_dialog.dart';
 import '../../widget/text_button.dart';
 
 class ConfigurationPage extends StatefulWidget {
-  const ConfigurationPage({Key? key}) : super(key: key);
+  const ConfigurationPage({super.key});
 
   @override
-  _ConfigurationPageState createState() => _ConfigurationPageState();
+  State<ConfigurationPage> createState() => _ConfigurationPageState();
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {

@@ -1,9 +1,8 @@
 import 'package:demo_tefpaygo_simples/exception/tef_paygo_exception.dart';
 
-class ValorPagamentoInvalidoException implements TefPaygoException{
-  final String message;
+class ValorPagamentoInvalidoException extends TefPaygoException{
 
-  ValorPagamentoInvalidoException(this.message);
+  ValorPagamentoInvalidoException(super.message);
 
   @override
   String toString() {

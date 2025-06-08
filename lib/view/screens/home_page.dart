@@ -6,7 +6,6 @@ import '../../controller/paygo_tefcontroller.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  String title = "";
 
   MyHomePage({super.key});
 
