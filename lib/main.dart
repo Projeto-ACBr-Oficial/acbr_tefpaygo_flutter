@@ -1,9 +1,9 @@
 import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
-  import 'package:demo_tefpaygo_simples/view/screens/home_page.dart';
-  import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
+import 'package:demo_tefpaygo_simples/view/screens/home_page.dart';
+import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
 import 'package:demo_tefpaygo_simples/view/screens/screen_example.dart';
-  import 'package:flutter/material.dart';
-  import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
   void main() {
     runApp(const MyApp());

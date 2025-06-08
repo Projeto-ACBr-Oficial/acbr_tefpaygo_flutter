@@ -1,9 +1,5 @@
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 

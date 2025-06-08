@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_request_handler.dart';
 import 'package:demo_tefpaygo_simples/controller/paygo_response_handler.dart';
@@ -9,7 +7,6 @@ import 'package:demo_tefpaygo_simples/controller/types/tef_paygo_callback.dart';
 import 'package:demo_tefpaygo_simples/model/tef_paygo_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_resposta.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
