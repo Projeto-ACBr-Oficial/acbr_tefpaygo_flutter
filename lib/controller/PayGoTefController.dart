@@ -136,7 +136,7 @@ class TefController extends GetxController  implements TefPayGoCallBack {
 
       case PendingTransactionActions.NONE:
       default:
-        print("Nenhuma ação definida para transação pendente");
+        debugPrint("Nenhuma ação definida para transação pendente");
         break;
     }
   }
