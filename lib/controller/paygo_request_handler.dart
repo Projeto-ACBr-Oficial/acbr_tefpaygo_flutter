@@ -1,12 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
-/**
- * PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
- *
- */
+/// PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
 class PayGoRequestHandler {
   String _provider = "DEMO";
   final _repository = PayGOSdk();

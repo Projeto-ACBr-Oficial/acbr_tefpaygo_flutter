@@ -12,15 +12,13 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
 
 import '../utils/paygo_consts.dart';
 
-/**
- *  TefController é a classe que implenta as regras de negócio do TEF PayGo
- *  Propriedades configuráveis:
- * - _printer: Instância de [GenericPrinter]
- * - _configuracoes: Instância de [TefPayGoConfiguracoes]
- *
- */
-
-class TefController extends GetxController  implements TefPayGoCallBack {
+///
+/// *  [TefController] é a classe que implenta as regras de negócio do TEF PayGo
+/// *  Propriedades configuráveis:
+/// * - [_printer]: Instância de [GenericPrinter]
+/// * - [_configuracoes]: Instância de [TefPayGoConfiguracoes]
+///
+class TefController extends GetxController implements TefPayGoCallBack {
   final PayGoRequestHandler _payGORequestHandler = PayGoRequestHandler();
   late GenericPrinter _printer = CustomPrinter();
   late PayGOResponseHandler _payGOResponseHandler;
@@ -167,19 +165,16 @@ class TefController extends GetxController  implements TefPayGoCallBack {
     }
   }
 
-
   void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
-        this.onSuccessMessage(resposta.resultMessage);
+        onSuccessMessage(resposta.resultMessage);
       else
-        this.onErrorMessage(resposta.resultMessage);
+        onErrorMessage(resposta.resultMessage);
     }
   }
 
-  /**
-   * Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
-   */
+/// Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
 
   @override
   bool checkRequirmentsToConfirmTransaction() {
@@ -187,18 +182,14 @@ class TefController extends GetxController  implements TefPayGoCallBack {
     return _configuracoes.isAutoConfirm == true;
   }
 
-  /**
-   * Metodo auxiliar para imprimir o comprovante (via  do cliente)
-   */
+  /// Metodo auxiliar para imprimir o comprovante (via  do cliente)
   void _printCardHolderReceipt(TransacaoRequisicaoResposta resposta) {
     if (_configuracoes.isPrintcardholderReceipt) {
       _printer.printerText(resposta.cardholderReceipt);
     }
   }
 
-  /**
-   * Metodo auxiliar para imprimir o relatório
-   */
+  /// Metodo auxiliar para imprimir o relatório
   void _printReport(TransacaoRequisicaoResposta resposta) {
     if (_configuracoes.isPrintReport) {
       if ( resposta.fullReceipt != "")
@@ -206,9 +197,7 @@ class TefController extends GetxController  implements TefPayGoCallBack {
     }
   }
 
-  /**
-   * Metodo auxiliar para imprimir os comprovantes
-   */
+  /// Metodo auxiliar para imprimir os comprovantes
   void _printRecepits(TransacaoRequisicaoResposta resposta) {
     if (_configuracoes.isPrintMerchantReceipt)
       _printer.printerText(resposta.merchantReceipt);
@@ -216,9 +205,8 @@ class TefController extends GetxController  implements TefPayGoCallBack {
     //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
-  /**
-   * Metodo auxiliar para tratar a instalação
-   */
+  /// Metodo auxiliar para tratar a instalação
+
   void _handleInstall(TransacaoRequisicaoResposta resposta) {
     if (resposta.transactionResult ==
         PayGoRetornoConsts.PWRET_OK) {
@@ -229,14 +217,7 @@ class TefController extends GetxController  implements TefPayGoCallBack {
     }
   }
 
-  /**
-   * Metodo auxiliar para converter o valor da transação para double
-   */
-  double _convertAmountToDouble(String amount) {
-    return double.parse(amount) / 100.00;
-  }
-
-  // Métodos de controle de estado
+  /// Métodos de controle de estado
 
   @override
   void onInit() {

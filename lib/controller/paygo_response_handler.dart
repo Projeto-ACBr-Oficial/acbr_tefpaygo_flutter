@@ -8,10 +8,9 @@ import 'package:receive_intent/receive_intent.dart' as receive_intent;
 
 import '../utils/paygo_consts.dart';
 
-/**
- * Classe para tratar as respostas do PayGo Integrado
- * Essencialmente essa classe recebe uma intent e chama a callback[TefPayGoCallBack] de acordo com a resposta
- */
+///
+///  Classe para tratar as respostas do PayGo Integrado
+///  Essencialmente essa classe recebe uma intent e chama a callback[TefPayGoCallBack] de acordo com a resposta
 
 class PayGOResponseHandler {
   final TefPayGoCallBack _callBack;
@@ -22,6 +21,8 @@ class PayGOResponseHandler {
 
   PayGOResponseHandler(this._callBack);
 
+
+  /// Método para inicializar o handler e escutar as intents recebidas
   void inicializar() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
         .listen((receive_intent.Intent? intent) {
@@ -29,14 +30,14 @@ class PayGOResponseHandler {
     });
   }
 
+  /// Método para finalizar o handler e cancelar a escuta das intents
+
   void finalizar() {
     debugPrint("Finalizando o PayGOResponseHandler");
     _subscription.cancel();
   }
 
-  /**
-   * Metodo para tratar a resposta do PayGo Integrado
-   */
+  // Metodo para tratar a resposta do PayGo Integrado
 
   void _processarIntent(receive_intent.Intent? intent) {
     if (intent?.data != null) {
@@ -49,6 +50,9 @@ class PayGOResponseHandler {
     }
   }
 
+
+  // Método para processar a resposta da transação
+  // Esse método verifica o tipo de operação e chama o método apropriado para tratar a resposta
   void _processarResposta(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       switch (resposta.operation) {
@@ -74,7 +78,7 @@ class PayGOResponseHandler {
     }
     _intent = null;
   }
-
+  // Método para tratar a resposta de uma operação
   void _handleOperacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       if (resposta.transactionResult ==
@@ -88,6 +92,7 @@ class PayGOResponseHandler {
     }
   }
 
+  // Método para tratar a resposta de uma transação
   void _handleTransacao(TransacaoRequisicaoResposta resposta) {
     if (resposta != null) {
       String transactionResult = resposta.transactionResult.toString();
@@ -107,9 +112,7 @@ class PayGOResponseHandler {
     }
   }
 
-  /**
-   * Método auxiliar para obter os dados da transação pendente
-   */
+  // Método auxiliar para obter os dados da transação pendente
   String _getStringPendingData() {
     return _intent?.extra?["TransacaoPendenteDados"] ?? "";
   }

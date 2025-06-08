@@ -130,10 +130,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   // Métodos onClick
 
-  /**
-   * Método executado quando clicar no botão de crédito
-   *
-   */
+  // Método executado quando clicar no botão de crédito
   void onClickButtonCredito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
@@ -197,9 +194,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     //navegarParaTelaAnterior();
   }
 
-  /**
-   * Função auxiliar para obter o modo de financiamento
-   */
+  /// Função auxiliar para obter o modo de financiamento
   Future<void> _obterModoDeFinanciamento(
       TransacaoRequisicaoVenda transacao) async {
     FinType currentFinType = await _selecionaFinanciamento();
@@ -227,10 +222,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     }
   }
 
-  /**
-   * Função auxiliar para selecionar a quantidade de parcelas
-   *
-   */
+  // Função auxiliar para selecionar a quantidade de parcelas
   Future<double> _selecionaQuantidadeDeParcelas(double valor) async {
     double quantidadeMaximaDeParcelas = _obterQuantidadeMaximaDeParcelas(valor);
     var parcelas =
@@ -254,9 +246,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return quantidadeParcelas;
   }
 
-  /**
-   * Função auxiliar para selecionar a forma de financiamento
-   */
+  // Função auxiliar para selecionar a forma de financiamento
   Future<FinType> _selecionaFinanciamento() async {
     var listFinType = {
       FinType.aVista,
@@ -281,9 +271,10 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return currenFinType;
   }
 
-  /**
-   * Função auxiliar para  calcular a quantidade máxima de parcelas
-   */
+  /// Função auxiliar para  calcular a quantidade máxima de parcelas
+  /// Retorna a quantidade máxima de parcelas que o valor pode ser parcelado
+  /// * [valor] é o valor a ser parcelado
+  /// * Lança uma exceção se o valor for menor que o valor mínimo parcelável
   double _obterQuantidadeMaximaDeParcelas(double valor) {
     double valordeParcelaMinimo = 5.00;
     double valorMinimoParcelavel = 2 * valordeParcelaMinimo;
