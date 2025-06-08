@@ -55,9 +55,9 @@ class PayGoRequestHandler {
         status: status,
       )
     ).then((value) {
-      print("Venda confirmada");
+      debugPrint("Venda confirmada");
     }).catchError((error) {
-      print("Erro ao confirmar venda: $error");
+      debugPrint("Erro ao confirmar venda: $error");
     });
   }
   
