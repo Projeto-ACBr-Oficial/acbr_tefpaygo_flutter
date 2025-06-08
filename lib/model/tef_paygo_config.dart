@@ -60,8 +60,7 @@ class TefPayGoConfiguracoes {
     _isAutoConfirm = isAutoConfirm;
   }
 
-  void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao){
+  void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao) {
     _tipoDeConfirmacao = tipoDeConfirmacao;
   }
-
 }

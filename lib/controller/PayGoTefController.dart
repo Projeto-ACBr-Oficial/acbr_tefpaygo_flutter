@@ -71,12 +71,13 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   @override
-  void onErrorMessage(String message)  {
-    Get.toNamed('/failure_screen', arguments: message); // Redireciona para a página de erro
+  void onErrorMessage(String message) {
+    Get.toNamed('/failure_screen',
+        arguments: message); // Redireciona para a página de erro
   }
 
-  void  _showDialog(
-      String title, String message, Color backgroundColor, IconData icon)  {
+  void _showDialog(
+      String title, String message, Color backgroundColor, IconData icon) {
     Get.defaultDialog(
       title: title,
       titleStyle: TextStyle(color: Colors.white),
@@ -190,7 +191,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
   /// Metodo auxiliar para imprimir o relatório
   void _printReport(TransacaoRequisicaoResposta resposta) {
     if (_configuracoes.isPrintReport) {
-      if ( resposta.fullReceipt != "")
+      if (resposta.fullReceipt != "")
         _printer.printerText(resposta.fullReceipt);
     }
   }
@@ -200,14 +201,14 @@ class TefController extends GetxController implements TefPayGoCallBack {
     if (_configuracoes.isPrintMerchantReceipt)
       _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
+
     //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
   /// Metodo auxiliar para tratar a instalação
 
   void _handleInstall(TransacaoRequisicaoResposta resposta) {
-    if (resposta.transactionResult ==
-        PayGoRetornoConsts.PWRET_OK) {
+    if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK) {
       onPrinter(resposta);
       onSuccessMessage(resposta.resultMessage);
     } else {
@@ -236,7 +237,4 @@ class TefController extends GetxController implements TefPayGoCallBack {
     super.onClose();
     _payGOResponseHandler.finalizar();
   }
-
-
-
 }

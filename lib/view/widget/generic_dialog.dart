@@ -28,18 +28,17 @@ Future<T?> showGenericDialog<T>({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: options
-                .map((option) =>
-                RadioListTile<T>(
-                  title: Text(displayText(option)),
-                  value: option,
-                  groupValue: selectedValue,
-                  onChanged: (T? value) {
-                    if (value != null) {
-                      onSelected(value);
-                      Navigator.pop(context, value);
-                    }
-                  },
-                ))
+                .map((option) => RadioListTile<T>(
+                      title: Text(displayText(option)),
+                      value: option,
+                      groupValue: selectedValue,
+                      onChanged: (T? value) {
+                        if (value != null) {
+                          onSelected(value);
+                          Navigator.pop(context, value);
+                        }
+                      },
+                    ))
                 .toList(),
           ),
         ),

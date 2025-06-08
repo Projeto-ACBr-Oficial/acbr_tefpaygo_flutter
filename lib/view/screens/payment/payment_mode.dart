@@ -186,7 +186,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   // Métodos auxiliares
 
   void navegarParaTelaAnterior() {
-   Get.back();
+    Get.back();
   }
 
   Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
@@ -282,7 +282,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     if (valor < valorMinimoParcelavel) {
       throw new ValorPagamentoInvalidoException(
-          "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
+          "Valor mínimo para parcelamento é R\$ $valorMinimoParcelavel");
     }
     double quantidadeDeParcelas = valor / valordeParcelaMinimo;
 
@@ -297,9 +297,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
   }
 
-  /**
-   * Função auxiliar para pagamento com cartão de crédito
-   */
+  /// Função auxiliar para pagamento com cartão de crédito
+
   void _pagamentoCredito(TransacaoRequisicaoVenda transacao) async {
     try {
       await _obterModoDeFinanciamento(transacao);
