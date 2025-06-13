@@ -312,7 +312,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
           msg: "Valor mínimo para parcelamento é R\$ 10,00",
           toastLength: Toast.LENGTH_LONG,
           fontSize: 16.0);
-      navegarParaTelaAnterior();
     }
   }
 }
