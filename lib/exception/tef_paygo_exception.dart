@@ -1,10 +1,9 @@
+import 'dart:core';
 class TefPaygoException implements Exception {
-  final String message;
 
+  final String message;
   TefPaygoException(this.message);
 
   @override
-  String toString() {
-    return 'TefPaygoException: $message';
-  }
+  toString() => 'TefPaygoException: $message';
 }

@@ -5,7 +5,5 @@ class ValorPagamentoInvalidoException extends TefPaygoException{
   ValorPagamentoInvalidoException(super.message);
 
   @override
-  String toString() {
-    return 'ValorPagamentoInvalidoException: $message';
-  }
+  String toString()  => "PagamentoInvalidoException: $message";
 }
