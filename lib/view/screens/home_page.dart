@@ -43,8 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(_titles[_currentIndex]),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            titleTextStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            title: Text(_titles[_currentIndex],),
           ),
           body: Center(child: _pages[_currentIndex]),
           bottomNavigationBar: Container(
