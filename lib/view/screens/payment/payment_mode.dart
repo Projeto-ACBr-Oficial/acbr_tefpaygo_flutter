@@ -143,9 +143,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     // não é possível testar voucher em modo de sandbox
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoVoucher;
-    //..finType = FinType.aVista;
+      ..cardType = CardType.cartaoVoucher
+      ..finType = FinType.aVista;
     await pagar(transacao);
   }
 
@@ -281,7 +280,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     double quantidadeMaximaDeParcelas = 99.0;
 
     if (valor < valorMinimoParcelavel) {
-      throw  ValorPagamentoInvalidoException(
+      throw ValorPagamentoInvalidoException(
           "Valor mínimo para parcelamento é R\$ $valorMinimoParcelavel");
     }
     double quantidadeDeParcelas = valor / valordeParcelaMinimo;
