@@ -51,6 +51,7 @@ class PayGoRequestHandler {
       requisicao: TransacaoRequisicaoConfirmacao(
         confirmationTransactionId: id,
         status: status,
+
       )
     ).then((value) {
       debugPrint("Venda confirmada");

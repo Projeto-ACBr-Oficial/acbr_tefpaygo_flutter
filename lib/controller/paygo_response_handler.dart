@@ -104,7 +104,8 @@ class PayGOResponseHandler {
           _callBack.onPendingTransaction(_getStringPendingData());
           break;
         default:
-          _callBack.onErrorMessage("$resposta.resultMessage\nResultado da transação: ${resposta.transactionResult}");
+          debugPrint("${resposta.transactionResult}");
+          _callBack.onErrorMessage("${resposta.transactionResult}: ${resposta.resultMessage}");
           break;
       }
     }

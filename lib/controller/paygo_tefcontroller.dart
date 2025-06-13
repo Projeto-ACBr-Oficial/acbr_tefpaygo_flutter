@@ -66,39 +66,45 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   @override
-  void onSuccessMessage(String message) {
-    _showDialog("Resultado:", message, Colors.green, Icons.check_circle);
+  Future<void> onSuccessMessage(String message) async {
+    await _showDialog("Resultado:", message, Colors.green, Icons.check_circle);
   }
 
   @override
-  void onErrorMessage(String message) {
-    Get.toNamed('/failure_screen',
-        arguments: message); // Redireciona para a página de erro
+  Future<void> onErrorMessage(String message) async {
+    await _showDialog("Erro:", message, Colors.red, Icons.error);
+    await Get.toNamed('/failure_screen', arguments: message);
   }
 
-  void _showDialog(
-      String title, String message, Color backgroundColor, IconData icon) {
-    Get.defaultDialog(
-      title: title,
-      titleStyle: TextStyle(color: Colors.white),
-      backgroundColor: backgroundColor,
-      middleText: message,
-      barrierDismissible: false,
-      radius: 10.0,
-      content: Column(
-        children: [
-          Icon(icon, color: Colors.white, size: 50),
-          SizedBox(height: 10),
-          Text(message, style: TextStyle(color: Colors.white)),
-        ],
+  /// [_showDialog] é um método auxiliar para mostrar diálogos de sucesso ou erro
+  /// * [title] é o título do diálogo
+  /// * [message] é a mensagem a ser exibida
+  /// * [backgroundColor] é a cor de fundo do diálogo
+  /// * [icon] é o ícone a ser exibido no diálogo
+  Future<void> _showDialog(String title, String message, Color backgroundColor,
+      IconData icon) async {
+    await Future.wait([
+      Get.defaultDialog(
+        title: title,
+        titleStyle: TextStyle(color: Colors.white),
+        backgroundColor: backgroundColor,
+        middleText: message,
+        barrierDismissible: false,
+        radius: 10.0,
+        content: Column(
+          children: [
+            Icon(icon, color: Colors.white, size: 50),
+            SizedBox(height: 10),
+            Text(message, style: TextStyle(color: Colors.white)),
+          ],
+        ),
       ),
-    );
-
-    Future.delayed(Duration(seconds: 3), () {
-      if (Get.isDialogOpen ?? false) {
-        Get.back();
-      }
-    });
+      Future.delayed(Duration(seconds: 3), () {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+      })
+    ]);
   }
 
   @override
@@ -106,18 +112,24 @@ class TefController extends GetxController implements TefPayGoCallBack {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
     if (checkRequirmentsToConfirmTransaction()) {
       _payGORequestHandler.confirmarTransacao(
-          response.confirmationTransactionId,
-          _configuracoes.tipoDeConfirmacao
-      );
+          response.confirmationTransactionId, _configuracoes.tipoDeConfirmacao);
 
-      onSuccessMessage(response.resultMessage);
-
-      Get.offAllNamed(
-          '/home'); // Redireciona para a tela inicial após o sucesso
-
-      //a impressão é opcional
-      onPrinter(response);
+      _afterFinishTransaction(response);
     }
+  }
+
+  /// [_afterFinishTransaction] é um método auxiliar que é chamado após a finalização de uma transação
+  /// * Ele exibe uma mensagem de sucesso, imprime os comprovantes e redireciona para a tela inicial
+  /// É assincrono porque os dialogs são exibidos de forma assíncrona
+  void _afterFinishTransaction(TransacaoRequisicaoResposta response) async {
+    await onSuccessMessage(response.resultMessage);
+    //a impressão é opcional
+    onPrinter(response);
+    await Get.offNamedUntil(
+        '/home',
+        (route) =>
+            Get.isDialogOpen ==
+            false); // Redireciona para a tela inicial após o sucesso
   }
 
   @override
@@ -173,7 +185,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
     }
   }
 
-/// Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
+  /// Função auxiliar que verifica se os requisitos para confirmar a transação foram atendidos
 
   @override
   bool checkRequirmentsToConfirmTransaction() {
@@ -202,7 +214,8 @@ class TefController extends GetxController implements TefPayGoCallBack {
       _printer.printerText(resposta.merchantReceipt);
     _printCardHolderReceipt(resposta);
 
-    //_printer.printerText(resposta.shortReceipt); //para roteiro de teste
+    if (_configuracoes.isPrintShortReceipt)
+      _printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
   /// Metodo auxiliar para tratar a instalação
