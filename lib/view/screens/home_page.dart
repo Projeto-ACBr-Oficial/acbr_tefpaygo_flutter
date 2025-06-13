@@ -1,8 +1,5 @@
 import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../controller/paygo_tefcontroller.dart';
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -37,7 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     debugPrint("home_page dispose");
-    Get.delete<TefController>();
     super.dispose();
   }
 
