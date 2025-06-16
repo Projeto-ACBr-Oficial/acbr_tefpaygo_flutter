@@ -42,26 +42,26 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   @override
-  void onPrinter(TransacaoRequisicaoResposta resposta) {
+  Future<void> onPrinter(TransacaoRequisicaoResposta resposta) async {
     switch (resposta.operation) {
       case "VENDA":
       case "REIMPRESSAO":
       case "CANCELAMENTO":
-        _printRecepits(resposta);
+        await _printRecepits(resposta);
         break;
 
       case "INSTALACAO":
-        _printer.printerText(resposta.fullReceipt);
+        await _printer.printerText(resposta.fullReceipt);
         break;
 
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
-        _printReport(resposta);
+        await _printReport(resposta);
         break;
 
       default:
-        onErrorMessage("Operação não suportada");
+        await onErrorMessage("Operação não suportada");
     }
   }
 
@@ -108,40 +108,29 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   @override
-  void onFinishTransaction(TransacaoRequisicaoResposta response) {
+  void onFinishTransaction(TransacaoRequisicaoResposta response) async {
     //aqui você pode implementar a lógica para salvar a transação no banco de dados, notas fiscais, etc
     if (checkRequirmentsToConfirmTransaction()) {
-      _payGORequestHandler.confirmarTransacao(
+      await _payGORequestHandler.confirmarTransacao(
           response.confirmationTransactionId, _configuracoes.tipoDeConfirmacao);
-
-      _afterFinishTransaction(response);
+      await onSuccessMessage(response.resultMessage);
+      //a impressão é opcional
+      await onPrinter(response);
+      await Get.offNamedUntil('/home',
+          (route) => Get.isDialogOpen == false); // Redireciona para a tela i
     }
   }
 
-  /// [_afterFinishTransaction] é um método auxiliar que é chamado após a finalização de uma transação
-  /// * Ele exibe uma mensagem de sucesso, imprime os comprovantes e redireciona para a tela inicial
-  /// É assincrono porque os dialogs são exibidos de forma assíncrona
-  void _afterFinishTransaction(TransacaoRequisicaoResposta response) async {
-    await onSuccessMessage(response.resultMessage);
-    //a impressão é opcional
-    onPrinter(response);
-    await Get.offNamedUntil(
-        '/home',
-        (route) =>
-            Get.isDialogOpen ==
-            false); // Redireciona para a tela inicial após o sucesso
-  }
-
   @override
-  void onPendingTransaction(String transactionPendingData) {
+  void onPendingTransaction(String transactionPendingData) async {
     switch (_configuracoes.pendingTransactionActions) {
       case PendingTransactionActions.CONFIRM:
-        _payGORequestHandler.resolverPendencia(
+        await _payGORequestHandler.resolverPendencia(
             transactionPendingData, TransactionStatus.confirmadoManual);
         break;
 
       case PendingTransactionActions.MANUAL_UNDO:
-        _payGORequestHandler.resolverPendencia(transactionPendingData);
+        await _payGORequestHandler.resolverPendencia(transactionPendingData);
         break;
 
       case PendingTransactionActions.NONE:
@@ -152,17 +141,17 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   @override
-  void onFinishOperation(TransacaoRequisicaoResposta response) {
+  void onFinishOperation(TransacaoRequisicaoResposta response) async {
     switch (response.operation) {
       case "REIMPRESSAO":
       case "RELATORIO_SINTETICO":
       case "RELATORIO_DETALHADO":
       case "RELATORIO_RESUMIDO":
-        onPrinter(response);
+        await onPrinter(response);
         break;
 
       case "INSTALACAO":
-        _handleInstall(response);
+        await _handleInstall(response);
         break;
 
       case "EXIBE_PDC":
@@ -171,17 +160,18 @@ class TefController extends GetxController implements TefPayGoCallBack {
       case "TESTE_COMUNICACAO":
       case "OPERACAO_DESCONHECIDA":
       default:
-        _handleOutraOperacao(response);
+        await _handleOutraOperacao(response);
         break;
     }
   }
 
-  void _handleOutraOperacao(TransacaoRequisicaoResposta resposta) {
+  Future<void> _handleOutraOperacao(
+      TransacaoRequisicaoResposta resposta) async {
     if (resposta != null) {
       if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
-        onSuccessMessage(resposta.resultMessage);
+        await onSuccessMessage(resposta.resultMessage);
       else
-        onErrorMessage(resposta.resultMessage);
+        await onErrorMessage(resposta.resultMessage);
     }
   }
 
@@ -194,38 +184,39 @@ class TefController extends GetxController implements TefPayGoCallBack {
   }
 
   /// Metodo auxiliar para imprimir o comprovante (via  do cliente)
-  void _printCardHolderReceipt(TransacaoRequisicaoResposta resposta) {
+  Future<void> _printCardHolderReceipt(
+      TransacaoRequisicaoResposta resposta) async {
     if (_configuracoes.isPrintcardholderReceipt) {
-      _printer.printerText(resposta.cardholderReceipt);
+      await _printer.printerText(resposta.cardholderReceipt);
     }
   }
 
   /// Metodo auxiliar para imprimir o relatório
-  void _printReport(TransacaoRequisicaoResposta resposta) {
+  Future<void> _printReport(TransacaoRequisicaoResposta resposta) async {
     if (_configuracoes.isPrintReport) {
       if (resposta.fullReceipt != "")
-        _printer.printerText(resposta.fullReceipt);
+        await _printer.printerText(resposta.fullReceipt);
     }
   }
 
   /// Metodo auxiliar para imprimir os comprovantes
-  void _printRecepits(TransacaoRequisicaoResposta resposta) {
+  Future<void> _printRecepits(TransacaoRequisicaoResposta resposta) async {
     if (_configuracoes.isPrintMerchantReceipt)
-      _printer.printerText(resposta.merchantReceipt);
-    _printCardHolderReceipt(resposta);
+      await _printer.printerText(resposta.merchantReceipt);
+    await _printCardHolderReceipt(resposta);
 
     if (_configuracoes.isPrintShortReceipt)
-      _printer.printerText(resposta.shortReceipt); //para roteiro de teste
+      await _printer.printerText(resposta.shortReceipt); //para roteiro de teste
   }
 
   /// Metodo auxiliar para tratar a instalação
 
-  void _handleInstall(TransacaoRequisicaoResposta resposta) {
+  Future<void> _handleInstall(TransacaoRequisicaoResposta resposta) async {
     if (resposta.transactionResult == PayGoRetornoConsts.PWRET_OK) {
-      onPrinter(resposta);
-      onSuccessMessage(resposta.resultMessage);
+      await onPrinter(resposta);
+      await onSuccessMessage(resposta.resultMessage);
     } else {
-      onErrorMessage(resposta.resultMessage);
+      await onErrorMessage(resposta.resultMessage);
     }
   }
 

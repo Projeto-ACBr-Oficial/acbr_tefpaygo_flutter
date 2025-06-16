@@ -13,7 +13,7 @@ class CustomPrinter implements GenericPrinter {
 
 
   @override
-  void printerText(String comprovante) async {
+  Future<void> printerText(String comprovante) async {
     try {
      await Future.wait([
        _printer.printText(comprovante),
@@ -25,12 +25,12 @@ class CustomPrinter implements GenericPrinter {
   }
 
   @override
-  void sendRawData(Uint8List data) async {
+  Future<void> sendRawData(Uint8List data) async {
     await _printer.sendRAWData(data);
   }
 
   @override
-  void printBitmap(Uint8List bitmap)  async {
+  Future<void> printBitmap(Uint8List bitmap)  async {
     await _printer.printBitmap(bitmap);
   }
 }

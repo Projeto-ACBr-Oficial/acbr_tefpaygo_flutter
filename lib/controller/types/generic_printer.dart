@@ -11,16 +11,16 @@ abstract class GenericPrinter {
   /// [printerText] Método para inicializar a impressora
   /// * [text] é o texto a ser impresso
 
-  void printerText(String text);
+  Future<void> printerText(String text);
 
   /// [sendRawData] Método para enviar dados brutos para a impressora
   /// * Este método é usado para enviar dados que não são texto, como imagens ou comandos específicos da impressora
   /// * [data] é os dados a serem enviados
 
-  void sendRawData(Uint8List data);
+  Future<void> sendRawData(Uint8List data);
 
   /// [printBitmap] Método para imprimir uma imagem bitmap
   /// * [bitmap] é a imagem em formato [Uint8List] a ser impressa
 
-  void printBitmap(Uint8List bitmap);
+  Future<void> printBitmap(Uint8List bitmap);
 }

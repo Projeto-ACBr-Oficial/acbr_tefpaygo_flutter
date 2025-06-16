@@ -2,17 +2,16 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_
 
 ///  [TefPayGoCallBack] é uma interface de comunicação entre a view e o [PayGoResponseHandler]
 abstract class TefPayGoCallBack {
-
   /// [onPrinter] é o método chamado quando a impressão é solicitada
   ///  * Aqui você pode implementar a lógica de impressão de acordo com a resposta da transação
 
-  void onPrinter(TransacaoRequisicaoResposta resposta);
+  Future<void> onPrinter(TransacaoRequisicaoResposta resposta);
 
   /// [onSuccessMessage] é o método chamado quando uma mensagem de sucesso é recebida
   /// * Aqui você pode implementar a lógica para exibir a mensagem recebida
   /// [message] é a mensagem de sucesso recebida
   ///
-  Future<void> onSuccessMessage(String message) ;
+  Future<void> onSuccessMessage(String message);
 
   ///[onErrorMessage] é o método chamado quando uma mensagem de erro é recebida
   /// [message] é a mensagem de erro recebida
