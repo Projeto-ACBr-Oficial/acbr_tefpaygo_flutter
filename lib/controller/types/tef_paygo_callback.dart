@@ -5,7 +5,7 @@ abstract class TefPayGoCallBack {
   /// [onPrinter] é o método chamado quando a impressão é solicitada
   ///  * Aqui você pode implementar a lógica de impressão de acordo com a resposta da transação
 
-  Future<void> onPrinter(TransacaoRequisicaoResposta resposta);
+  Future<void> onPrinter(TransacaoRequisicaoResposta response);
 
   /// [onSuccessMessage] é o método chamado quando uma mensagem de sucesso é recebida
   /// * Aqui você pode implementar a lógica para exibir a mensagem recebida

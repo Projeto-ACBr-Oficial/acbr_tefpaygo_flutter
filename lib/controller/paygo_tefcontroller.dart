@@ -202,6 +202,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
   Future<void> _printRecepits(TransacaoRequisicaoResposta resposta) async {
     if (_configuracoes.isPrintMerchantReceipt)
       await _printer.printerText(resposta.merchantReceipt);
+
     await _printCardHolderReceipt(resposta);
 
     if (_configuracoes.isPrintShortReceipt)
