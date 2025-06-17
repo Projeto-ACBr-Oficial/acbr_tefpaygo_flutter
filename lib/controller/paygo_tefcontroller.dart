@@ -116,8 +116,7 @@ class TefController extends GetxController implements TefPayGoCallBack {
       await onSuccessMessage(response.resultMessage);
       //a impressão é opcional
       await onPrinter(response);
-      await Get.offNamedUntil('/home',
-          (route) => Get.isDialogOpen == false); // Redireciona para a tela i
+      await Get.offAllNamed('/home'); // Redireciona para a tela i
     }
   }
 
