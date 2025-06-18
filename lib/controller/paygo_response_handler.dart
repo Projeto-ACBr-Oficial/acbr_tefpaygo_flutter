@@ -61,16 +61,6 @@ class PayGOResponseHandler {
           _handleTransacao(resposta);
           break;
 
-        case "REIMPRESSAO":
-        case "RELATORIO_SINTETICO":
-        case "RELATORIO_DETALHADO":
-        case "RELATORIO_RESUMIDO":
-        case "INSTALACAO":
-        case "EXIBE_PDC":
-        case "MANUTENCAO":
-        case "ADMINISTRATIVA":
-        case "TESTE_COMUNICACAO":
-        case "OPERACAO_DESCONHECIDA":
         default:
           _handleOperacao(resposta);
           break;
