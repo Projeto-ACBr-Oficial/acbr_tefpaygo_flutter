@@ -152,12 +152,8 @@ class TefController extends GetxController implements TefPayGoCallBack {
       case "INSTALACAO":
         await _handleInstall(response);
         break;
-
-      case "EXIBE_PDC":
-      case "MANUTENCAO":
-      case "ADMINISTRATIVA":
-      case "TESTE_COMUNICACAO":
-      case "OPERACAO_DESCONHECIDA":
+      // outras operações (não financeiras) que não sejam impressão ou instalacao
+      // no geral exibição na tela é suficiente para elas
       default:
         await _handleOutraOperacao(response);
         break;
