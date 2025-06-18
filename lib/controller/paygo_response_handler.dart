@@ -21,7 +21,6 @@ class PayGOResponseHandler {
 
   PayGOResponseHandler(this._callBack);
 
-
   /// Método para inicializar o handler e escutar as intents recebidas
   void inicializar() {
     _subscription = receive_intent.ReceiveIntent.receivedIntentStream
@@ -50,7 +49,6 @@ class PayGOResponseHandler {
     }
   }
 
-
   // Método para processar a resposta da transação
   // Esse método verifica o tipo de operação e chama o método apropriado para tratar a resposta
   void _processarResposta(TransacaoRequisicaoResposta resposta) {
@@ -58,45 +56,35 @@ class PayGOResponseHandler {
       switch (resposta.operation) {
         case "VENDA":
         case "CANCELAMENTO":
-          _handleTransacao(resposta);
+          _handleOperacao(resposta, _callBack.onFinishTransaction);
           break;
 
-          // todas as operações que não sejam transações financeiras
+        // todas as operações que não sejam transações financeiras
         default:
-          _handleOperacao(resposta);
+          _handleOperacao(resposta, _callBack.onFinishOperation);
           break;
       }
     }
     _intent = null;
   }
-  // Método para tratar a resposta de uma operação
-  void _handleOperacao(TransacaoRequisicaoResposta resposta) {
-    if (resposta != null) {
-      if (resposta.transactionResult ==
-          PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN) {
-        _callBack.onPendingTransaction(_getStringPendingData());
-      } else if ( resposta.transactionResult == PayGoRetornoConsts.PWRET_OK)
-        _callBack.onFinishOperation(resposta);
-      else{
-        _callBack.onErrorMessage(resposta.resultMessage);
-      }
-    }
-  }
 
-  // Método para tratar a resposta de uma transação
-  void _handleTransacao(TransacaoRequisicaoResposta resposta) {
+  /// [_handleOperacao] é uma função auxiliar para tratar operações de forma genérica.
+  /// * [resposta]: Dados da operação a ser processada.
+  /// * [onOperacaoRealizadaSucesso]: Função chamada quando a operação (financeira ou não) é concluída com sucesso.
+  /// **Obs.:** Qualquer tratamento específico  é feita na classe que implemente a interface [TefPayGoCallBack].
+
+  void _handleOperacao(TransacaoRequisicaoResposta resposta,
+      void Function(TransacaoRequisicaoResposta) onOperacaoRealizadaSucesso) {
     if (resposta != null) {
-      String transactionResult = resposta.transactionResult.toString();
-      switch (transactionResult) {
+      switch (resposta.transactionResult) {
         case PayGoRetornoConsts.PWRET_OK:
-          _callBack.onFinishTransaction(resposta);
+          onOperacaoRealizadaSucesso(resposta);
           break;
         case PayGoRetornoConsts.PWRET_FROMHOSTPENDTRN:
           _callBack.onPendingTransaction(_getStringPendingData());
           break;
         default:
-          debugPrint("${resposta.transactionResult}");
-          _callBack.onErrorMessage("${resposta.transactionResult}: ${resposta.resultMessage}");
+          _callBack.onErrorMessage(resposta.resultMessage);
           break;
       }
     }
