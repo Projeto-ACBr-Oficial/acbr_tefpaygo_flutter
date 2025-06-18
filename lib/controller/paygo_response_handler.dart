@@ -61,6 +61,7 @@ class PayGOResponseHandler {
           _handleTransacao(resposta);
           break;
 
+          // todas as operações que não sejam transações financeiras
         default:
           _handleOperacao(resposta);
           break;
