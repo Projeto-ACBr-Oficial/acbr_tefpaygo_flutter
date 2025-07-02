@@ -9,7 +9,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/currency_code.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
-import '../../../controller/PayGoTefController.dart';
+import '../../../controller/paygo_tefcontroller.dart';
 import '../../widget/generic_dialog.dart';
 
 class PaymentViewMode extends StatefulWidget {
@@ -130,10 +130,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   // Métodos onClick
 
-  /**
-   * Método executado quando clicar no botão de crédito
-   *
-   */
+  // Método executado quando clicar no botão de crédito
   void onClickButtonCredito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
@@ -146,9 +143,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     // não é possível testar voucher em modo de sandbox
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
-      ..cardType = CardType.cartaoVoucher;
-    //..finType = FinType.aVista;
+      ..cardType = CardType.cartaoVoucher
+      ..finType = FinType.aVista;
     await pagar(transacao);
   }
 
@@ -189,17 +185,15 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   // Métodos auxiliares
 
   void navegarParaTelaAnterior() {
-    Navigator.pop(context);
+    Get.back();
   }
 
   Future<void> pagar(TransacaoRequisicaoVenda transacao) async {
     await _tefController.payGORequestHandler.venda(transacao);
-    Navigator.pop(context);
+    //navegarParaTelaAnterior();
   }
 
-  /**
-   * Função auxiliar para obter o modo de financiamento
-   */
+  /// Função auxiliar para obter o modo de financiamento
   Future<void> _obterModoDeFinanciamento(
       TransacaoRequisicaoVenda transacao) async {
     FinType currentFinType = await _selecionaFinanciamento();
@@ -227,10 +221,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     }
   }
 
-  /**
-   * Função auxiliar para selecionar a quantidade de parcelas
-   *
-   */
+  // Função auxiliar para selecionar a quantidade de parcelas
   Future<double> _selecionaQuantidadeDeParcelas(double valor) async {
     double quantidadeMaximaDeParcelas = _obterQuantidadeMaximaDeParcelas(valor);
     var parcelas =
@@ -254,9 +245,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return quantidadeParcelas;
   }
 
-  /**
-   * Função auxiliar para selecionar a forma de financiamento
-   */
+  // Função auxiliar para selecionar a forma de financiamento
   Future<FinType> _selecionaFinanciamento() async {
     var listFinType = {
       FinType.aVista,
@@ -281,17 +270,18 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     return currenFinType;
   }
 
-  /**
-   * Função auxiliar para  calcular a quantidade máxima de parcelas
-   */
+  /// Função auxiliar para  calcular a quantidade máxima de parcelas
+  /// Retorna a quantidade máxima de parcelas que o valor pode ser parcelado
+  /// * [valor] é o valor a ser parcelado
+  /// * Lança uma exceção se o valor for menor que o valor mínimo parcelável
   double _obterQuantidadeMaximaDeParcelas(double valor) {
     double valordeParcelaMinimo = 5.00;
     double valorMinimoParcelavel = 2 * valordeParcelaMinimo;
     double quantidadeMaximaDeParcelas = 99.0;
 
     if (valor < valorMinimoParcelavel) {
-      throw new ValorPagamentoInvalidoException(
-          "Valor mínimo para parcelamento é R\$ ${valorMinimoParcelavel}");
+      throw ValorPagamentoInvalidoException(
+          "Valor mínimo para parcelamento é R\$ $valorMinimoParcelavel");
     }
     double quantidadeDeParcelas = valor / valordeParcelaMinimo;
 
@@ -306,9 +296,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
         msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
   }
 
-  /**
-   * Função auxiliar para pagamento com cartão de crédito
-   */
+  /// Função auxiliar para pagamento com cartão de crédito
+
   void _pagamentoCredito(TransacaoRequisicaoVenda transacao) async {
     try {
       await _obterModoDeFinanciamento(transacao);
@@ -322,7 +311,6 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
           msg: "Valor mínimo para parcelamento é R\$ 10,00",
           toastLength: Toast.LENGTH_LONG,
           fontSize: 16.0);
-      navegarParaTelaAnterior();
     }
   }
 }

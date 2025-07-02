@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-/**
- * Função auxiliar para montar um diálogo genérico
- * @param context contexto do widget
- * @param title título do diálogo
- * @param options lista de opções
- * @param selectedValue valor selecionado
- * @param displayText função para exibir o texto
- * @param onSelected função para selecionar o valor
- * @param onCancel função para cancelar a operação
- */
+/// Função auxiliar para montar um diálogo genérico
+/// * [context] contexto do widget
+/// * [titlte] título do diálogo
+/// * [options] lista de opções
+/// * [selectedValue] valor selecionado
+/// * [displayText] função para exibir o texto
+/// * [onSelected] função para selecionar o valor
+/// * [onCancel] função para cancelar a operação
+
 Future<T?> showGenericDialog<T>({
   required BuildContext context,
   required String title,
@@ -29,18 +28,17 @@ Future<T?> showGenericDialog<T>({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: options
-                .map((option) =>
-                RadioListTile<T>(
-                  title: Text(displayText(option)),
-                  value: option,
-                  groupValue: selectedValue,
-                  onChanged: (T? value) {
-                    if (value != null) {
-                      onSelected(value);
-                      Navigator.pop(context, value);
-                    }
-                  },
-                ))
+                .map((option) => RadioListTile<T>(
+                      title: Text(displayText(option)),
+                      value: option,
+                      groupValue: selectedValue,
+                      onChanged: (T? value) {
+                        if (value != null) {
+                          onSelected(value);
+                          Navigator.pop(context, value);
+                        }
+                      },
+                    ))
                 .toList(),
           ),
         ),

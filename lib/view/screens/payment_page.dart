@@ -1,5 +1,4 @@
-import 'package:demo_tefpaygo_simples/controller/PayGoTefController.dart';
-import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
+import 'package:demo_tefpaygo_simples/controller/paygo_tefcontroller.dart';
 import 'package:demo_tefpaygo_simples/view/widget/text_price.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,7 +15,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final TefController _tefController = Get.find();
   double _valorVenda = 0.0;
   String _valorVendaString = "0,00";
 
@@ -83,11 +81,7 @@ class _PaymentPageState extends State<PaymentPage> {
     }
 
     // _tefController.payGORequestHandler.venda(_valorVenda);
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                PaymentViewMode(valorPagamento: _valorVenda)));
+    await Get.toNamed('/payment', arguments: _valorVenda);
     _onClearVenda();
   }
 
@@ -107,7 +101,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 16),
-                  TextPrice(_valorVendaString),
+                  TextPrice(initialPrice: _valorVendaString),
                   const SizedBox(height: 16),
                   Flexible(
                     child: CustomKeyBoard(

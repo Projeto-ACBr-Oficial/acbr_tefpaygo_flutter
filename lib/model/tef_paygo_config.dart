@@ -1,32 +1,31 @@
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
-import '../controller/types/PendingTransactionActions.dart';
+import '../controller/types/pending_transaction_actions.dart';
 
-/**
- * TefPayGoConfiguracoes é uma classe que representa as configurações do TEF PayGo
- * Essa class é utilizada pelo PayGoTefController para configurar o comportamento do TEF PayGo
- * Propriedades configuráveis:
- * * - _isAutoConfirm: booleano que define se a transação deve ser confirmada automaticamente
- * - _isPrintcardholderReceipt: booleano que define se o comprovante do cliente deve ser impresso
- *  - _isPrintMerchantReceipt: booleano que define se o comprovante do estabelecimento deve ser impresso
- *  - _isPrintReport: booleano que define se o relatório deve ser impresso
- *  - _pendingTransactionActions (enumerado) que define a ação a ser tomada quando a transação está pendente
- *  - _tipoDeConfirmacao (enumerado) que define o tipo de confirmação da transação
- *  - _isTestScript: booleano que define se é um roteiro de testes
- *
- */
+///
+///  [TefPayGoConfiguracoes] é uma classe que representa as configurações do TEF PayGo
+///  Essa class é utilizada pelo PayGoTefController para configurar o comportamento do TEF PayGo
+/// * Propriedades configuráveis:
+/// [_isAutoConfirm]  booleano que define se a transação deve ser confirmada automaticamente
+/// [_isPrintcardholderReceipt] booleano que define se o comprovante do cliente deve ser impresso
+/// [_isPrintMerchantReceipt]  booleano que define se o comprovante do estabelecimento deve ser impresso
+/// [_isPrintReport]  booleano que define se o relatório deve ser impresso
+/// [_pendingTransactionActions] (enumerado) que define a ação a ser tomada quando a transação está pendente
+/// [_tipoDeConfirmacao] (enumerado) que define o tipo de confirmação da transação
+/// [_isPrintShortReceipt] booleano que define se o comprovante curto deve ser impresso
+
 class TefPayGoConfiguracoes {
   late bool _isAutoConfirm = true;
   late bool _isPrintcardholderReceipt = true;
   late bool _isPrintMerchantReceipt = false;
   late bool _isPrintReport = true;
-  late bool _isTestScript = false;
+  late bool _isPrintShortReceipt = false;
 
   late PendingTransactionActions _pendingTransactionActions =
-  PendingTransactionActions.MANUAL_UNDO;
+      PendingTransactionActions.MANUAL_UNDO;
 
-  late TransactionStatus _tipoDeConfirmacao = TransactionStatus.confirmadoAutomatico;
-
+  late TransactionStatus _tipoDeConfirmacao =
+      TransactionStatus.confirmadoAutomatico;
 
   get pendingTransactionActions => _pendingTransactionActions;
 
@@ -38,10 +37,13 @@ class TefPayGoConfiguracoes {
 
   bool get isPrintReport => _isPrintReport;
 
-   get tipoDeConfirmacao => _tipoDeConfirmacao;
+  bool get isPrintShortReceipt => _isPrintShortReceipt;
 
-  bool get isTestScript => _isTestScript;
+  set isPrintShortReceipt(bool isPrintShortReceipt) {
+    _isPrintShortReceipt = isPrintShortReceipt;
+  }
 
+  get tipoDeConfirmacao => _tipoDeConfirmacao;
 
   void setPendingTransactionActions(
       PendingTransactionActions pendingTransactionActions) {
@@ -64,12 +66,7 @@ class TefPayGoConfiguracoes {
     _isAutoConfirm = isAutoConfirm;
   }
 
-  void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao){
+  void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao) {
     _tipoDeConfirmacao = tipoDeConfirmacao;
   }
-
-  void setIsTestScript(bool isTestScript){
-    _isTestScript = isTestScript;
-  }
-
 }

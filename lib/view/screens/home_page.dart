@@ -1,11 +1,8 @@
 import 'package:demo_tefpaygo_simples/view/screens/payment_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'config/config_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  String title = "";
 
   MyHomePage({super.key});
 
@@ -30,12 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+    debugPrint(" home page initState");
     super.initState();
   }
 
+  @override
   void dispose() {
-    debugPrint("dispose");
-    Get.deleteAll();
+    debugPrint("home_page dispose");
     super.dispose();
   }
 
@@ -45,8 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(_titles[_currentIndex]),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            titleTextStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            title: Text(_titles[_currentIndex],),
           ),
           body: Center(child: _pages[_currentIndex]),
           bottomNavigationBar: Container(

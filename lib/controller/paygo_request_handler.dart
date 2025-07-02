@@ -1,16 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_confirmacao.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_dados_automacao.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/models/transacao/transacao_requisicao_pendencia.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/card_type.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
-import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 import 'package:paygo_sdk/paygo_sdk.dart';
 
-/**
- * PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
- *
- */
+/// PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
 class PayGoRequestHandler {
   String _provider = "DEMO";
   final _repository = PayGOSdk();
@@ -21,8 +15,7 @@ class PayGoRequestHandler {
     _provider = provider;
   }
 
-  late TransacaoRequisicaoDadosAutomacao _dadosAutomacao =
-  dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
+  late TransacaoRequisicaoDadosAutomacao _dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
 
     "Exemplo TEF PayGo Flutter",
     "1.0",
@@ -35,11 +28,10 @@ class PayGoRequestHandler {
     allowShortReceipt: true,
   );
 
+  TransacaoRequisicaoDadosAutomacao get dadosAutomacao => _dadosAutomacao;
   set dadosAutomacao(TransacaoRequisicaoDadosAutomacao dadosAutomacao) {
     _dadosAutomacao = dadosAutomacao;
   }
-
-  TransacaoRequisicaoDadosAutomacao get dadosAutomacao => _dadosAutomacao;
 
   
   Future<void> venda(TransacaoRequisicaoVenda dadosVenda) async {
@@ -59,11 +51,12 @@ class PayGoRequestHandler {
       requisicao: TransacaoRequisicaoConfirmacao(
         confirmationTransactionId: id,
         status: status,
+
       )
     ).then((value) {
-      print("Venda confirmada");
+      debugPrint("Venda confirmada");
     }).catchError((error) {
-      print("Erro ao confirmar venda: $error");
+      debugPrint("Erro ao confirmar venda: $error");
     });
   }
   
