@@ -43,7 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+           backgroundColor: Theme.of(context).colorScheme.primary,
+            // backgroundColor: Color.fromARGB(255, 43, 57, 78),
             titleTextStyle: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
               fontSize: 20,

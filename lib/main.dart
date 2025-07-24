@@ -14,8 +14,8 @@ import 'package:get/get.dart';
 
     @override
     Widget build(BuildContext context) {
-      final colorScheme = ColorScheme.fromSeed(seedColor: Colors.blue);
-      final colorSchemeDark = ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark);
+     final colorScheme = ColorScheme.fromSeed(seedColor: Color(0xFF2B394E));
+      final colorSchemeDark = ColorScheme.fromSeed(seedColor: Color(0xFF2B394E), brightness: Brightness.dark);
 
       return GetMaterialApp(
         onDispose: () {
