@@ -14,7 +14,7 @@ class CustomKeyBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         double width = calculeWidth(constraints.maxWidth);
-        double maxHeight = constraints.maxHeight * 0.7; // Limita altura máxima
+        double maxHeight = calculeHeight(constraints.maxHeight); // Limita altura máxima
         
         return Container(
           width: width,
@@ -40,27 +40,35 @@ class CustomKeyBoard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Flexible(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: (width - 32) / 3, // Considera padding
-                    childAspectRatio: 1.2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemCount: 12,
-                  itemBuilder: (context, index) {
-                    List<String> buttons = [
-                      '1', '2', '3',
-                      '4', '5', '6',
-                      '7', '8', '9',
-                      'C', '0', 'CE'
-                    ];
-                    return NumericKeyButton(
-                      text: buttons[index],
-                      onPressed: () => processKeyBoardInput(buttons[index]),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, gridConstraints) {
+                    // Calcula a altura disponível para o grid (subtraindo padding e botão de pagamento)
+                    double availableHeight = gridConstraints.maxHeight - 12; // Espaço do botão de pagamento
+                    double buttonHeight = (availableHeight - 24) / 4; // 4 linhas de botões com espaçamento
+                    double buttonWidth = (width - 32 - 16) / 3; // 3 colunas com espaçamento
+                    
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: buttonWidth / buttonHeight,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: 12,
+                      itemBuilder: (context, index) {
+                        List<String> buttons = [
+                          '1', '2', '3',
+                          '4', '5', '6',
+                          '7', '8', '9',
+                          'C', '0', 'CE'
+                        ];
+                        return NumericKeyButton(
+                          text: buttons[index],
+                          onPressed: () => processKeyBoardInput(buttons[index]),
+                        );
+                      },
                     );
                   },
                 ),
