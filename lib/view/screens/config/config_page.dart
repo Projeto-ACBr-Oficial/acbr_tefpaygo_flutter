@@ -6,79 +6,6 @@ import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
 import '../../widget/widgets.dart';
 
-/// Página de configurações do sistema TEF PayGo.
-/// 
-/// Esta página permite configurar diversos aspectos do sistema:
-/// - Configurações de automação (nome, versão, software house)
-/// - Configurações de transação (recibos, descontos, vouchers)
-/// - Configurações de impressão (vias do cliente, estabelecimento, relatórios)
-/// - Ações do sistema (instalação, manutenção, administrativo)
-/// 
-/// A página se adapta automaticamente ao tema atual da aplicação
-/// e utiliza componentes reutilizáveis para manter consistência visual.
-class ConfigurationPage extends StatefulWidget {
-  const ConfigurationPage({super.key});
-
-  @override
-  State<ConfigurationPage> createState() => _ConfigurationPageState();
-}
-
-class _ConfigurationPageState extends State<ConfigurationPage> {
-  final TefController _tefController = Get.find();
-  late TextEditingController _posNameController;
-  late TextEditingController _posVersionController;
-  late TextEditingController _posDeveloperController;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            theme.colorScheme.surface,
-            theme.colorScheme.surface.withOpacity(0.8),
-          ],
-        ),
-      ),
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          AutomationSection(),
-          const SizedBox(height: 16),
-          TransactionSection(),
-          const SizedBox(height: 16),
-          PrintSection(),
-          const SizedBox(height: 16),
-          ActionsSection(),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _posNameController = TextEditingController(
-        text: _tefController.payGORequestHandler.dadosAutomacao.posName);
-    _posVersionController = TextEditingController(
-        text: _tefController.payGORequestHandler.dadosAutomacao.posVersion);
-    _posDeveloperController = TextEditingController(
-        text: _tefController.payGORequestHandler.dadosAutomacao.posDeveloper);
-  }
-
-  @override
-  void dispose() {
-    _posNameController.dispose();
-    _posVersionController.dispose();
-    _posDeveloperController.dispose();
-    super.dispose();
-  }
-}
-
 /// Seção de configurações de automação.
 /// 
 /// Permite configurar informações básicas da automação:
@@ -505,3 +432,55 @@ class ActionsSection extends StatelessWidget {
     );
   }
 }
+
+
+
+/// Página de configurações do sistema TEF PayGo.
+/// 
+/// Esta página permite configurar diversos aspectos do sistema:
+/// - Configurações de automação (nome, versão, software house)
+/// - Configurações de transação (recibos, descontos, vouchers)
+/// - Configurações de impressão (vias do cliente, estabelecimento, relatórios)
+/// - Ações do sistema (instalação, manutenção, administrativo)
+/// 
+/// A página se adapta automaticamente ao tema atual da aplicação
+/// e utiliza componentes reutilizáveis para manter consistência visual.
+class ConfigurationPage extends StatefulWidget {
+  const ConfigurationPage({super.key});
+
+  @override
+  State<ConfigurationPage> createState() => _ConfigurationPageState();
+}
+
+class _ConfigurationPageState extends State<ConfigurationPage> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.colorScheme.surface,
+            theme.colorScheme.surface.withOpacity(0.8),
+          ],
+        ),
+      ),
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: <Widget>[
+          AutomationSection(),
+          const SizedBox(height: 16),
+          TransactionSection(),
+          const SizedBox(height: 16),
+          PrintSection(),
+          const SizedBox(height: 16),
+          ActionsSection(),
+        ],
+      ),
+    );
+  }
+}
+
