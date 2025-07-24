@@ -4,10 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
-import '../../widget/generic_dialog.dart';
-
-// Widgets específicos da página de configuração
-import 'widget/widgets.dart';
+import '../../widget/widgets.dart';
 
 /// Seção de configurações de automação.
 /// 
@@ -34,7 +31,7 @@ class _AutomationSectionState extends State<AutomationSection> {
     
     return ExpansionTile(
       leading: Container(
-        padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
@@ -45,7 +42,7 @@ class _AutomationSectionState extends State<AutomationSection> {
         'Configurações de Automação',
         style: TextStyle(fontWeight: FontWeight.w600),
       ),
-      children: <Widget>[
+          children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
@@ -53,26 +50,26 @@ class _AutomationSectionState extends State<AutomationSection> {
               CustomTextField(
                 icon: Icons.label,
                 label: 'Nome da Automação',
-                controller: _posNameController,
-                onChanged: _onPosNameChanged,
-              ),
+                      controller: _posNameController,
+                      onChanged: _onPosNameChanged,
+                    ),
               const SizedBox(height: 12),
               CustomTextField(
                 icon: Icons.info,
                 label: 'Versão da Automação',
-                controller: _posVersionController,
-                onChanged: _onPosVersionChanged,
-              ),
+                      controller: _posVersionController,
+                      onChanged: _onPosVersionChanged,
+                    ),
               const SizedBox(height: 12),
               CustomTextField(
                 icon: Icons.business,
                 label: 'Software House',
-                controller: _posDeveloperController,
-                onChanged: _onPosDeveloperChanged,
+                      controller: _posDeveloperController,
+                      onChanged: _onPosDeveloperChanged,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ],
     );
   }

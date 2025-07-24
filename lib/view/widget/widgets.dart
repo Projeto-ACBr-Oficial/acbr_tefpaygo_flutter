@@ -1,18 +1,25 @@
-// Widgets reutilizáveis da aplicação
-// 
-// Este arquivo exporta todos os componentes que podem ser utilizados
-// em múltiplas telas da aplicação.
-// 
-// NOTA: Widgets específicos de cada página foram movidos para suas
-// respectivas pastas widget para melhor organização.
-// 
-// Exemplo de uso:
-// ```dart
-// import 'package:app/view/widget/widgets.dart';
-// ```
+/// Arquivo de índice para exportar todos os widgets da pasta.
+/// 
+/// Este arquivo facilita a importação de múltiplos widgets
+/// em um único import statement.
+/// 
+/// Exemplo de uso:
+/// ```dart
+/// import 'package:app/view/widget/widgets.dart';
+/// ```
 
-// Widgets básicos reutilizáveis
+// Widgets existentes
 export 'keyboard.dart';
 export 'text_price.dart';
 export 'generic_dialog.dart';
-export 'text_button.dart'; 
+export 'text_button.dart';
+
+// Novos widgets de configuração
+export 'custom_text_field.dart';
+export 'transaction_switch_tile.dart';
+export 'print_switch_tile.dart';
+export 'action_button.dart';
+
+// Widgets de pagamento
+export 'payment_option_tile.dart';
+export 'cancel_button.dart'; 

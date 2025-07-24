@@ -55,20 +55,20 @@ class CustomKeyBoard extends StatelessWidget {
                         childAspectRatio: buttonWidth / buttonHeight,
                         crossAxisSpacing: 8,
                         mainAxisSpacing: 8,
-                      ),
-                      itemCount: 12,
-                      itemBuilder: (context, index) {
-                        List<String> buttons = [
+                ),
+                itemCount: 12,
+                itemBuilder: (context, index) {
+                  List<String> buttons = [
                           '1', '2', '3',
                           '4', '5', '6',
                           '7', '8', '9',
                           'C', '0', 'CE'
-                        ];
-                        return NumericKeyButton(
-                          text: buttons[index],
-                          onPressed: () => processKeyBoardInput(buttons[index]),
-                        );
-                      },
+                  ];
+                  return NumericKeyButton(
+                    text: buttons[index],
+                    onPressed: () => processKeyBoardInput(buttons[index]),
+                  );
+                },
                     );
                   },
                 ),
@@ -144,7 +144,7 @@ class NumericKeyButton extends StatelessWidget {
                 offset: const Offset(0, 2),
               ),
             ],
-          ),
+      ),
           child: Center(child: buttonChild),
         ),
       ),
@@ -184,10 +184,10 @@ class PayButton extends StatelessWidget {
                 offset: const Offset(0, 4),
               ),
             ],
-          ),
-          child: const Center(
-            child: Text(
-              'Pagar',
+      ),
+      child: const Center(
+        child: Text(
+          'Pagar',
               style: TextStyle(
                 color: Colors.white, 
                 fontSize: 18,

@@ -1,5 +1,5 @@
 import 'package:demo_tefpaygo_simples/exception/valor_pagamento_invalido.dart';
-import 'package:demo_tefpaygo_simples/view/widget/generic_dialog.dart';
+import 'package:demo_tefpaygo_simples/view/widget/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -10,9 +10,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
-
-// Widgets específicos da página de pagamento
-import 'widget/widgets.dart';
+import '../../widget/widgets.dart';
 
 class PaymentViewMode extends StatefulWidget {
   final double valorPagamento;
