@@ -24,44 +24,67 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Configurações',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        elevation: 0,
-        backgroundColor: theme.colorScheme.surface,
-        foregroundColor: theme.colorScheme.onSurface,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              theme.colorScheme.surface,
-              theme.colorScheme.surface.withOpacity(0.8),
-            ],
-          ),
-        ),
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: <Widget>[
-            _buildAutomationSection(),
-            const SizedBox(height: 16),
-            _buildTransactionSection(),
-            const SizedBox(height: 16),
-            _buildPrintSection(),
-            const SizedBox(height: 16),
-            _buildActionsSection(),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.colorScheme.surface,
+            theme.colorScheme.surface.withOpacity(0.8),
           ],
         ),
+      ),
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: const <Widget>[
+          AutomationSection(),
+          SizedBox(height: 16),
+          TransactionSection(),
+          SizedBox(height: 16),
+          PrintSection(),
+          SizedBox(height: 16),
+          ActionsSection(),
+        ],
       ),
     );
   }
 
-  Widget _buildAutomationSection() {
+  @override
+  void initState() {
+    super.initState();
+    _posNameController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posName);
+    _posVersionController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posVersion);
+    _posDeveloperController = TextEditingController(
+        text: _tefController.payGORequestHandler.dadosAutomacao.posDeveloper);
+  }
+
+  @override
+  void dispose() {
+    _posNameController.dispose();
+    _posVersionController.dispose();
+    _posDeveloperController.dispose();
+    super.dispose();
+  }
+}
+
+class AutomationSection extends StatefulWidget {
+  const AutomationSection({super.key});
+
+  @override
+  State<AutomationSection> createState() => _AutomationSectionState();
+}
+
+class _AutomationSectionState extends State<AutomationSection> {
+  final TefController _tefController = Get.find();
+  late TextEditingController _posNameController;
+  late TextEditingController _posVersionController;
+  late TextEditingController _posDeveloperController;
+
+  @override
+  Widget build(BuildContext context) {
     return ExpansionTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
@@ -80,21 +103,21 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             children: [
-              _buildTextField(
+              CustomTextField(
                 icon: Icons.label,
                 label: 'Nome da Automação',
                 controller: _posNameController,
                 onChanged: _onPosNameChanged,
               ),
               const SizedBox(height: 12),
-              _buildTextField(
+              CustomTextField(
                 icon: Icons.info,
                 label: 'Versão da Automação',
                 controller: _posVersionController,
                 onChanged: _onPosVersionChanged,
               ),
               const SizedBox(height: 12),
-              _buildTextField(
+              CustomTextField(
                 icon: Icons.business,
                 label: 'Software House',
                 controller: _posDeveloperController,
@@ -104,287 +127,6 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildTransactionSection() {
-    return Column(
-      children: [
-        ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(Icons.payment, color: Colors.grey[700]),
-          ),
-          title: const Text(
-            'Configurações de Transação',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.receipt, color: Colors.grey[600]),
-          title: const Text('Permitir Recibos com via diferenciadas'),
-          subtitle: const Text('Habilita recibos com vias diferentes'),
-          value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
-          onChanged: _onAllowDifferentReceiptsChanged,
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.discount, color: Colors.grey[600]),
-          title: const Text('Permitir Desconto'),
-          subtitle: const Text('Habilita aplicação de descontos'),
-          value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
-          onChanged: _onAllowDiscountChanged,
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.card_giftcard, color: Colors.grey[600]),
-          title: const Text('Permitir Voucher para Desconto'),
-          subtitle: const Text('Habilita uso de vouchers'),
-          value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
-          onChanged: _onAllowDueAmountChanged,
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.receipt_long, color: Colors.grey[600]),
-          title: const Text('Permitir Via Reduzida'),
-          subtitle: const Text('Habilita impressão de via reduzida'),
-          value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
-          onChanged: _onAllowShortReceiptChanged,
-        ),
-        const Divider(height: 1),
-        ListTile(
-          leading: Icon(Icons.pending_actions, color: Colors.grey[600]),
-          title: const Text('Transação Pendente'),
-          subtitle: const Text('Ação para transações pendentes'),
-          trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: DropdownButton<PendingTransactionActions>(
-              value: _tefController.configuracoes.pendingTransactionActions,
-              onChanged: _onPendingTransactionActionsChanged,
-              underline: const SizedBox(),
-              items: PendingTransactionActions.values
-                  .map<DropdownMenuItem<PendingTransactionActions>>(
-                      (PendingTransactionActions value) {
-                return DropdownMenuItem<PendingTransactionActions>(
-                  value: value,
-                  child: Text(
-                    value.toValue().replaceAll("_", " "),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.check_circle, color: Colors.grey[600]),
-          title: const Text('Confirmação Automática de Transação'),
-          subtitle: const Text('Confirma transações automaticamente'),
-          value: _tefController.configuracoes.isAutoConfirm,
-          onChanged: _onIsAutoConfirmChanged,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPrintSection() {
-    return ExpansionTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(Icons.print, color: Colors.grey[700]),
-      ),
-      title: const Text(
-        'Configurações de Impressão',
-        style: TextStyle(fontWeight: FontWeight.w600),
-      ),
-      children: <Widget>[
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.receipt, color: Colors.grey[600]),
-          title: const Text('Imprimir via do Cliente'),
-          subtitle: const Text('Imprime recibo para o cliente'),
-          value: _tefController.configuracoes.isPrintcardholderReceipt,
-          onChanged: _onIsPrintCardholderReceiptChanged,
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.store, color: Colors.grey[600]),
-          title: const Text('Imprimir via do Estabelecimento'),
-          subtitle: const Text('Imprime recibo para o estabelecimento'),
-          value: _tefController.configuracoes.isPrintMerchantReceipt,
-          onChanged: _onIsPrintMerchantReceiptChanged,
-        ),
-        const Divider(height: 1),
-        SwitchListTile.adaptive(
-          secondary: Icon(Icons.report, color: Colors.grey[600]),
-          title: const Text('Imprimir Relatório'),
-          subtitle: const Text('Imprime relatórios de transação'),
-          value: _tefController.configuracoes.isPrintReport,
-          onChanged: _onIsPrintReportChanged,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionsSection() {
-    return Column(
-      children: [
-        ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(Icons.build, color: Colors.grey[700]),
-          ),
-          title: const Text(
-            'Ações do Sistema',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-        _buildActionButton(
-          icon: Icons.build,
-          text: 'Instalação',
-          onPressed: onclickButtonInstalacao,
-        ),
-        _buildActionButton(
-          icon: Icons.settings,
-          text: 'Manutenção',
-          onPressed: onclickButtonManutencao,
-        ),
-        _buildActionButton(
-          icon: Icons.admin_panel_settings,
-          text: 'Administrativo',
-          onPressed: onclickButtonPainelAdministrativo,
-        ),
-        _buildActionButton(
-          icon: Icons.visibility,
-          text: 'Exibe PDC',
-          onPressed: onclickButtonExibePDC,
-        ),
-        _buildActionButton(
-          icon: Icons.description,
-          text: 'Relatório Detalhado',
-          onPressed: onClickButtonRelatorioDetalhado,
-        ),
-        _buildActionButton(
-          icon: Icons.summarize,
-          text: 'Relatório Resumido',
-          onPressed: onclickButtonRelatorioResumido,
-        ),
-        _buildActionButton(
-          icon: Icons.select_all,
-          text: 'Selecionar Provedor',
-          onPressed: onclickButtonSelectProvider,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField({
-    required IconData icon,
-    required String label,
-    required TextEditingController controller,
-    required Function(String) onChanged,
-  }) {
-    return TextField(
-      controller: controller,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Colors.grey[600]),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        filled: true,
-        fillColor: Colors.grey[50],
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String text,
-    required VoidCallback onPressed,
-  }) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(icon, color: Colors.grey[700], size: 20),
-      ),
-      title: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
-      onTap: onPressed,
-    );
-  }
-
-  void onclickButtonInstalacao() async {
-    await _tefController.payGORequestHandler.instalacao();
-  }
-
-  void onclickButtonManutencao() async {
-    await _tefController.payGORequestHandler.manutencao();
-  }
-
-  void onclickButtonPainelAdministrativo() async {
-    await _tefController.payGORequestHandler.painelAdministrativo();
-    Navigator.canPop(context);
-  }
-
-  void onclickButtonExibePDC() async {
-    await _tefController.payGORequestHandler.exibePDC();
-    Navigator.canPop(context);
-  }
-
-  void onClickButtonRelatorioDetalhado() async {
-    await _tefController.payGORequestHandler.relatorioDetalhado();
-    Navigator.canPop(context);
-  }
-
-  void onclickButtonRelatorioResumido() async {
-    await _tefController.payGORequestHandler.relatorioResumido();
-
-    Navigator.canPop(context);
-  }
-
-  void onclickButtonSelectProvider() async {
-    var providers = {"DEMO", "REDE", "PIX C6 BANK"};
-    await showGenericDialog<String>(
-      context: context,
-      title: "Selecione o provedor",
-      options: providers.toList(),
-      selectedValue: _tefController.payGORequestHandler.provider,
-      displayText: (e) => e,
-      onSelected: (value) {
-        setState(() {
-          _tefController.payGORequestHandler.setProvider(value);
-        });
-      },
-      onCancel: () {
-        Fluttertoast.showToast(
-            msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
-      },
     );
   }
 
@@ -406,68 +148,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     });
   }
 
-  void _onAllowDifferentReceiptsChanged(bool value) {
-    setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts =
-          value;
-    });
-  }
-
-  void _onAllowDiscountChanged(bool value) {
-    setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
-    });
-  }
-
-  void _onAllowDueAmountChanged(bool value) {
-    setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
-    });
-  }
-
-  void _onAllowShortReceiptChanged(bool value) {
-    setState(() {
-      _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt =
-          value;
-    });
-  }
-
-  void _onPendingTransactionActionsChanged(
-      PendingTransactionActions? newValue) {
-    setState(() {
-      _tefController.configuracoes.setPendingTransactionActions(newValue!);
-    });
-  }
-
-  void _onIsAutoConfirmChanged(bool value) {
-    setState(() {
-      _tefController.configuracoes.setIsAutoConfirm(value);
-    });
-  }
-
-  void _onIsPrintCardholderReceiptChanged(bool value) {
-    setState(() {
-      _tefController.configuracoes.setIsPrintcardholderReceipt(value);
-    });
-  }
-
-  void _onIsPrintMerchantReceiptChanged(bool value) {
-    setState(() {
-      _tefController.configuracoes.setIsPrintMerchantReceipt(value);
-    });
-  }
-
-  void _onIsPrintReportChanged(bool value) {
-    setState(() {
-      _tefController.configuracoes.setIsPrintReport(value);
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-
-    // Inicialize os controladores com os valores existentes
     _posNameController = TextEditingController(
         text: _tefController.payGORequestHandler.dadosAutomacao.posName);
     _posVersionController = TextEditingController(
@@ -478,10 +161,405 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   @override
   void dispose() {
-    // Libere os controladores
     _posNameController.dispose();
     _posVersionController.dispose();
     _posDeveloperController.dispose();
     super.dispose();
+  }
+}
+
+class TransactionSection extends StatelessWidget {
+  const TransactionSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TefController _tefController = Get.find();
+    
+    return Column(
+      children: [
+        ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.payment, color: Colors.grey[700]),
+          ),
+          title: const Text(
+            'Configurações de Transação',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        TransactionSwitchTile(
+          icon: Icons.receipt,
+          title: 'Permitir Recibos com via diferenciadas',
+          subtitle: 'Habilita recibos com vias diferentes',
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
+          onChanged: (value) {
+            _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts = value;
+          },
+        ),
+        const Divider(height: 1),
+        TransactionSwitchTile(
+          icon: Icons.discount,
+          title: 'Permitir Desconto',
+          subtitle: 'Habilita aplicação de descontos',
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
+          onChanged: (value) {
+            _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
+          },
+        ),
+        const Divider(height: 1),
+        TransactionSwitchTile(
+          icon: Icons.card_giftcard,
+          title: 'Permitir Voucher para Desconto',
+          subtitle: 'Habilita uso de vouchers',
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
+          onChanged: (value) {
+            _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
+          },
+        ),
+        const Divider(height: 1),
+        TransactionSwitchTile(
+          icon: Icons.receipt_long,
+          title: 'Permitir Via Reduzida',
+          subtitle: 'Habilita impressão de via reduzida',
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
+          onChanged: (value) {
+            _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt = value;
+          },
+        ),
+        const Divider(height: 1),
+        PendingTransactionTile(),
+        const Divider(height: 1),
+        TransactionSwitchTile(
+          icon: Icons.check_circle,
+          title: 'Confirmação Automática de Transação',
+          subtitle: 'Confirma transações automaticamente',
+          value: _tefController.configuracoes.isAutoConfirm,
+          onChanged: (value) {
+            _tefController.configuracoes.setIsAutoConfirm(value);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class PrintSection extends StatelessWidget {
+  const PrintSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TefController _tefController = Get.find();
+    
+    return ExpansionTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(Icons.print, color: Colors.grey[700]),
+      ),
+      title: const Text(
+        'Configurações de Impressão',
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      children: <Widget>[
+        PrintSwitchTile(
+          icon: Icons.receipt,
+          title: 'Imprimir via do Cliente',
+          subtitle: 'Imprime recibo para o cliente',
+          value: _tefController.configuracoes.isPrintcardholderReceipt,
+          onChanged: (value) {
+            _tefController.configuracoes.setIsPrintcardholderReceipt(value);
+          },
+        ),
+        const Divider(height: 1),
+        PrintSwitchTile(
+          icon: Icons.store,
+          title: 'Imprimir via do Estabelecimento',
+          subtitle: 'Imprime recibo para o estabelecimento',
+          value: _tefController.configuracoes.isPrintMerchantReceipt,
+          onChanged: (value) {
+            _tefController.configuracoes.setIsPrintMerchantReceipt(value);
+          },
+        ),
+        const Divider(height: 1),
+        PrintSwitchTile(
+          icon: Icons.report,
+          title: 'Imprimir Relatório',
+          subtitle: 'Imprime relatórios de transação',
+          value: _tefController.configuracoes.isPrintReport,
+          onChanged: (value) {
+            _tefController.configuracoes.setIsPrintReport(value);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ActionsSection extends StatelessWidget {
+  const ActionsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.build, color: Colors.grey[700]),
+          ),
+          title: const Text(
+            'Ações do Sistema',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        ActionButton(
+          icon: Icons.build,
+          text: 'Instalação',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.instalacao();
+          },
+        ),
+        ActionButton(
+          icon: Icons.settings,
+          text: 'Manutenção',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.manutencao();
+          },
+        ),
+        ActionButton(
+          icon: Icons.admin_panel_settings,
+          text: 'Administrativo',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.painelAdministrativo();
+            Navigator.canPop(context);
+          },
+        ),
+        ActionButton(
+          icon: Icons.visibility,
+          text: 'Exibe PDC',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.exibePDC();
+            Navigator.canPop(context);
+          },
+        ),
+        ActionButton(
+          icon: Icons.description,
+          text: 'Relatório Detalhado',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.relatorioDetalhado();
+            Navigator.canPop(context);
+          },
+        ),
+        ActionButton(
+          icon: Icons.summarize,
+          text: 'Relatório Resumido',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            await _tefController.payGORequestHandler.relatorioResumido();
+            Navigator.canPop(context);
+          },
+        ),
+        ActionButton(
+          icon: Icons.select_all,
+          text: 'Selecionar Provedor',
+          onPressed: () async {
+            final TefController _tefController = Get.find();
+            var providers = {"DEMO", "REDE", "PIX C6 BANK"};
+            await showGenericDialog<String>(
+              context: context,
+              title: "Selecione o provedor",
+              options: providers.toList(),
+              selectedValue: _tefController.payGORequestHandler.provider,
+              displayText: (e) => e,
+              onSelected: (value) {
+                _tefController.payGORequestHandler.setProvider(value);
+              },
+              onCancel: () {
+                Fluttertoast.showToast(
+                    msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final TextEditingController controller;
+  final Function(String) onChanged;
+
+  const CustomTextField({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.grey[600]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        filled: true,
+        fillColor: Colors.grey[50],
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+    );
+  }
+}
+
+class TransactionSwitchTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final Function(bool) onChanged;
+
+  const TransactionSwitchTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile.adaptive(
+      secondary: Icon(icon, color: Colors.grey[600]),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      value: value,
+      onChanged: onChanged,
+    );
+  }
+}
+
+class PrintSwitchTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final Function(bool) onChanged;
+
+  const PrintSwitchTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile.adaptive(
+      secondary: Icon(icon, color: Colors.grey[600]),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      value: value,
+      onChanged: onChanged,
+    );
+  }
+}
+
+class PendingTransactionTile extends StatelessWidget {
+  const PendingTransactionTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TefController _tefController = Get.find();
+    
+    return ListTile(
+      leading: Icon(Icons.pending_actions, color: Colors.grey[600]),
+      title: const Text('Transação Pendente'),
+      subtitle: const Text('Ação para transações pendentes'),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: DropdownButton<PendingTransactionActions>(
+          value: _tefController.configuracoes.pendingTransactionActions,
+          onChanged: (newValue) {
+            _tefController.configuracoes.setPendingTransactionActions(newValue!);
+          },
+          underline: const SizedBox(),
+          items: PendingTransactionActions.values
+              .map<DropdownMenuItem<PendingTransactionActions>>(
+                  (PendingTransactionActions value) {
+            return DropdownMenuItem<PendingTransactionActions>(
+              value: value,
+              child: Text(
+                value.toValue().replaceAll("_", " "),
+                style: const TextStyle(fontSize: 12),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final VoidCallback onPressed;
+
+  const ActionButton({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: Colors.grey[700], size: 20),
+      ),
+      title: Text(
+        text,
+        style: const TextStyle(fontWeight: FontWeight.w500),
+      ),
+      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
+      onTap: onPressed,
+    );
   }
 }
