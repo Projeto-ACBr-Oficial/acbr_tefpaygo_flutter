@@ -85,14 +85,16 @@ class _AutomationSectionState extends State<AutomationSection> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return ExpansionTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
+          color: theme.colorScheme.primary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(Icons.settings, color: Colors.grey[700]),
+        child: Icon(Icons.settings, color: theme.colorScheme.primary),
       ),
       title: const Text(
         'Configurações de Automação',
@@ -180,16 +182,18 @@ class _TransactionSectionState extends State<TransactionSection> {
   
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Column(
       children: [
         ListTile(
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: theme.colorScheme.secondary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.payment, color: Colors.grey[700]),
+            child: Icon(Icons.payment, color: theme.colorScheme.secondary),
           ),
           title: const Text(
             'Configurações de Transação',
@@ -245,13 +249,13 @@ class _TransactionSectionState extends State<TransactionSection> {
         ),
         const Divider(height: 1),
         ListTile(
-          leading: Icon(Icons.pending_actions, color: Colors.grey[600]),
+          leading: Icon(Icons.pending_actions, color: theme.colorScheme.onSurfaceVariant),
           title: const Text('Transação Pendente'),
           subtitle: const Text('Ação para transações pendentes'),
           trailing: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
               borderRadius: BorderRadius.circular(8),
             ),
             child: DropdownButton<PendingTransactionActions>(
@@ -269,7 +273,7 @@ class _TransactionSectionState extends State<TransactionSection> {
                   value: value,
                   child: Text(
                     value.toValue().replaceAll("_", " "),
-                    style: const TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface),
                   ),
                 );
               }).toList(),
@@ -305,14 +309,16 @@ class _PrintSectionState extends State<PrintSection> {
   
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return ExpansionTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
+          color: theme.colorScheme.tertiary.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(Icons.print, color: Colors.grey[700]),
+        child: Icon(Icons.print, color: theme.colorScheme.tertiary),
       ),
       title: const Text(
         'Configurações de Impressão',
@@ -364,16 +370,18 @@ class ActionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Column(
       children: [
         ListTile(
           leading: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: theme.colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.build, color: Colors.grey[700]),
+            child: Icon(Icons.build, color: theme.colorScheme.primary),
           ),
           title: const Text(
             'Ações do Sistema',
@@ -475,17 +483,19 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return TextField(
       controller: controller,
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: Colors.grey[600]),
+        prefixIcon: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         filled: true,
-        fillColor: Colors.grey[50],
+        fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
@@ -510,8 +520,10 @@ class TransactionSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return SwitchListTile.adaptive(
-      secondary: Icon(icon, color: Colors.grey[600]),
+      secondary: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
       title: Text(title),
       subtitle: Text(subtitle),
       value: value,
@@ -538,8 +550,10 @@ class PrintSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return SwitchListTile.adaptive(
-      secondary: Icon(icon, color: Colors.grey[600]),
+      secondary: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
       title: Text(title),
       subtitle: Text(subtitle),
       value: value,
@@ -562,20 +576,22 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
+          color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(icon, color: Colors.grey[700], size: 20),
+        child: Icon(icon, color: theme.colorScheme.onSurfaceVariant, size: 20),
       ),
       title: Text(
         text,
         style: const TextStyle(fontWeight: FontWeight.w500),
       ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
+      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: theme.colorScheme.onSurfaceVariant),
       onTap: onPressed,
     );
   }
