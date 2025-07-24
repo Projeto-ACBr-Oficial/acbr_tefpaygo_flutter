@@ -73,7 +73,6 @@ class TefController extends GetxController implements TefPayGoCallBack {
   @override
   Future<void> onErrorMessage(String message) async {
     await _showDialog("Erro:", message, Colors.red, Icons.error);
-    await Get.toNamed('/failure_screen', arguments: message);
   }
 
   /// [_showDialog] é um método auxiliar para mostrar diálogos de sucesso ou erro
