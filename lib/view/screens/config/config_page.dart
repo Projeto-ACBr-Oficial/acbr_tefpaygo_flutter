@@ -37,13 +37,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       ),
       child: ListView(
         padding: const EdgeInsets.all(16),
-        children: const <Widget>[
+        children: <Widget>[
           AutomationSection(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           TransactionSection(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           PrintSection(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ActionsSection(),
         ],
       ),
@@ -168,13 +168,18 @@ class _AutomationSectionState extends State<AutomationSection> {
   }
 }
 
-class TransactionSection extends StatelessWidget {
+class TransactionSection extends StatefulWidget {
   const TransactionSection({super.key});
 
   @override
+  State<TransactionSection> createState() => _TransactionSectionState();
+}
+
+class _TransactionSectionState extends State<TransactionSection> {
+  final TefController _tefController = Get.find();
+  
+  @override
   Widget build(BuildContext context) {
-    final TefController _tefController = Get.find();
-    
     return Column(
       children: [
         ListTile(
@@ -197,7 +202,9 @@ class TransactionSection extends StatelessWidget {
           subtitle: 'Habilita recibos com vias diferentes',
           value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
           onChanged: (value) {
-            _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts = value;
+            setState(() {
+              _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts = value;
+            });
           },
         ),
         const Divider(height: 1),
@@ -207,7 +214,9 @@ class TransactionSection extends StatelessWidget {
           subtitle: 'Habilita aplicação de descontos',
           value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
           onChanged: (value) {
-            _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
+            setState(() {
+              _tefController.payGORequestHandler.dadosAutomacao.allowDiscount = value;
+            });
           },
         ),
         const Divider(height: 1),
@@ -217,7 +226,9 @@ class TransactionSection extends StatelessWidget {
           subtitle: 'Habilita uso de vouchers',
           value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
           onChanged: (value) {
-            _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
+            setState(() {
+              _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount = value;
+            });
           },
         ),
         const Divider(height: 1),
@@ -227,11 +238,44 @@ class TransactionSection extends StatelessWidget {
           subtitle: 'Habilita impressão de via reduzida',
           value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
           onChanged: (value) {
-            _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt = value;
+            setState(() {
+              _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt = value;
+            });
           },
         ),
         const Divider(height: 1),
-        PendingTransactionTile(),
+        ListTile(
+          leading: Icon(Icons.pending_actions, color: Colors.grey[600]),
+          title: const Text('Transação Pendente'),
+          subtitle: const Text('Ação para transações pendentes'),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: DropdownButton<PendingTransactionActions>(
+              value: _tefController.configuracoes.pendingTransactionActions,
+              onChanged: (newValue) {
+                setState(() {
+                  _tefController.configuracoes.setPendingTransactionActions(newValue!);
+                });
+              },
+              underline: const SizedBox(),
+              items: PendingTransactionActions.values
+                  .map<DropdownMenuItem<PendingTransactionActions>>(
+                      (PendingTransactionActions value) {
+                return DropdownMenuItem<PendingTransactionActions>(
+                  value: value,
+                  child: Text(
+                    value.toValue().replaceAll("_", " "),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
         const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.check_circle,
@@ -239,7 +283,9 @@ class TransactionSection extends StatelessWidget {
           subtitle: 'Confirma transações automaticamente',
           value: _tefController.configuracoes.isAutoConfirm,
           onChanged: (value) {
-            _tefController.configuracoes.setIsAutoConfirm(value);
+            setState(() {
+              _tefController.configuracoes.setIsAutoConfirm(value);
+            });
           },
         ),
       ],
@@ -247,13 +293,18 @@ class TransactionSection extends StatelessWidget {
   }
 }
 
-class PrintSection extends StatelessWidget {
+class PrintSection extends StatefulWidget {
   const PrintSection({super.key});
 
   @override
+  State<PrintSection> createState() => _PrintSectionState();
+}
+
+class _PrintSectionState extends State<PrintSection> {
+  final TefController _tefController = Get.find();
+  
+  @override
   Widget build(BuildContext context) {
-    final TefController _tefController = Get.find();
-    
     return ExpansionTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
@@ -274,7 +325,9 @@ class PrintSection extends StatelessWidget {
           subtitle: 'Imprime recibo para o cliente',
           value: _tefController.configuracoes.isPrintcardholderReceipt,
           onChanged: (value) {
-            _tefController.configuracoes.setIsPrintcardholderReceipt(value);
+            setState(() {
+              _tefController.configuracoes.setIsPrintcardholderReceipt(value);
+            });
           },
         ),
         const Divider(height: 1),
@@ -284,7 +337,9 @@ class PrintSection extends StatelessWidget {
           subtitle: 'Imprime recibo para o estabelecimento',
           value: _tefController.configuracoes.isPrintMerchantReceipt,
           onChanged: (value) {
-            _tefController.configuracoes.setIsPrintMerchantReceipt(value);
+            setState(() {
+              _tefController.configuracoes.setIsPrintMerchantReceipt(value);
+            });
           },
         ),
         const Divider(height: 1),
@@ -294,7 +349,9 @@ class PrintSection extends StatelessWidget {
           subtitle: 'Imprime relatórios de transação',
           value: _tefController.configuracoes.isPrintReport,
           onChanged: (value) {
-            _tefController.configuracoes.setIsPrintReport(value);
+            setState(() {
+              _tefController.configuracoes.setIsPrintReport(value);
+            });
           },
         ),
       ],
@@ -487,46 +544,6 @@ class PrintSwitchTile extends StatelessWidget {
       subtitle: Text(subtitle),
       value: value,
       onChanged: onChanged,
-    );
-  }
-}
-
-class PendingTransactionTile extends StatelessWidget {
-  const PendingTransactionTile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final TefController _tefController = Get.find();
-    
-    return ListTile(
-      leading: Icon(Icons.pending_actions, color: Colors.grey[600]),
-      title: const Text('Transação Pendente'),
-      subtitle: const Text('Ação para transações pendentes'),
-      trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: DropdownButton<PendingTransactionActions>(
-          value: _tefController.configuracoes.pendingTransactionActions,
-          onChanged: (newValue) {
-            _tefController.configuracoes.setPendingTransactionActions(newValue!);
-          },
-          underline: const SizedBox(),
-          items: PendingTransactionActions.values
-              .map<DropdownMenuItem<PendingTransactionActions>>(
-                  (PendingTransactionActions value) {
-            return DropdownMenuItem<PendingTransactionActions>(
-              value: value,
-              child: Text(
-                value.toValue().replaceAll("_", " "),
-                style: const TextStyle(fontSize: 12),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
     );
   }
 }
