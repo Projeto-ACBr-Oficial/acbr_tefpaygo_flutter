@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
-import '../../widget/widgets.dart';
+import '../../widget/generic_dialog.dart';
+
+// Widgets específicos da página de configuração
+import 'widget/widgets.dart';
 
 /// Seção de configurações de automação.
 /// 
