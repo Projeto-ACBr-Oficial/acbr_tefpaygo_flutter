@@ -4,9 +4,18 @@ import 'package:get/get.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
-import '../../widget/generic_dialog.dart';
-import '../../widget/text_button.dart';
+import '../../widget/widgets.dart';
 
+/// Página de configurações do sistema TEF PayGo.
+/// 
+/// Esta página permite configurar diversos aspectos do sistema:
+/// - Configurações de automação (nome, versão, software house)
+/// - Configurações de transação (recibos, descontos, vouchers)
+/// - Configurações de impressão (vias do cliente, estabelecimento, relatórios)
+/// - Ações do sistema (instalação, manutenção, administrativo)
+/// 
+/// A página se adapta automaticamente ao tema atual da aplicação
+/// e utiliza componentes reutilizáveis para manter consistência visual.
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({super.key});
 
@@ -70,6 +79,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 }
 
+/// Seção de configurações de automação.
+/// 
+/// Permite configurar informações básicas da automação:
+/// - Nome da automação
+/// - Versão da automação
+/// - Software house
 class AutomationSection extends StatefulWidget {
   const AutomationSection({super.key});
 
@@ -170,6 +185,15 @@ class _AutomationSectionState extends State<AutomationSection> {
   }
 }
 
+/// Seção de configurações de transação.
+/// 
+/// Permite configurar comportamentos relacionados a transações:
+/// - Recibos com via diferenciada
+/// - Aplicação de descontos
+/// - Uso de vouchers
+/// - Via reduzida
+/// - Transação pendente
+/// - Confirmação automática
 class TransactionSection extends StatefulWidget {
   const TransactionSection({super.key});
 
@@ -297,6 +321,12 @@ class _TransactionSectionState extends State<TransactionSection> {
   }
 }
 
+/// Seção de configurações de impressão.
+/// 
+/// Permite configurar comportamentos de impressão:
+/// - Via do cliente
+/// - Via do estabelecimento
+/// - Relatórios
 class PrintSection extends StatefulWidget {
   const PrintSection({super.key});
 
@@ -365,6 +395,15 @@ class _PrintSectionState extends State<PrintSection> {
   }
 }
 
+/// Seção de ações do sistema.
+/// 
+/// Fornece acesso a funcionalidades administrativas:
+/// - Instalação
+/// - Manutenção
+/// - Painel administrativo
+/// - Exibição PDC
+/// - Relatórios detalhados e resumidos
+/// - Seleção de provedor
 class ActionsSection extends StatelessWidget {
   const ActionsSection({super.key});
 
@@ -463,136 +502,6 @@ class ActionsSection extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final TextEditingController controller;
-  final Function(String) onChanged;
-
-  const CustomTextField({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.controller,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return TextField(
-      controller: controller,
-      onChanged: onChanged,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        filled: true,
-        fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-    );
-  }
-}
-
-class TransactionSwitchTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final bool value;
-  final Function(bool) onChanged;
-
-  const TransactionSwitchTile({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return SwitchListTile.adaptive(
-      secondary: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-}
-
-class PrintSwitchTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final bool value;
-  final Function(bool) onChanged;
-
-  const PrintSwitchTile({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return SwitchListTile.adaptive(
-      secondary: Icon(icon, color: theme.colorScheme.onSurfaceVariant),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-}
-
-class ActionButton extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final VoidCallback onPressed;
-
-  const ActionButton({
-    super.key,
-    required this.icon,
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(icon, color: theme.colorScheme.onSurfaceVariant, size: 20),
-      ),
-      title: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: theme.colorScheme.onSurfaceVariant),
-      onTap: onPressed,
     );
   }
 }
