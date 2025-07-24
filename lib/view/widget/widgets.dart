@@ -18,4 +18,8 @@ export 'text_button.dart';
 export 'custom_text_field.dart';
 export 'transaction_switch_tile.dart';
 export 'print_switch_tile.dart';
-export 'action_button.dart'; 
+export 'action_button.dart';
+
+// Widgets de pagamento
+export 'payment_option_tile.dart';
+export 'cancel_button.dart'; 

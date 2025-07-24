@@ -10,7 +10,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
-import '../../widget/generic_dialog.dart';
+import '../../widget/widgets.dart';
 
 class PaymentViewMode extends StatefulWidget {
   final double valorPagamento;
@@ -31,90 +31,155 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
-        appBar: AppBar(title: Text("Forma de Pagamento")),
-        body: Center(
-          child: Container(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).colorScheme.surface
-                : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-            padding: EdgeInsets.all(16),
-            child: ListView(
-              children: <Widget>[
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        Text("Total"),
-                        Text(_formatPayment(),
-                            style: TextStyle(
-                                fontSize: 30,
-                                color:
-                                    Theme.of(context).colorScheme.onSurface)),
-                      ],
+      appBar: AppBar(
+        title: const Text("Forma de Pagamento"),
+        elevation: 0,
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              theme.colorScheme.surface,
+              theme.colorScheme.surface.withOpacity(0.8),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Seção do valor total
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24.0),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: theme.colorScheme.outline.withOpacity(0.2),
+                      width: 1,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.shadowColor.withOpacity(0.05),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total a Pagar",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: theme.colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _formatPayment(),
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text("Escolha a forma de pagamento:",
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.center),
-                ),
-                Card(
-                    child: CustomButton(
-                  onPressed: onClicKButtonDebito,
-                  text: "Debito",
-                  icon: Icon(Icons.credit_card),
-                )),
-                Card(
-                  child: CustomButton(
-                    onPressed: onClickButtonCredito,
-                    text: "Credito",
-                    icon: Icon(Icons.credit_card),
+                
+                const SizedBox(height: 24),
+                
+                // Título da seção
+                Text(
+                  "Escolha a forma de pagamento",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                Card(
-                  child: CustomButton(
-                    onPressed: onClickButtonVoucher,
-                    text: "Voucher",
-                    icon: Icon(Icons.card_giftcard),
-                  ),
-                ),
-                Card(
-                  child: CustomButton(
-                    onPressed: onClickButtonFrota,
-                    text: "Cartão Frota",
-                    icon: Icon(Icons.local_gas_station),
-                  ),
-                ),
-                Card(
-                  child: CustomButton(
-                    onPressed: onClickButtonPrivateLabel,
-                    text: "Cartão da loja",
-                    icon: Icon(Icons.store),
-                  ),
-                ),
-                Card(
-                  child: CustomButton(
-                    onPressed: onClickButtonCarteiraDigital,
-                    text: "Carteira Digital",
-                    icon: Icon(Icons.account_balance),
-                  ),
-                ),
-                Card(
-                  child: CustomButton(
-                    onPressed: navegarParaTelaAnterior,
-                    text: "Cancelar",
-                    icon: Icon(Icons.cancel),
+                
+                const SizedBox(height: 24),
+                
+                // Lista de opções de pagamento
+                Expanded(
+                  child: ListView(
+                    children: [
+                      PaymentOptionTile(
+                        icon: Icons.credit_card,
+                        title: "Débito",
+                        subtitle: "Cartão de débito",
+                        color: Colors.blue,
+                        onPressed: onClicKButtonDebito,
+                      ),
+                      const SizedBox(height: 12),
+                      PaymentOptionTile(
+                        icon: Icons.credit_card,
+                        title: "Crédito",
+                        subtitle: "Cartão de crédito",
+                        color: Colors.green,
+                        onPressed: onClickButtonCredito,
+                      ),
+                      const SizedBox(height: 12),
+                      PaymentOptionTile(
+                        icon: Icons.card_giftcard,
+                        title: "Voucher",
+                        subtitle: "Vale alimentação ou refeição",
+                        color: Colors.orange,
+                        onPressed: onClickButtonVoucher,
+                      ),
+                      const SizedBox(height: 12),
+                      PaymentOptionTile(
+                        icon: Icons.local_gas_station,
+                        title: "Cartão Frota",
+                        subtitle: "Cartão corporativo",
+                        color: Colors.purple,
+                        onPressed: onClickButtonFrota,
+                      ),
+                      const SizedBox(height: 12),
+                      PaymentOptionTile(
+                        icon: Icons.store,
+                        title: "Cartão da Loja",
+                        subtitle: "Private label",
+                        color: Colors.teal,
+                        onPressed: onClickButtonPrivateLabel,
+                      ),
+                      const SizedBox(height: 12),
+                      PaymentOptionTile(
+                        icon: Icons.account_balance,
+                        title: "Carteira Digital",
+                        subtitle: "PIX e carteiras virtuais",
+                        color: Colors.indigo,
+                        onPressed: onClickButtonCarteiraDigital,
+                      ),
+                      const SizedBox(height: 24),
+                      CancelButton(
+                        onPressed: navegarParaTelaAnterior,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
+
+
 
   void onClicKButtonDebito() {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
