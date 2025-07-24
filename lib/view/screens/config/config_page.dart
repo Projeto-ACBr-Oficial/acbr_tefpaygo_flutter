@@ -62,266 +62,250 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   }
 
   Widget _buildAutomationSection() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: ExpansionTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(Icons.settings, color: Colors.blue),
+    return ExpansionTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.blue.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
         ),
-        title: const Text(
-          'Configurações de Automação',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              children: [
-                _buildTextField(
-                  icon: Icons.label,
-                  label: 'Nome da Automação',
-                  controller: _posNameController,
-                  onChanged: _onPosNameChanged,
-                ),
-                const SizedBox(height: 12),
-                _buildTextField(
-                  icon: Icons.info,
-                  label: 'Versão da Automação',
-                  controller: _posVersionController,
-                  onChanged: _onPosVersionChanged,
-                ),
-                const SizedBox(height: 12),
-                _buildTextField(
-                  icon: Icons.business,
-                  label: 'Software House',
-                  controller: _posDeveloperController,
-                  onChanged: _onPosDeveloperChanged,
-                ),
-              ],
-            ),
-          ),
-        ],
+        child: const Icon(Icons.settings, color: Colors.blue),
       ),
+      title: const Text(
+        'Configurações de Automação',
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            children: [
+              _buildTextField(
+                icon: Icons.label,
+                label: 'Nome da Automação',
+                controller: _posNameController,
+                onChanged: _onPosNameChanged,
+              ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                icon: Icons.info,
+                label: 'Versão da Automação',
+                controller: _posVersionController,
+                onChanged: _onPosVersionChanged,
+              ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                icon: Icons.business,
+                label: 'Software House',
+                controller: _posDeveloperController,
+                onChanged: _onPosDeveloperChanged,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildTransactionSection() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        children: [
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.payment, color: Colors.green),
+    return Column(
+      children: [
+        ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-            title: const Text(
-              'Configurações de Transação',
-              style: TextStyle(fontWeight: FontWeight.w600),
+            child: const Icon(Icons.payment, color: Colors.green),
+          ),
+          title: const Text(
+            'Configurações de Transação',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.receipt, color: Colors.orange),
+          title: const Text('Permitir Recibos com via diferenciadas'),
+          subtitle: const Text('Habilita recibos com vias diferentes'),
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
+          onChanged: _onAllowDifferentReceiptsChanged,
+          activeColor: Colors.orange,
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.discount, color: Colors.purple),
+          title: const Text('Permitir Desconto'),
+          subtitle: const Text('Habilita aplicação de descontos'),
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
+          onChanged: _onAllowDiscountChanged,
+          activeColor: Colors.purple,
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.card_giftcard, color: Colors.teal),
+          title: const Text('Permitir Voucher para Desconto'),
+          subtitle: const Text('Habilita uso de vouchers'),
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
+          onChanged: _onAllowDueAmountChanged,
+          activeColor: Colors.teal,
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.receipt_long, color: Colors.indigo),
+          title: const Text('Permitir Via Reduzida'),
+          subtitle: const Text('Habilita impressão de via reduzida'),
+          value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
+          onChanged: _onAllowShortReceiptChanged,
+          activeColor: Colors.indigo,
+        ),
+        const Divider(height: 1),
+        ListTile(
+          leading: const Icon(Icons.pending_actions, color: Colors.amber),
+          title: const Text('Transação Pendente'),
+          subtitle: const Text('Ação para transações pendentes'),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.amber.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-          ),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.receipt, color: Colors.orange),
-            title: const Text('Permitir Recibos com via diferenciadas'),
-            subtitle: const Text('Habilita recibos com vias diferentes'),
-            value: _tefController.payGORequestHandler.dadosAutomacao.allowDifferentReceipts,
-            onChanged: _onAllowDifferentReceiptsChanged,
-            activeColor: Colors.orange,
-          ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.discount, color: Colors.purple),
-            title: const Text('Permitir Desconto'),
-            subtitle: const Text('Habilita aplicação de descontos'),
-            value: _tefController.payGORequestHandler.dadosAutomacao.allowDiscount,
-            onChanged: _onAllowDiscountChanged,
-            activeColor: Colors.purple,
-          ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.card_giftcard, color: Colors.teal),
-            title: const Text('Permitir Voucher para Desconto'),
-            subtitle: const Text('Habilita uso de vouchers'),
-            value: _tefController.payGORequestHandler.dadosAutomacao.allowDueAmount,
-            onChanged: _onAllowDueAmountChanged,
-            activeColor: Colors.teal,
-          ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.receipt_long, color: Colors.indigo),
-            title: const Text('Permitir Via Reduzida'),
-            subtitle: const Text('Habilita impressão de via reduzida'),
-            value: _tefController.payGORequestHandler.dadosAutomacao.allowShortReceipt,
-            onChanged: _onAllowShortReceiptChanged,
-            activeColor: Colors.indigo,
-          ),
-          const Divider(height: 1),
-          ListTile(
-            leading: const Icon(Icons.pending_actions, color: Colors.amber),
-            title: const Text('Transação Pendente'),
-            subtitle: const Text('Ação para transações pendentes'),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: DropdownButton<PendingTransactionActions>(
-                value: _tefController.configuracoes.pendingTransactionActions,
-                onChanged: _onPendingTransactionActionsChanged,
-                underline: const SizedBox(),
-                items: PendingTransactionActions.values
-                    .map<DropdownMenuItem<PendingTransactionActions>>(
-                        (PendingTransactionActions value) {
-                  return DropdownMenuItem<PendingTransactionActions>(
-                    value: value,
-                    child: Text(
-                      value.toValue().replaceAll("_", " "),
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  );
-                }).toList(),
-              ),
+            child: DropdownButton<PendingTransactionActions>(
+              value: _tefController.configuracoes.pendingTransactionActions,
+              onChanged: _onPendingTransactionActionsChanged,
+              underline: const SizedBox(),
+              items: PendingTransactionActions.values
+                  .map<DropdownMenuItem<PendingTransactionActions>>(
+                      (PendingTransactionActions value) {
+                return DropdownMenuItem<PendingTransactionActions>(
+                  value: value,
+                  child: Text(
+                    value.toValue().replaceAll("_", " "),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                );
+              }).toList(),
             ),
           ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.check_circle, color: Colors.green),
-            title: const Text('Confirmação Automática de Transação'),
-            subtitle: const Text('Confirma transações automaticamente'),
-            value: _tefController.configuracoes.isAutoConfirm,
-            onChanged: _onIsAutoConfirmChanged,
-            activeColor: Colors.green,
-          ),
-        ],
-      ),
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.check_circle, color: Colors.green),
+          title: const Text('Confirmação Automática de Transação'),
+          subtitle: const Text('Confirma transações automaticamente'),
+          value: _tefController.configuracoes.isAutoConfirm,
+          onChanged: _onIsAutoConfirmChanged,
+          activeColor: Colors.green,
+        ),
+      ],
     );
   }
 
   Widget _buildPrintSection() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: ExpansionTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.red.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(Icons.print, color: Colors.red),
+    return ExpansionTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.red.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
         ),
-        title: const Text(
-          'Configurações de Impressão',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        children: <Widget>[
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.receipt, color: Colors.blue),
-            title: const Text('Imprimir via do Cliente'),
-            subtitle: const Text('Imprime recibo para o cliente'),
-            value: _tefController.configuracoes.isPrintcardholderReceipt,
-            onChanged: _onIsPrintCardholderReceiptChanged,
-            activeColor: Colors.blue,
-          ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.store, color: Colors.green),
-            title: const Text('Imprimir via do Estabelecimento'),
-            subtitle: const Text('Imprime recibo para o estabelecimento'),
-            value: _tefController.configuracoes.isPrintMerchantReceipt,
-            onChanged: _onIsPrintMerchantReceiptChanged,
-            activeColor: Colors.green,
-          ),
-          const Divider(height: 1),
-          SwitchListTile.adaptive(
-            secondary: const Icon(Icons.report, color: Colors.orange),
-            title: const Text('Imprimir Relatório'),
-            subtitle: const Text('Imprime relatórios de transação'),
-            value: _tefController.configuracoes.isPrintReport,
-            onChanged: _onIsPrintReportChanged,
-            activeColor: Colors.orange,
-          ),
-        ],
+        child: const Icon(Icons.print, color: Colors.red),
       ),
+      title: const Text(
+        'Configurações de Impressão',
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      children: <Widget>[
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.receipt, color: Colors.blue),
+          title: const Text('Imprimir via do Cliente'),
+          subtitle: const Text('Imprime recibo para o cliente'),
+          value: _tefController.configuracoes.isPrintcardholderReceipt,
+          onChanged: _onIsPrintCardholderReceiptChanged,
+          activeColor: Colors.blue,
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.store, color: Colors.green),
+          title: const Text('Imprimir via do Estabelecimento'),
+          subtitle: const Text('Imprime recibo para o estabelecimento'),
+          value: _tefController.configuracoes.isPrintMerchantReceipt,
+          onChanged: _onIsPrintMerchantReceiptChanged,
+          activeColor: Colors.green,
+        ),
+        const Divider(height: 1),
+        SwitchListTile.adaptive(
+          secondary: const Icon(Icons.report, color: Colors.orange),
+          title: const Text('Imprimir Relatório'),
+          subtitle: const Text('Imprime relatórios de transação'),
+          value: _tefController.configuracoes.isPrintReport,
+          onChanged: _onIsPrintReportChanged,
+          activeColor: Colors.orange,
+        ),
+      ],
     );
   }
 
   Widget _buildActionsSection() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        children: [
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.indigo.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(Icons.build, color: Colors.indigo),
+    return Column(
+      children: [
+        ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.indigo.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-            title: const Text(
-              'Ações do Sistema',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
+            child: const Icon(Icons.build, color: Colors.indigo),
           ),
-          _buildActionButton(
-            icon: Icons.build,
-            text: 'Instalação',
-            color: Colors.blue,
-            onPressed: onclickButtonInstalacao,
+          title: const Text(
+            'Ações do Sistema',
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          _buildActionButton(
-            icon: Icons.settings,
-            text: 'Manutenção',
-            color: Colors.orange,
-            onPressed: onclickButtonManutencao,
-          ),
-          _buildActionButton(
-            icon: Icons.admin_panel_settings,
-            text: 'Administrativo',
-            color: Colors.purple,
-            onPressed: onclickButtonPainelAdministrativo,
-          ),
-          _buildActionButton(
-            icon: Icons.visibility,
-            text: 'Exibe PDC',
-            color: Colors.teal,
-            onPressed: onclickButtonExibePDC,
-          ),
-          _buildActionButton(
-            icon: Icons.description,
-            text: 'Relatório Detalhado',
-            color: Colors.indigo,
-            onPressed: onClickButtonRelatorioDetalhado,
-          ),
-          _buildActionButton(
-            icon: Icons.summarize,
-            text: 'Relatório Resumido',
-            color: Colors.cyan,
-            onPressed: onclickButtonRelatorioResumido,
-          ),
-          _buildActionButton(
-            icon: Icons.select_all,
-            text: 'Selecionar Provedor',
-            color: Colors.deepPurple,
-            onPressed: onclickButtonSelectProvider,
-          ),
-        ],
-      ),
+        ),
+        _buildActionButton(
+          icon: Icons.build,
+          text: 'Instalação',
+          color: Colors.blue,
+          onPressed: onclickButtonInstalacao,
+        ),
+        _buildActionButton(
+          icon: Icons.settings,
+          text: 'Manutenção',
+          color: Colors.orange,
+          onPressed: onclickButtonManutencao,
+        ),
+        _buildActionButton(
+          icon: Icons.admin_panel_settings,
+          text: 'Administrativo',
+          color: Colors.purple,
+          onPressed: onclickButtonPainelAdministrativo,
+        ),
+        _buildActionButton(
+          icon: Icons.visibility,
+          text: 'Exibe PDC',
+          color: Colors.teal,
+          onPressed: onclickButtonExibePDC,
+        ),
+        _buildActionButton(
+          icon: Icons.description,
+          text: 'Relatório Detalhado',
+          color: Colors.indigo,
+          onPressed: onClickButtonRelatorioDetalhado,
+        ),
+        _buildActionButton(
+          icon: Icons.summarize,
+          text: 'Relatório Resumido',
+          color: Colors.cyan,
+          onPressed: onclickButtonRelatorioResumido,
+        ),
+        _buildActionButton(
+          icon: Icons.select_all,
+          text: 'Selecionar Provedor',
+          color: Colors.deepPurple,
+          onPressed: onclickButtonSelectProvider,
+        ),
+      ],
     );
   }
 
