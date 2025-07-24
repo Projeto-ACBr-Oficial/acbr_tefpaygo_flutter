@@ -19,8 +19,6 @@ double calculeWidth(double maxWidth) {
 
 double calculeHeight(double maxHeight) {
   double height = 0.7 * maxHeight; // Reduzido de 0.8 para 0.7
-
-  debugPrint('maxHeight: $maxHeight');
   
   if (maxHeight < 600) {
     height = 0.8 * maxHeight; // Em telas muito pequenas, usa mais espaço
