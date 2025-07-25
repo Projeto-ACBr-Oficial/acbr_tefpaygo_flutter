@@ -164,6 +164,16 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         color: Colors.indigo,
                         onPressed: onClickButtonCarteiraDigital,
                       ),
+
+                      const SizedBox(height: 12),
+                      // Botão para pagar item de roteiro de testes
+                      PaymentOptionTile(
+                        icon: Icons.check_circle,
+                        title: "Pagar Item do Roteiro de Testes",
+                        subtitle: "Simula pagamento de item de roteiro",
+                        color: Colors.green,
+                        onPressed: onClickPagarItemRoteiroTestes,
+                      ),
                       const SizedBox(height: 24),
                       CancelButton(
                         onPressed: navegarParaTelaAnterior,
@@ -180,6 +190,16 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   }
 
 
+  // Método para pagar item de roteiro de testes
+  // aqui é onde voce pode escrevar passo no roteiro de testes
+  //
+  void onClickPagarItemRoteiroTestes() async {
+    //objeto[transacao] deve ser configurado com os dados do item de roteiro de testes
+    //exemplo: provider,tipo de cartão, entre outros
+    TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
+        amount: 1.00, currencyCode: CurrencyCode.iso4217Real);
+    await pagar(transacao);
+  }
 
   void onClicKButtonDebito() {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
