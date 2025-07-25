@@ -201,7 +201,8 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     await pagar(transacao);
   }
 
-  void onClicKButtonDebito() {
+  
+  void onClicKButtonDebito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
       ..provider = _tefController.payGORequestHandler.provider
