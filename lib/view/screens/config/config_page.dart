@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
 import '../../widget/widgets.dart';
 
 /// Seção de configurações de automação.
-/// 
+///
 /// Permite configurar informações básicas da automação:
 /// - Nome da automação
 /// - Versão da automação
@@ -231,6 +232,40 @@ class _TransactionSectionState extends State<TransactionSection> {
             ),
           ),
         ),
+        Divider(height: 1),
+        ListTile(
+            leading: Icon(Icons.check_circle_outline,
+                color: theme.colorScheme.onSurfaceVariant),
+            title: Text("Tipo de confirmação"),
+            subtitle: Text("Tipo de confirmação da transação"),
+            trailing: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: DropdownButton<TransactionStatus>(
+                value: _tefController.configuracoes.tipoDeConfirmacao,
+                onChanged: (newValue) {
+                  setState(() {
+                    _tefController.configuracoes
+                        .setTipoDeConfirmacao(newValue!);
+                  });
+                },
+                underline: const SizedBox(),
+                items: TransactionStatus.values.map((TransactionStatus value) {
+                  return DropdownMenuItem<TransactionStatus>(
+                    value: value,
+                    child: Text(
+                      value.requisicaoTransactionStatusString
+                          .replaceAll("_", " "),
+                      style: TextStyle(
+                          fontSize: 12, color: theme.colorScheme.onSurface),
+                    ),
+                  );
+                }).toList(),
+              ),
+            )),
         const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.check_circle,
