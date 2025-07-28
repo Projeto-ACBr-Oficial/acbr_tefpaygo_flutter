@@ -216,6 +216,7 @@ class _TransactionSectionState extends State<TransactionSection> {
             icon: Icons.pending_actions,
           ),
         ),
+        const Divider(height: 1),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ConfiguracoesDropdowmMenu<TransactionStatus>(
@@ -231,6 +232,7 @@ class _TransactionSectionState extends State<TransactionSection> {
             icon: Icons.check_circle_outline,
           ),
         ),
+        const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.check_circle,
           title: 'Confirmação Automática de Transação',

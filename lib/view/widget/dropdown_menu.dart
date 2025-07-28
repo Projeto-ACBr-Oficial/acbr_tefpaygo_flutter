@@ -33,22 +33,29 @@ class ConfiguracoesDropdowmMenu<T> extends StatelessWidget {
         Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              Icon(icon, size: 24, color: Theme.of(context).colorScheme.onSurfaceVariant),
               const SizedBox(width: 8),
             ],
             Expanded(
-              child: Text(label),
+              child: Text(
+                label,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         DropdownButton<T>(
           value: value,
           isExpanded: true,
+          underline: const SizedBox(),
           items: values.map((T v) {
             return DropdownMenuItem<T>(
               value: v,
-              child: Text(getLabel(v)),
+              child: Text(
+                getLabel(v),
+                style: const TextStyle(fontSize: 14),
+              ),
             );
           }).toList(),
           onChanged: onChanged,
