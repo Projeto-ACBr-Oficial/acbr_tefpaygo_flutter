@@ -6,6 +6,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.da
 import '../../../controller/paygo_tefcontroller.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
 import '../../widget/widgets.dart';
+import '../../widget/dropdown_menu.dart';
 
 /// Seção de configurações de automação.
 ///
@@ -200,73 +201,36 @@ class _TransactionSectionState extends State<TransactionSection> {
           },
         ),
         const Divider(height: 1),
-        ListTile(
-          leading: Icon(Icons.pending_actions, color: theme.colorScheme.onSurfaceVariant),
-          title: const Text('Transação Pendente'),
-          subtitle: const Text('Ação para transações pendentes'),
-          trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: DropdownButton<PendingTransactionActions>(
-              value: _tefController.configuracoes.pendingTransactionActions,
-              onChanged: (newValue) {
-                setState(() {
-                  _tefController.configuracoes.setPendingTransactionActions(newValue!);
-                });
-              },
-              underline: const SizedBox(),
-              items: PendingTransactionActions.values
-                  .map<DropdownMenuItem<PendingTransactionActions>>(
-                      (PendingTransactionActions value) {
-                return DropdownMenuItem<PendingTransactionActions>(
-                  value: value,
-                  child: Text(
-                    value.toValue().replaceAll("_", " "),
-                    style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface),
-                  ),
-                );
-              }).toList(),
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<PendingTransactionActions>(
+            label: 'Ação para transações pendentes',
+            values: PendingTransactionActions.values,
+            value: _tefController.configuracoes.pendingTransactionActions,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.setPendingTransactionActions(newValue!);
+              });
+            },
+            getLabel: (value) => value.toValue().replaceAll("_", " "),
+            icon: Icons.pending_actions,
           ),
         ),
-        Divider(height: 1),
-        ListTile(
-            leading: Icon(Icons.check_circle_outline,
-                color: theme.colorScheme.onSurfaceVariant),
-            title: Text("Tipo de confirmação"),
-            subtitle: Text("Tipo de confirmação da transação"),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: DropdownButton<TransactionStatus>(
-                value: _tefController.configuracoes.tipoDeConfirmacao,
-                onChanged: (newValue) {
-                  setState(() {
-                    _tefController.configuracoes
-                        .setTipoDeConfirmacao(newValue!);
-                  });
-                },
-                underline: const SizedBox(),
-                items: TransactionStatus.values.map((TransactionStatus value) {
-                  return DropdownMenuItem<TransactionStatus>(
-                    value: value,
-                    child: Text(
-                      value.requisicaoTransactionStatusString
-                          .replaceAll("_", " "),
-                      style: TextStyle(
-                          fontSize: 12, color: theme.colorScheme.onSurface),
-                    ),
-                  );
-                }).toList(),
-              ),
-            )),
-        const Divider(height: 1),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<TransactionStatus>(
+            label: 'Tipo de confirmação da transação',
+            values: TransactionStatus.values,
+            value: _tefController.configuracoes.tipoDeConfirmacao,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.setTipoDeConfirmacao(newValue!);
+              });
+            },
+            getLabel: (value) => value.requisicaoTransactionStatusString.replaceAll("_", " "),
+            icon: Icons.check_circle_outline,
+          ),
+        ),
         TransactionSwitchTile(
           icon: Icons.check_circle,
           title: 'Confirmação Automática de Transação',
