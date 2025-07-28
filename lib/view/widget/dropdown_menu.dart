@@ -37,7 +37,7 @@ class ConfiguracoesDropdowmMenu<T> extends StatelessWidget {
           children: [
             if (icon != null) ...[
               Icon(icon, size: 24, color: Theme.of(context).colorScheme.onSurfaceVariant),
-              const SizedBox(width: 8),
+              const SizedBox(width: 16),
             ],
             Expanded(
               child: Column(

@@ -467,11 +467,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
-          AutomationSection(),
-          const SizedBox(height: 16),
           TransactionSection(),
           const SizedBox(height: 16),
           PrintSection(),
+          const SizedBox(height: 16),
+          AutomationSection(),
           const SizedBox(height: 16),
           ActionsSection(),
         ],
