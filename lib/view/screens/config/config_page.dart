@@ -164,7 +164,6 @@ class _TransactionSectionState extends State<TransactionSection> {
             });
           },
         ),
-        const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.discount,
           title: 'Permitir Desconto',
@@ -176,7 +175,6 @@ class _TransactionSectionState extends State<TransactionSection> {
             });
           },
         ),
-        const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.card_giftcard,
           title: 'Permitir Voucher para Desconto',
@@ -188,7 +186,6 @@ class _TransactionSectionState extends State<TransactionSection> {
             });
           },
         ),
-        const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.receipt_long,
           title: 'Permitir Via Reduzida',
@@ -200,39 +197,6 @@ class _TransactionSectionState extends State<TransactionSection> {
             });
           },
         ),
-        const Divider(height: 1),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ConfiguracoesDropdowmMenu<PendingTransactionActions>(
-            label: 'Ação para transações pendentes',
-            values: PendingTransactionActions.values,
-            value: _tefController.configuracoes.pendingTransactionActions,
-            onChanged: (newValue) {
-              setState(() {
-                _tefController.configuracoes.setPendingTransactionActions(newValue!);
-              });
-            },
-            getLabel: (value) => value.toValue().replaceAll("_", " "),
-            icon: Icons.pending_actions,
-          ),
-        ),
-        const Divider(height: 1),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ConfiguracoesDropdowmMenu<TransactionStatus>(
-            label: 'Tipo de confirmação da transação',
-            values: TransactionStatus.values,
-            value: _tefController.configuracoes.tipoDeConfirmacao,
-            onChanged: (newValue) {
-              setState(() {
-                _tefController.configuracoes.setTipoDeConfirmacao(newValue!);
-              });
-            },
-            getLabel: (value) => value.requisicaoTransactionStatusString.replaceAll("_", " "),
-            icon: Icons.check_circle_outline,
-          ),
-        ),
-        const Divider(height: 1),
         TransactionSwitchTile(
           icon: Icons.check_circle,
           title: 'Confirmação Automática de Transação',
@@ -244,6 +208,39 @@ class _TransactionSectionState extends State<TransactionSection> {
             });
           },
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<PendingTransactionActions>(
+            label: 'Transação Pendente',
+            subtitle: 'Ação para transações pendentes',
+            values: PendingTransactionActions.values,
+            value: _tefController.configuracoes.pendingTransactionActions,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.setPendingTransactionActions(newValue!);
+              });
+            },
+            getLabel: (value) => value.toValue().replaceAll("_", " "),
+            icon: Icons.pending_actions,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<TransactionStatus>(
+            label: 'Tipo de confirmação',
+            subtitle: 'Tipo de confirmação da transação',
+            values: TransactionStatus.values,
+            value: _tefController.configuracoes.tipoDeConfirmacao,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.setTipoDeConfirmacao(newValue!);
+              });
+            },
+            getLabel: (value) => value.requisicaoTransactionStatusString.replaceAll("_", " "),
+            icon: Icons.check_circle_outline,
+          ),
+        ),
+        
       ],
     );
   }
@@ -294,7 +291,6 @@ class _PrintSectionState extends State<PrintSection> {
             });
           },
         ),
-        const Divider(height: 1),
         PrintSwitchTile(
           icon: Icons.store,
           title: 'Imprimir via do Estabelecimento',
@@ -306,7 +302,6 @@ class _PrintSectionState extends State<PrintSection> {
             });
           },
         ),
-        const Divider(height: 1),
         PrintSwitchTile(
           icon: Icons.report,
           title: 'Imprimir Relatório',
