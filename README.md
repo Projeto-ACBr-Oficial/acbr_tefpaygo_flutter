@@ -136,7 +136,7 @@ A arquitetura está documentada em detalhes no arquivo [arquitetura.md](docs/arq
 ### 🎮 Controllers
 
 #### PayGoTefController
-**Arquivo**: [`lib/controller/PayGoTefController.dart`](lib/controller/PayGoTefController.dart)
+**Arquivo**: [`lib/controller/paygo_tefcontroller.dart`](lib/controller/paygo_tefcontroller.dart)
 
 Responsável pelas regras de negócio e implementa a interface [`TefPayGoCallBack`](docs/arquitetura.md#tefpaygocallback).
 
