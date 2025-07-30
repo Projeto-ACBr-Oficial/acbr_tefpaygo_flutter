@@ -43,45 +43,26 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            titleTextStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+           backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
             title: Text(_titles[_currentIndex],),
           ),
           body: Center(child: _pages[_currentIndex]),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).shadowColor.withOpacity(0.2),
-                  spreadRadius: 3.0,
-                  blurRadius: 5,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              backgroundColor: Colors.transparent,
-              selectedItemColor: Theme.of(context).colorScheme.onSurface,
-              unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              elevation: 0,
-              currentIndex: _currentIndex,
-              onTap: setCurrentIndex,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: "Configurações",
-                ),
-              ],
-            ),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: _currentIndex,
+            onDestinationSelected: setCurrentIndex,
+            destinations: const <NavigationDestination>[
+              NavigationDestination(
+                icon: Icon(Icons.payment),
+                selectedIcon: Icon(Icons.payment),
+                label: 'Pagamento',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings),
+                selectedIcon: Icon(Icons.settings),
+                label: 'Configurações',
+              ),
+            ],
           ),
         );
       },
