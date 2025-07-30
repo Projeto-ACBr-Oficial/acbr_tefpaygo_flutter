@@ -197,7 +197,12 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     //objeto[transacao] deve ser configurado com os dados do item de roteiro de testes
     //exemplo: provider,tipo de cartão, entre outros
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
-        amount: 1.00, currencyCode: CurrencyCode.iso4217Real);
+        amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
+    //..provider = _tefController.payGORequestHandler.provider
+      //..cardType = CardType.cartaoCredito
+      //..finType = FinType.parceladoEmissor
+      //..installments = 3.0; // exemplo de parcelamento em 3 vezes
+    ;
     await pagar(transacao);
   }
 
