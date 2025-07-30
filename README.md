@@ -49,8 +49,8 @@ O **DemoTefPayGoSimples** é um projeto de exemplo que demonstra a integração 
 
 | Tecnologia | Descrição | Link |
 |------------|-----------|------|
-| **PayGo SDK** | SDK oficial para integração com PayGo | [GitHub](https://github.com/claudneysessa/paygo_sdk) |
-| **PayGo Integrado** | Sistema de pagamento integrado | [Documentação](https://paygodev.readme.io/docs/o-paygo-integrado) |
+| **PayGo SDK** | SDK para integração com PayGo | [GitHub](https://github.com/claudneysessa/paygo_sdk) |
+| **PayGo Integrado** | Sistema de pagamento integrado oficial | [Documentação](https://paygodev.readme.io/docs/o-paygo-integrado) |
 | **Flutter** | Framework de desenvolvimento multiplataforma | [Flutter.dev](https://flutter.dev) |
 | **Material 3** | Design system moderno do Flutter | [Documentação](https://m3.material.io/) |
 
@@ -223,7 +223,7 @@ Este projeto está sob a licença [MIT](LICENSE). Veja o arquivo `LICENSE` para 
 ## 🙏 Créditos
 
 ### PayGo SDK
-SDK desenvolvido por **Claudney Sarti Sessa** para integração com PayGO Integrado via URI.
+SDK desenvolvido por **Claudney Sarti Sessa** para integração com o **PayGO Integrado** via URI.
 
 **Desenvolvedores**:
 - [Claudney Sarti Sessa](https://github.com/claudneysessa) - Criador do PayGo SDK
