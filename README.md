@@ -16,12 +16,17 @@ Getting Started
 ## Pré-requisitos do PayGo Integrador ##
 
 1. Obter as crendenciais do PayGo Integrado (entre contato com o suporte da PayGo)
-2. Baixar o [PayGo Integrado e PayGo SDK](https://setis.com.br/filevista/public/pg6b/kit-paygo-android-v4-1-35-7.zip)\*
+2. Baixar o [PayGo Integrado e PayGo SDK](https://www.setis.com.br/filevista/public/5ky5/kit-paygo-android-v4-1-50-5.zip)\*
 3. Instalar o Apk do PayGo Integrado no dispositivo. 
-   1. Para produção instalar o apk *PGIntegrado-v4.1.27.13_PROD-signed.apk*
-   2. Para homologação instalar o apk *PGIntegrado-v4.1.27.13_CERT-signed.apk* 
+   1. Para produção instalar o apk *PGIntegrado-v4.1.50.5_PROD-signed.apk*
+   2. Para homologação instalar o apk *PGIntegrado-v4.1.50.5_CERT-signed.apk* 
 4. Instalar este aplicativo no dispositivo. 
 5. Ir em tela de configurações
+   1. Pin-pad
+   2. Digite a senha do lojista (o padrão é 999999)
+   3. Tap em Usar pin-pad
+   4. Selecione (*switch*) tipo de pin-pad (usb, ou bluetooth)
+   5. Testar Pin-pad
 6. Clicar no bõtão "Instalação" e digitar a senha técnica padrão  (314159)
    1. Digitar o id do ponto de captura 
    2. Digitar CPNJ do usuário 
