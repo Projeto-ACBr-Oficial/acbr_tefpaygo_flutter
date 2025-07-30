@@ -71,7 +71,7 @@ class ConfiguracoesDropdowmMenu<T> extends StatelessWidget {
             return DropdownMenuItem<T>(
               value: v,
               child: Text(
-                getLabel(v),
+                getLabel(v).capitalize(),
                 style: const TextStyle(fontSize: 14),
               ),
             );
