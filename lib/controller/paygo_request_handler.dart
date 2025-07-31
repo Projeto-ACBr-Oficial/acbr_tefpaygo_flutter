@@ -6,14 +6,7 @@ import 'package:paygo_sdk/paygo_sdk.dart';
 
 /// PayGoRequestHandler é uma classe que abstrai a requisiçoes do PayGo SDK
 class PayGoRequestHandler {
-  String _provider = "DEMO";
   final _repository = PayGOSdk();
-
-  get provider => _provider;
-
-  void setProvider(String provider) {
-    _provider = provider;
-  }
 
   late TransacaoRequisicaoDadosAutomacao _dadosAutomacao = TransacaoRequisicaoDadosAutomacao(
 

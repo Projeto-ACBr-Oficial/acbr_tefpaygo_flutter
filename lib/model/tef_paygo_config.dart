@@ -1,3 +1,4 @@
+import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
 import '../controller/types/pending_transaction_actions.dart';
@@ -20,6 +21,13 @@ class TefPayGoConfiguracoes {
   late bool _isPrintMerchantReceipt = false;
   late bool _isPrintReport = true;
   late bool _isPrintShortReceipt = false;
+
+  late TefProvider _provider = TefProvider.DEMO;
+
+  TefProvider get provider => _provider;
+  set provider(TefProvider provider) {
+    _provider = provider;
+  }
 
   late PendingTransactionActions _pendingTransactionActions =
       PendingTransactionActions.MANUAL_UNDO;
@@ -69,4 +77,6 @@ class TefPayGoConfiguracoes {
   void setTipoDeConfirmacao(TransactionStatus tipoDeConfirmacao) {
     _tipoDeConfirmacao = tipoDeConfirmacao;
   }
+
+
 }

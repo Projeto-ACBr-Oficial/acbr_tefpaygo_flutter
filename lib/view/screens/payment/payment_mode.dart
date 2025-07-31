@@ -1,3 +1,4 @@
+import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:demo_tefpaygo_simples/exception/valor_pagamento_invalido.dart';
 import 'package:demo_tefpaygo_simples/view/widget/text_button.dart';
 import 'package:flutter/material.dart';
@@ -198,7 +199,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
     //exemplo: provider,tipo de cartão, entre outros
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-    //..provider = _tefController.payGORequestHandler.provider
+    //..provider = _tefController.configuracoes.provider.toValue()
       //..cardType = CardType.cartaoCredito
       //..finType = FinType.parceladoEmissor
       //..installments = 3.0; // exemplo de parcelamento em 3 vezes
@@ -210,7 +211,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   void onClicKButtonDebito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
+      ..provider = _tefController.configuracoes.provider.toValue()
       ..cardType = CardType.cartaoDebito;
 
     transacao.finType = FinType.aVista;
@@ -225,7 +226,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   void onClickButtonCredito() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
+      ..provider = _tefController.configuracoes.provider.toValue()
       ..cardType = CardType.cartaoCredito;
     _pagamentoCredito(transacao);
   }
@@ -245,7 +246,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
+      ..provider = _tefController.configuracoes.provider.toValue()
       ..cardType = CardType.cartaoFrota
       ..finType = FinType.aVista;
 
@@ -257,7 +258,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
 
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = _tefController.payGORequestHandler.provider
+      ..provider = _tefController.configuracoes.provider.toValue()
       ..cardType = CardType.cartaoPrivateLabel
       ..finType = FinType.aVista;
     _pagamentoCredito(transacao);
