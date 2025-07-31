@@ -27,11 +27,11 @@ O **DemoTefPayGoSimples** é um projeto de exemplo que demonstra a integração 
    <img src="https://img.shields.io/badge/Status-Produção-brightgreen" alt="Status"/>
    <img src="https://img.shields.io/badge/Flutter-3.6.1+-blue?logo=flutter" alt="Flutter"/>
    <img src="https://img.shields.io/badge/Dart-3.6.1+-blue?logo=dart" alt="Dart"/>
-   <img src="https://img.shields.io/badge/Version-1.0.0-green" alt="Version"/>
+   <img src="https://img.shields.io/badge/Version-1.2.0-green" alt="Version"/>
    <img src="https://img.shields.io/badge/Material-3-orange?logo=material-design" alt="Material 3"/>
    <img src="https://img.shields.io/badge/Platform-Android-blue?logo=android" alt="Android"/>
    <img src="https://img.shields.io/badge/Dependencies-6-blue" alt="Dependencies"/>
-   <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License"/>
+   <img src="https://img.shields.io/badge/License-LGPL%202.1-yellow" alt="License"/>
 </p>
 
 ### ✨ Funcionalidades
@@ -209,7 +209,7 @@ demo_tefpaygo_simples/
 
 ## 📄 Licença
 
-Este projeto está sob a licença [MIT](LICENSE). Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença [LGPL 2.1](LICENSE). Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
 
