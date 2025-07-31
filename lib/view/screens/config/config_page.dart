@@ -1,3 +1,4 @@
+import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -240,6 +241,25 @@ class _TransactionSectionState extends State<TransactionSection> {
             icon: Icons.check_circle_outline,
           ),
         ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<TefProvider>(
+            label: 'Adquirente',
+            subtitle: 'Configura o provider ou adquirente do TEF',
+            values: TefProvider.values,
+            value: _tefController.configuracoes.provider,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.provider = newValue!;
+              });
+            },
+            getLabel: (value) => value.toValue(),
+            icon: Icons.payment_outlined,
+          ),
+        ),
+
+        //
         
       ],
     );
@@ -303,6 +323,17 @@ class _PrintSectionState extends State<PrintSection> {
           },
         ),
         PrintSwitchTile(
+          icon: Icons.receipt_long,
+          title: 'Imprimir Via Reduzida',
+          subtitle: 'Imprime recibo reduzido',
+          value: _tefController.configuracoes.isPrintShortReceipt,
+          onChanged: (value) {
+            setState(() {
+              _tefController.configuracoes.isPrintShortReceipt = value;
+            });
+          },
+        ),
+        PrintSwitchTile(
           icon: Icons.report,
           title: 'Imprimir Relatório',
           subtitle: 'Imprime relatórios de transação',
@@ -313,6 +344,8 @@ class _PrintSectionState extends State<PrintSection> {
             });
           },
         ),
+
+
       ],
     );
   }
@@ -401,29 +434,7 @@ class ActionsSection extends StatelessWidget {
             await _tefController.payGORequestHandler.relatorioResumido();
             Navigator.canPop(context);
           },
-        ),
-        ActionButton(
-          icon: Icons.select_all,
-          text: 'Selecionar Provedor',
-          onPressed: () async {
-            final TefController _tefController = Get.find();
-            var providers = {"DEMO", "REDE", "PIX C6 BANK"};
-            await showGenericDialog<String>(
-              context: context,
-              title: "Selecione o provedor",
-              options: providers.toList(),
-              selectedValue: _tefController.payGORequestHandler.provider,
-              displayText: (e) => e,
-              onSelected: (value) {
-                _tefController.payGORequestHandler.setProvider(value);
-              },
-              onCancel: () {
-                Fluttertoast.showToast(
-                    msg: "Operação cancelada", toastLength: Toast.LENGTH_LONG);
-              },
-            );
-          },
-        ),
+        )
       ],
     );
   }
