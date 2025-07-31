@@ -14,6 +14,7 @@ import '../controller/types/pending_transaction_actions.dart';
 /// [_pendingTransactionActions] (enumerado) que define a ação a ser tomada quando a transação está pendente
 /// [_tipoDeConfirmacao] (enumerado) que define o tipo de confirmação da transação
 /// [_isPrintShortReceipt] booleano que define se o comprovante curto deve ser impresso
+/// [_provider] (enumerado) que define o provedor do TEF PayGo
 
 class TefPayGoConfiguracoes {
   late bool _isAutoConfirm = true;
