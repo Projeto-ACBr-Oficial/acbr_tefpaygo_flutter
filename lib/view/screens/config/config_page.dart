@@ -323,6 +323,17 @@ class _PrintSectionState extends State<PrintSection> {
           },
         ),
         PrintSwitchTile(
+          icon: Icons.receipt_long,
+          title: 'Imprimir Via Reduzida',
+          subtitle: 'Imprime recibo reduzido',
+          value: _tefController.configuracoes.isPrintShortReceipt,
+          onChanged: (value) {
+            setState(() {
+              _tefController.configuracoes.isPrintShortReceipt = value;
+            });
+          },
+        ),
+        PrintSwitchTile(
           icon: Icons.report,
           title: 'Imprimir Relatório',
           subtitle: 'Imprime relatórios de transação',
@@ -334,18 +345,7 @@ class _PrintSectionState extends State<PrintSection> {
           },
         ),
 
-        /// imprimir via red
-        PrintSwitchTile(
-          icon: Icons.receipt_long,
-          title: 'Imprimir Via Reduzida',
-          subtitle: 'Imprime recibo reduzido',
-          value: _tefController.configuracoes.isPrintShortReceipt,
-          onChanged: (value) {
-            setState(() {
-              _tefController.configuracoes.isPrintShortReceipt = value;
-            });
-          },
-        ),
+
       ],
     );
   }
