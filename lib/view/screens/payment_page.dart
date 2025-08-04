@@ -100,9 +100,8 @@ class _PaymentPageState extends State<PaymentPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 16),
                   TextPrice(initialPrice: _valorVendaString),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   Flexible(
                     child: CustomKeyBoard(
                       processKeyBoardInput: _processInputKeyBoard,
