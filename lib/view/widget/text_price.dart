@@ -14,8 +14,8 @@ class TextPrice extends StatelessWidget {
         double width = calculeWidth(constraints.maxWidth);
         return Container(
           width: width,
-          padding: const EdgeInsets.all(15.0),
-          margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          padding: const EdgeInsets.all(10.0),
+          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
