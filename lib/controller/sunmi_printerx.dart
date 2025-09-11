@@ -4,6 +4,11 @@ import 'package:demo_tefpaygo_simples/controller/types/generic_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:sunmi_flutter_helper/sunmi_flutter_helper.dart';
 
+
+/**
+ * CustomSunmiPrinterX é uma classe que usa de impressao a biblioteca SunmiPrinterX
+ * -
+ */
 class CustomSunmiPrinterX implements GenericPrinter {
 
   @override

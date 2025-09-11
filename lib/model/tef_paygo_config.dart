@@ -1,3 +1,4 @@
+import 'package:demo_tefpaygo_simples/controller/types/tef_printer_type.dart';
 import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
@@ -24,6 +25,14 @@ class TefPayGoConfiguracoes {
   late bool _isPrintShortReceipt = false;
 
   late TefProvider _provider = TefProvider.DEMO;
+
+  late TefPrinterType _tefPrinterType = TefPrinterType.SUNMI_LEGACY_PRINTER;
+
+  TefPrinterType get tefPrinterType => _tefPrinterType;
+
+  set tefPrinterType(TefPrinterType tefPrinterType) {
+    _tefPrinterType = tefPrinterType;
+  }
 
   TefProvider get provider => _provider;
   set provider(TefProvider provider) {

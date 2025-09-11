@@ -34,3 +34,25 @@ class CustomPrinter implements GenericPrinter {
     await _printer.printBitmap(bitmap);
   }
 }
+
+/// NonePrinter imprime na saída padrão
+class NonePrinter implements GenericPrinter {
+  @override
+  Future<void> printBitmap(Uint8List bitmap) async {
+    // TODO: implement printBitmap
+   debugPrint(bitmap.toString());
+  }
+
+  @override
+  Future<void> printerText(String text) async {
+    // TODO: implement printerText
+    debugPrint(text);
+  }
+
+  @override
+  Future<void> sendRawData(Uint8List data) async {
+    // TODO: implement sendRawData
+    debugPrint(data.toString());
+  }
+
+}
