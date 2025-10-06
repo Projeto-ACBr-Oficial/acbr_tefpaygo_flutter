@@ -258,7 +258,10 @@ class _TransactionSectionState extends State<TransactionSection> {
                 _tefController.configuracoes.provider = newValue!;
               });
             },
-            getLabel: (value) => value.toValue(),
+            getLabel: (value) =>
+                value.toString()
+                    .replaceAll("TefProvider.", "")
+                    .toUpperCase(),
             icon: Icons.payment_outlined,
           ),
         ),
