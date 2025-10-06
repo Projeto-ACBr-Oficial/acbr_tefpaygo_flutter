@@ -307,7 +307,7 @@ class _PrintSectionState extends State<PrintSection> {
     }
 
     _tefController.printer = printer;
-    await printer.printerText('hello\n\n');
+    await printer.printerText('hello from ${_tefController.configuracoes.tefPrinterType.toValue()}\n');
 
   }
   @override
