@@ -24,7 +24,7 @@ class CustomSunmiPrinterX implements GenericPrinter {
   @override
   Future<void> printerText(String text) async {
     try {
-      await SunmiFlutterHelper.printText(text: text  + '\n\n', align: 'center', size: 12);
+      await SunmiFlutterHelper.printText(text: text, size:10, align: 'left');
     }catch(e){
       debugPrint("Erro ao imprimir: $e");
     }
