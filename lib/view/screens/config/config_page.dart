@@ -261,7 +261,7 @@ class _TransactionSectionState extends State<TransactionSection> {
             getLabel: (value) =>
                 value.toString()
                     .replaceAll("TefProvider.", "")
-                    .toUpperCase(),
+            .replaceAll("_", " "),
             icon: Icons.payment_outlined,
           ),
         ),
