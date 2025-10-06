@@ -73,7 +73,7 @@ class CustomKeyBoard extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               PayButton(onPressed: () => processKeyBoardInput('PAGAR')),
             ],
           ),
@@ -166,7 +166,7 @@ class PayButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Container(
           width: double.infinity,
-          height: 50,
+          height: 48,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
