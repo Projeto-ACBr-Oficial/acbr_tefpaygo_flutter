@@ -1,5 +1,6 @@
 import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:demo_tefpaygo_simples/exception/valor_pagamento_invalido.dart';
+import 'package:demo_tefpaygo_simples/model/tef_paygo_config.dart';
 import 'package:demo_tefpaygo_simples/view/widget/text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -267,7 +268,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
   void onClickButtonCarteiraDigital() async {
     TransacaoRequisicaoVenda transacao = TransacaoRequisicaoVenda(
         amount: widget.valorPagamento, currencyCode: CurrencyCode.iso4217Real)
-      ..provider = "PIX C6 BANK"
+      ..provider = TefProvider.NENHUM.toValue()
       ..finType = FinType.aVista
       ..paymentMode = PaymentMode.pagamentoCarteiraVirtual;
 

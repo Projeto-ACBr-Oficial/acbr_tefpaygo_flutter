@@ -1,3 +1,6 @@
+import 'package:demo_tefpaygo_simples/controller/custom_printer.dart';
+import 'package:demo_tefpaygo_simples/controller/sunmi_printerx.dart';
+import 'package:demo_tefpaygo_simples/controller/types/tef_printer_type.dart';
 import 'package:demo_tefpaygo_simples/controller/types/tef_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/transaction_status.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
+import '../../../controller/types/generic_printer.dart';
 import '../../../controller/types/pending_transaction_actions.dart';
 import '../../widget/widgets.dart';
 import '../../widget/dropdown_menu.dart';
@@ -254,7 +258,10 @@ class _TransactionSectionState extends State<TransactionSection> {
                 _tefController.configuracoes.provider = newValue!;
               });
             },
-            getLabel: (value) => value.toValue(),
+            getLabel: (value) =>
+                value.toString()
+                    .replaceAll("TefProvider.", "")
+            .replaceAll("_", " "),
             icon: Icons.payment_outlined,
           ),
         ),
@@ -280,8 +287,32 @@ class PrintSection extends StatefulWidget {
 }
 
 class _PrintSectionState extends State<PrintSection> {
+
+
   final TefController _tefController = Get.find();
-  
+
+  void afterPrinterChanged()  async {
+    GenericPrinter printer;
+    switch(_tefController.configuracoes.tefPrinterType) {
+
+      case TefPrinterType.NONE:
+        printer = NonePrinter();
+        break;
+      case TefPrinterType.SUNMI_LEGACY_PRINTER:
+        printer = CustomPrinter();
+        break;
+      case TefPrinterType.SUNMI_PRINTER_X:
+        printer = CustomSunmiPrinterX();
+        break;
+      default:
+        printer = CustomPrinter();
+        break;
+    }
+
+    _tefController.printer = printer;
+    await printer.printerText('hello from ${_tefController.configuracoes.tefPrinterType.toValue()}\n');
+
+  }
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -344,6 +375,27 @@ class _PrintSectionState extends State<PrintSection> {
             });
           },
         ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ConfiguracoesDropdowmMenu<TefPrinterType>(
+            label: 'Impressora TEF',
+            subtitle: 'Configura o tipo de impressora TEF',
+            values: TefPrinterType.values,
+            value: _tefController.configuracoes.tefPrinterType,
+            onChanged: (newValue) {
+              setState(() {
+                _tefController.configuracoes.tefPrinterType = newValue!;
+                afterPrinterChanged();
+              });
+
+            },
+            getLabel: (value) => value.toValue(),
+            icon: Icons.print_outlined,
+          ),
+        ),
+
+
 
 
       ],
