@@ -7,7 +7,7 @@
     <uses-feature android:name="android.hardware.usb.host"/>
 
     <application
-        android:label="demo_tefpaygo_simples"
+        android:label="PayGo"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <activity
