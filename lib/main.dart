@@ -46,14 +46,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/payment',
           page: () => PaymentViewMode(valorPagamento: Get.arguments),
-        ),
-        GetPage(
-            name: '/failure_screen',
-            page: () => ExampleErrorScreen(message: Get.arguments)),
-        GetPage(
-          name: '/success_screen',
-          page: () => ExampleSuccessScreen(),
-        ),
+        )
       ],
     );
   }
