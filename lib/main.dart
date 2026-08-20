@@ -1,4 +1,5 @@
 import 'package:demo_tefpaygo_simples/controller/paygo_tefcontroller.dart';
+import 'package:demo_tefpaygo_simples/view/_core/app_theme.dart';
 import 'package:demo_tefpaygo_simples/view/screens/home_page.dart';
 import 'package:demo_tefpaygo_simples/view/screens/payment/payment_mode.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorSeed = Color.fromARGB(255, 43, 57, 78);
-    final colorScheme = ColorScheme.fromSeed(
-        seedColor: colorSeed, brightness: Brightness.light);
-    final colorSchemeDark =
-        ColorScheme.fromSeed(seedColor: colorSeed, brightness: Brightness.dark);
-
     return GetMaterialApp(
       onDispose: () {
         debugPrint("GetMaterialApp onDispose");
@@ -28,14 +23,7 @@ class MyApp extends StatelessWidget {
         Get.put(TefController(), permanent: true);
       }),
       title: 'Demo PayGOSdk',
-      theme: ThemeData(
-          colorScheme: colorScheme,
-          useMaterial3: true,
-          primaryColor: colorSeed),
-      darkTheme: ThemeData(
-          colorScheme: colorSchemeDark,
-          useMaterial3: true,
-          primaryColor: colorSeed),
+      theme: AppTheme.dark,
       initialRoute: '/home',
       getPages: [
         GetPage(

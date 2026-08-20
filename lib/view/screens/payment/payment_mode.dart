@@ -12,6 +12,7 @@ import 'package:paygo_sdk/paygo_integrado_uri/domain/types/fin_type.dart';
 import 'package:paygo_sdk/paygo_integrado_uri/domain/types/payment_mode.dart';
 
 import '../../../controller/paygo_tefcontroller.dart';
+import '../../_core/app_colors.dart';
 import '../../widget/widgets.dart';
 
 class PaymentViewMode extends StatefulWidget {
@@ -123,7 +124,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.credit_card,
                         title: "Débito",
                         subtitle: "Cartão de débito",
-                        color: Colors.blue,
+                        color: AppColors.debito,
                         onPressed: onClicKButtonDebito,
                       ),
                       const SizedBox(height: 12),
@@ -131,7 +132,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.credit_card,
                         title: "Crédito",
                         subtitle: "Cartão de crédito",
-                        color: Colors.green,
+                        color: AppColors.credito,
                         onPressed: onClickButtonCredito,
                       ),
                       const SizedBox(height: 12),
@@ -139,7 +140,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.card_giftcard,
                         title: "Voucher",
                         subtitle: "Vale alimentação ou refeição",
-                        color: Colors.orange,
+                        color: AppColors.voucher,
                         onPressed: onClickButtonVoucher,
                       ),
                       const SizedBox(height: 12),
@@ -147,7 +148,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.local_gas_station,
                         title: "Cartão Frota",
                         subtitle: "Cartão corporativo",
-                        color: Colors.purple,
+                        color: AppColors.frota,
                         onPressed: onClickButtonFrota,
                       ),
                       const SizedBox(height: 12),
@@ -155,7 +156,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.store,
                         title: "Cartão da Loja",
                         subtitle: "Private label",
-                        color: Colors.teal,
+                        color: AppColors.privateLabel,
                         onPressed: onClickButtonPrivateLabel,
                       ),
                       const SizedBox(height: 12),
@@ -163,7 +164,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.account_balance,
                         title: "Carteira Digital",
                         subtitle: "PIX e carteiras virtuais",
-                        color: Colors.indigo,
+                        color: AppColors.carteiraDigital,
                         onPressed: onClickButtonCarteiraDigital,
                       ),
 
@@ -173,7 +174,7 @@ class _PaymentViewModeState extends State<PaymentViewMode> {
                         icon: Icons.check_circle,
                         title: "Pagar Item do Roteiro de Testes",
                         subtitle: "Simula pagamento de item de roteiro",
-                        color: Colors.green,
+                        color: AppColors.credito,
                         onPressed: onClickPagarItemRoteiroTestes,
                       ),
                       const SizedBox(height: 24),

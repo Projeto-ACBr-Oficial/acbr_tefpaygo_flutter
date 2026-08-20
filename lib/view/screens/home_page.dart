@@ -42,11 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          appBar: AppBar(
-           backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            title: Text(_titles[_currentIndex],),
-          ),
           body: Center(child: _pages[_currentIndex]),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _currentIndex,

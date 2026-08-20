@@ -24,7 +24,7 @@ class TefPayGoConfiguracoes {
   late bool _isPrintReport = true;
   late bool _isPrintShortReceipt = false;
 
-  late TefProvider _provider = TefProvider.DEMO;
+  late TefProvider _provider = TefProvider.C6_PAY;
 
   late TefPrinterType _tefPrinterType = TefPrinterType.SUNMI_LEGACY_PRINTER;
 

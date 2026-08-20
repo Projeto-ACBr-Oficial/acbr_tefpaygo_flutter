@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../width_helper.dart';
+import '../_core/app_colors.dart';
 
 class CustomKeyBoard extends StatelessWidget {
   final Function(String) processKeyBoardInput;
@@ -8,77 +8,51 @@ class CustomKeyBoard extends StatelessWidget {
   const CustomKeyBoard({Key? key, required this.processKeyBoardInput})
       : super(key: key);
 
+  static const double _maxKeyboardWidth = 400.0;
+
+  static const List<String> _keys = [
+    '1', '2', '3',
+    '4', '5', '6',
+    '7', '8', '9',
+    'C', '0', 'CE',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double width = calculeWidth(constraints.maxWidth);
-        double maxHeight = calculeHeight(constraints.maxHeight); // Limita altura máxima
-        
-        return Container(
-          width: width,
-          constraints: BoxConstraints(
-            maxWidth: width,
-            maxHeight: maxHeight,
-          ),
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: theme.brightness == Brightness.dark
-                    ? Colors.white.withOpacity(0.1)
-                    : theme.shadowColor.withOpacity(0.15),
-                blurRadius: 12,
-                spreadRadius: 1,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, gridConstraints) {
-                    // Calcula a altura disponível para o grid (subtraindo padding e botão de pagamento)
-                    double availableHeight = gridConstraints.maxHeight - 12; // Espaço do botão de pagamento
-                    double buttonHeight = (availableHeight - 24) / 4; // 4 linhas de botões com espaçamento
-                    double buttonWidth = (width - 32 - 16) / 3; // 3 colunas com espaçamento
-                    
-                    return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: buttonWidth / buttonHeight,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                ),
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  List<String> buttons = [
-                          '1', '2', '3',
-                          '4', '5', '6',
-                          '7', '8', '9',
-                          'C', '0', 'CE'
-                  ];
-                  return NumericKeyButton(
-                    text: buttons[index],
-                    onPressed: () => processKeyBoardInput(buttons[index]),
-                  );
-                },
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: _maxKeyboardWidth),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 0; i < _keys.length; i += 3)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  children: _keys.sublist(i, i + 3).map((key) {
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: NumericKeyButton(
+                          text: key,
+                          onPressed: () => processKeyBoardInput(key),
+                        ),
+                      ),
                     );
-                  },
+                  }).toList(),
                 ),
               ),
-              const SizedBox(height: 8),
-              PayButton(onPressed: () => processKeyBoardInput('PAGAR')),
-            ],
-          ),
-        );
-      },
+            const SizedBox(height: 8),
+            PayButton(onPressed: () => processKeyBoardInput('PAGAR')),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -96,7 +70,7 @@ class NumericKeyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Color buttonColor = theme.colorScheme.primaryContainer;
+    Color buttonColor =  AppColors.secondary;
     Color textColor = theme.colorScheme.onPrimaryContainer;
     
     Widget buttonChild = Center(
@@ -111,15 +85,15 @@ class NumericKeyButton extends StatelessWidget {
     );
 
     if (text == 'C') {
-      buttonColor = Colors.red.shade400;
+      buttonColor = AppColors.dangerLight;
       textColor = Colors.white;
       buttonChild = Icon(
-        Icons.clear, 
-        color: textColor, 
+        Icons.clear,
+        color: textColor,
         size: 24,
       );
     } else if (text == 'CE') {
-      buttonColor = Colors.amber.shade600;
+      buttonColor = AppColors.warning;
       textColor = Colors.white;
       buttonChild = Icon(
         Icons.backspace, 
@@ -128,24 +102,21 @@ class NumericKeyButton extends StatelessWidget {
       );
     }
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: buttonColor,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: buttonColor.withOpacity(0.3),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-      ),
-          child: Center(child: buttonChild),
+    return AspectRatio(
+      aspectRatio: 1.16,
+      child: Material(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            decoration: BoxDecoration(
+              color: buttonColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(child: buttonChild),
+          ),
         ),
       ),
     );
@@ -170,8 +141,8 @@ class PayButton extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.green.shade600,
-                Colors.green.shade700,
+                AppColors.success,
+                AppColors.successDark,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -179,7 +150,7 @@ class PayButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.green.withOpacity(0.3),
+                color: AppColors.success.withOpacity(0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../_core/app_colors.dart';
+
 /// Widget personalizado para botão de cancelamento.
 /// 
 /// Este componente fornece um botão de cancelamento estilizado que se adapta
@@ -42,10 +44,10 @@ class CancelButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.red.withOpacity(0.1),
+            color: AppColors.danger.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.red.withOpacity(0.3),
+              color: AppColors.danger.withOpacity(0.3),
               width: 1,
             ),
           ),
@@ -54,7 +56,7 @@ class CancelButton extends StatelessWidget {
             children: [
               Icon(
                 Icons.cancel,
-                color: Colors.red,
+                color: AppColors.danger,
                 size: 20,
               ),
               const SizedBox(width: 8),
@@ -63,7 +65,7 @@ class CancelButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Colors.red,
+                  color: AppColors.danger,
                 ),
               ),
             ],
