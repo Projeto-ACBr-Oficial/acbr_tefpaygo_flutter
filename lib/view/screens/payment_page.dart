@@ -15,7 +15,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  double _valorVenda = 0.0;
+  double _valorVenda = 0;
   String _valorVendaString = "0,00";
 
   void _setInputVenta(String value) {
